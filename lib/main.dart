@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'app/routes/app_pages.dart';
+import 'app/services/auth_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -16,7 +17,9 @@ void main() async {
     GetMaterialApp.router(
       debugShowCheckedModeBanner:false,
       title: "Application",
-      initialBinding: BindingsBuilder((){}),
+      initialBinding: BindingsBuilder((){
+        Get.put(AuthService());
+      }),
       getPages: AppPages.routes,
     ),
   );

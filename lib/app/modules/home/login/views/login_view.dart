@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../services/auth_service.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -13,9 +14,14 @@ class LoginView extends GetView<LoginController> {
         centerTitle: true,
       ),
       body: Center(
-        child: Text(
-          'LoginView is working',
-          style: TextStyle(fontSize: 20),
+        child: TextButton(
+          child: Text(
+            'Google Sign',
+            style: TextStyle(fontSize: 20),
+          ),
+          onPressed: (){
+            AuthService.to.handleSignIn();
+          },
         ),
       ),
     );
