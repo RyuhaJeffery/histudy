@@ -1,5 +1,13 @@
 import 'package:get/get.dart';
 
+import '../modules/home/admin/bindings/admin_binding.dart';
+import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
+import '../modules/home/admin/group_add/views/group_add_view.dart';
+import '../modules/home/admin/group_del/bindings/group_del_binding.dart';
+import '../modules/home/admin/group_del/views/group_del_view.dart';
+import '../modules/home/admin/student_list/bindings/student_list_binding.dart';
+import '../modules/home/admin/student_list/views/student_list_view.dart';
+import '../modules/home/admin/views/admin_view.dart';
 import '../modules/home/announce/bindings/announce_binding.dart';
 import '../modules/home/announce/views/announce_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -87,6 +95,28 @@ class AppPages {
           name: _Paths.MY_PAGE,
           page: () => MyPageView(),
           binding: MyPageBinding(),
+        ),
+        GetPage(
+          name: _Paths.ADMIN,
+          page: () => AdminView(),
+          binding: AdminBinding(),
+          children: [
+            GetPage(
+              name: _Paths.STUDENT_LIST,
+              page: () => StudentListView(),
+              binding: StudentListBinding(),
+            ),
+            GetPage(
+              name: _Paths.GROUP_ADD,
+              page: () => GroupAddView(),
+              binding: GroupAddBinding(),
+            ),
+            GetPage(
+              name: _Paths.GROUP_DEL,
+              page: () => GroupDelView(),
+              binding: GroupDelBinding(),
+            ),
+          ],
         ),
       ],
     ),

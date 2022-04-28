@@ -15,6 +15,10 @@ abstract class Routes {
   static const REGISTER = _Paths.HOME + _Paths.REGISTER;
   static const QUESTION = _Paths.HOME + _Paths.QUESTION;
   static const MY_PAGE = _Paths.HOME + _Paths.MY_PAGE;
+  static const ADMIN = _Paths.HOME + _Paths.ADMIN;
+  static const STUDENT_LIST = _Paths.HOME + _Paths.ADMIN + _Paths.STUDENT_LIST;
+  static const GROUP_ADD = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_ADD;
+  static const GROUP_DEL = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_DEL;
 }
 
 abstract class _Paths {
@@ -30,4 +34,8 @@ abstract class _Paths {
   static const REGISTER = '/register';
   static const QUESTION = '/question';
   static const MY_PAGE = '/my-page';
+  static const ADMIN = '/admin';
+  static const STUDENT_LIST = '/student-list';
+  static const GROUP_ADD = '/group-add';
+  static const GROUP_DEL = '/group-del';
 }
