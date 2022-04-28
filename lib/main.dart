@@ -13,9 +13,10 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    GetMaterialApp(
+    GetMaterialApp.router(
+      debugShowCheckedModeBanner:false,
       title: "Application",
-      initialRoute: AppPages.INITIAL,
+      initialBinding: BindingsBuilder((){}),
       getPages: AppPages.routes,
     ),
   );
