@@ -11,6 +11,9 @@ dependencies:
   flutter: 
     sdk: flutter
   firebase_core: ^1.15.0
+  firebase_auth: ^3.3.4
+  cloud_firestore: ^3.1.5
+  flutterfire_ui: ^0.3.1
 
 dev_dependencies: 
   flutter_lints: ^1.0.0
