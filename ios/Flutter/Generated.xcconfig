@@ -1,6 +1,6 @@
 // This is a generated file; do not edit or check into version control.
-FLUTTER_ROOT=/Users/woonseonyu/development/flutter
-FLUTTER_APPLICATION_PATH=/Users/woonseonyu/Desktop/develop/histudy
+FLUTTER_ROOT=/Users/jeong-yechan/Library/flutter
+FLUTTER_APPLICATION_PATH=/Users/jeong-yechan/Documents/GitHub/histudy
 COCOAPODS_PARALLEL_CODE_SIGN=true
 FLUTTER_TARGET=lib/main.dart
 FLUTTER_BUILD_DIR=build
