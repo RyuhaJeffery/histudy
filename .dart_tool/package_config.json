@@ -74,6 +74,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "dropdown_button2",
+      "rootUri": "file:///Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/dropdown_button2-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "email_validator",
       "rootUri": "file:///Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/email_validator-2.0.1",
       "packageUri": "lib/",
@@ -422,7 +428,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-05-01T16:06:10.883789Z",
+  "generated": "2022-05-02T01:17:41.944165Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

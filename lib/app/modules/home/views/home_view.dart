@@ -39,11 +39,7 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 281,
               width: 367,
-              child: SafeArea(
-                child: kIsWeb
-                    ? SvgPicture.asset('assets/people.svg')
-                    : SvgPicture.asset('assets/people.svg'),
-              ),
+              child: Image(image: AssetImage('assets/people.png')),
             ),
             SizedBox(
               height: 76,

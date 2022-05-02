@@ -37,13 +37,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            '제목',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black
-                            ),
-                          ),
+                          _titleWidget('제목'),
                           SizedBox(
                             width: 16,
                           ),
@@ -61,13 +55,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                       ),
                       Row(
                         children: [
-                          Text(
-                            '참여 멤버',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black
-                            ),
-                          ),
+                          _titleWidget('참여 멤버'),
                           SizedBox(
                             width: 16,
                           ),
@@ -109,13 +97,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                       ),
                       Row(
                         children: [
-                          Text(
-                            '스터디 시간',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black
-                            ),
-                          ),
+                          _titleWidget('스터디 시간'),
                           SizedBox(
                             width: 16,
                           ),
@@ -128,26 +110,11 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           ),
                         ],
                       ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        height: 1,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
+                      _dividerWidget(),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '스터디 내용',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black
-                            ),
-                          ),
+                          _titleWidget('스터디 내용'),
                           SizedBox(
                             width: 16,
                           ),
@@ -203,13 +170,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '이미지',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black
-                            ),
-                          ),
+                          _titleWidget('이미지'),
                           SizedBox(
                             width: 16,
                           ),
@@ -262,6 +223,33 @@ class ReportDetailView extends GetView<ReportDetailController> {
             ),
           ],
         )
+    );
+  }
+
+  Widget _titleWidget(String title) {
+    return Text(
+      title,
+      style: TextStyle(
+          fontSize: 20,
+          color: Colors.black
+      ),
+    );
+  }
+
+  Widget _dividerWidget() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 16,
+        ),
+        Container(
+          height: 1,
+          color: Colors.black,
+        ),
+        SizedBox(
+          height: 16,
+        ),
+      ],
     );
   }
 }
