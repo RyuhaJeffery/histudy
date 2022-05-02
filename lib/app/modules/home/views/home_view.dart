@@ -86,7 +86,7 @@ class HomeView extends GetView<HomeController> {
                     )),
               ),
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.REPORT_DETAILE);
+                Get.rootDelegate.toNamed(Routes.QUESTION_WRITE);
               },
             ),
           ],
