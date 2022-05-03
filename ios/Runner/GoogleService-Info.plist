@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>668681426021-sh2lq81l32lfv4o2nmt30fdfatk6v10q.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.668681426021-sh2lq81l32lfv4o2nmt30fdfatk6v10q</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBWb0_3cG-lVMaIKw39yOALXjUZD8NQkCA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>668681426021</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.histudy.histudy</string>
+	<key>PROJECT_ID</key>
+	<string>cseehistudy</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cseehistudy.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:668681426021:ios:63e866bd84533904ffa28c</string>
+</dict>
+</plist>
