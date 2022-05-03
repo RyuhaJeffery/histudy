@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:histudy/app/routes/app_pages.dart';
 
-import '../../../../routes/app_pages.dart';
-import '../controllers/question_controller.dart';
+import '../controllers/home2_controller.dart';
+import '../controllers/home_controller.dart';
 
-class QuestionView extends GetView<QuestionController> {
+class HomeView2 extends GetView<Home2Controller> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,29 +79,24 @@ class QuestionView extends GetView<QuestionController> {
             ),
           ]),
         ),
-
-
         Container(
           child:Column(children: [
             Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children:[
                   //SizedBox(width: 180,),
-                  Text('Q&A 게시판'),
+                  Text('등록된 스터디모임 보고서'),
                   SizedBox(width: 200,),
                   ElevatedButton(onPressed: (){
-                    Get.rootDelegate.toNamed(Routes.QUESTION_WRITE);
-                  }, child: const Text('질문 작성'))
+                    Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
+                  }, child: const Text('보고서 작성'))
                 ]
             ),
-
-
-
             DataTable(
               columns: const <DataColumn>[
                 DataColumn(
                   label: Text(
-                    'No',
+                    ' ',
 
                   ),
                 ),
@@ -116,7 +113,7 @@ class QuestionView extends GetView<QuestionController> {
                 ),
                 DataColumn(
                   label: Text(
-                    '과목',
+                    '날짜',
 
                   ),
                 ),
@@ -126,20 +123,27 @@ class QuestionView extends GetView<QuestionController> {
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Text('1')),
-                    DataCell(Text('저는 아는게 없습니다 ..  ')),
+                    DataCell(Text('개념 2 스터디 ')),
                     DataCell(Text('홍길동')),
-                    DataCell(Text('소프트웨어 공학')),
+                    DataCell(Text('2022-10-22')),
                   ],
                 ),
                 DataRow(
                   cells: <DataCell>[
                     DataCell(Text('2')),
-                    DataCell(Text('DB Query 질문있어요!')),
+                    DataCell(Text('개념 3 스터디')),
                     DataCell(Text('김길동')),
-                    DataCell(Text('데이터베이스')),
+                    DataCell(Text('2022-10-23')),
                   ],
                 ),
-
+                DataRow(
+                  cells: <DataCell>[
+                    DataCell(Text('3')),
+                    DataCell(Text('개념 4 스터디 Lec10' )),
+                    DataCell(Text('관리자')),
+                    DataCell(Text('2022-10-23')),
+                  ],
+                ),
               ],
             ),
           ],

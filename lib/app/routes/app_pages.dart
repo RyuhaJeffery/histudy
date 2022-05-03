@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:histudy/app/modules/home/views/home_view2.dart';
 
 import '../modules/home/admin/bindings/admin_binding.dart';
 import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
@@ -50,6 +51,11 @@ class AppPages {
       page: () => HomeView(),
       binding: HomeBinding(),
       children: [
+        GetPage(
+          name: _Paths.HOME2,
+          page: () => HomeView2(),
+          binding: RankBinding(),
+        ),
         GetPage(
           name: _Paths.LOGIN,
           page: () => LoginView(),

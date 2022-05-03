@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../../routes/app_pages.dart';
 import '../controllers/report_write_controller.dart';
 
 class ReportWriteView extends GetView<ReportWriteController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffFDFFFE),
       body: ListView(
         children: [
           Column(
@@ -434,7 +436,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                             ),
                           ),
                           onTap: () {
-                            print("Clicked");
+                            Get.rootDelegate.toNamed(Routes.HOME2);
                           },
                         ),
                       ],

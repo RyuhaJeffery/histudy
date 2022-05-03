@@ -326,6 +326,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "phosphor_flutter",
+      "rootUri": "file:///Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/phosphor_flutter-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "plugin_platform_interface",
       "rootUri": "file:///Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/plugin_platform_interface-2.1.2",
       "packageUri": "lib/",
@@ -428,7 +434,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-05-02T01:17:41.944165Z",
+  "generated": "2022-05-03T11:07:28.492114Z",
   "generator": "pub",
   "generatorVersion": "2.16.2"
 }

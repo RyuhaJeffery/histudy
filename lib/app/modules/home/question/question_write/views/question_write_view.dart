@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../../routes/app_pages.dart';
 import '../controllers/question_write_controller.dart';
 
 class QuestionWriteView extends GetView<QuestionWriteController> {
@@ -316,7 +317,7 @@ class QuestionWriteView extends GetView<QuestionWriteController> {
                             ),
                           ),
                           onTap: () {
-                            print("Clicked");
+                            Get.rootDelegate.toNamed(Routes.QUESTION);
                           },
                         ),
                       ],

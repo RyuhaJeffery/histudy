@@ -13,28 +13,73 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
+        backgroundColor: Color(0xffFDFFFE),
         body: Column(
           children: [
-            // Row(children: [
-            //   TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-            //       },
-            //       child: Text("Announce Page")),
-            //   TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.LOGIN);
-            //       },
-            //       child: Text("Login Page")),
-            //   TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.RANK);
-            //       },
-            //       child: Text("Rank Page"))
-            // ]),
-            Container(
-              height: 100,
-              color: Colors.blue,
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Row(
+                  children: [
+                    SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image.asset('assets/handong_logo.png')),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Get.rootDelegate.toNamed(Routes.HOME);
+                      },
+                      child: Text(
+                        'HISTUDY',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.HOME2);
+                        },
+                        child: Text("HOME")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                        },
+                        child: Text("TEAM")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.QUESTION);
+                        },
+                        child: Text("Q&A")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                        },
+                        child: Text("ANNOUNCEMENT")),
+                  ],
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.RANK);
+                        },
+                        child: Text("RANK")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.GUIDELINE);
+                        },
+                        child: Text("GUIDELINE")),
+                    ElevatedButton(onPressed: () {
+                    }, child: Text('LOGOUT'))
+                  ],
+                ),
+              ]),
             ),
             SizedBox(
               height: 281,
@@ -86,9 +131,27 @@ class HomeView extends GetView<HomeController> {
                     )),
               ),
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.QUESTION_WRITE);
+
               },
             ),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.GROUP_ADD);
+                  },
+                  child: Text('GROUP ADD'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.GROUP_DEL);
+                  },
+                  child: Text('GROUP DEL'),
+                )
+              ],
+            )
           ],
         ),
       );
