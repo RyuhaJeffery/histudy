@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 import 'package:histudy/app/routes/app_pages.dart';
@@ -7,8 +9,6 @@ import '../../../services/auth_service.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-
-  
   @override
   Widget build(BuildContext context) {
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
@@ -18,74 +18,68 @@ class HomeView extends GetView<HomeController> {
           children: [
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: Image.asset('assets/handong_logo.png')),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.rootDelegate.toNamed(Routes.HOME);
-                          },
-                          child: Text(
-                            'HISTUDY',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.HOME2);
-                            },
-                            child: Text("HOME")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                            },
-                            child: Text("TEAM")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.QUESTION);
-                            },
-                            child: Text("Q&A")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                            },
-                            child: Text("ANNOUNCEMENT")),
-                      ],
+                    SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Image.asset('assets/handong_logo.png')),
+                    SizedBox(
+                      width: 8,
                     ),
-                    Row(
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.RANK);
-                            },
-                            child: Text("RANK")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.GUIDELINE);
-                            },
-                            child: Text("GUIDELINE")),
-                        ElevatedButton(
-                            onPressed: () {
-                              AuthService.to.googleSignOut();
-                            },
-                            child: Text('LOGOUT'))
-                      ],
+                    GestureDetector(
+                      onTap: () {
+                        Get.rootDelegate.toNamed(Routes.HOME);
+                      },
+                      child: Text(
+                        'HISTUDY',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
                     ),
-                  ]),
+                    SizedBox(
+                      width: 8,
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.HOME2);
+                        },
+                        child: Text("HOME")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                        },
+                        child: Text("TEAM")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.QUESTION);
+                        },
+                        child: Text("Q&A")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                        },
+                        child: Text("ANNOUNCEMENT")),
+                  ],
+                ),
+                Row(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.RANK);
+                        },
+                        child: Text("RANK")),
+                    TextButton(
+                        onPressed: () {
+                          Get.rootDelegate.toNamed(Routes.GUIDELINE);
+                        },
+                        child: Text("GUIDELINE")),
+                    ElevatedButton(onPressed: () {
+                    }, child: Text('LOGOUT'))
+                  ],
+                ),
+              ]),
             ),
             SizedBox(
               height: 281,
@@ -104,7 +98,9 @@ class HomeView extends GetView<HomeController> {
               ),
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                  Colors.blue
+                ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
@@ -126,13 +122,17 @@ class HomeView extends GetView<HomeController> {
               ),
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.black
+                ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                )),
+                      borderRadius: BorderRadius.circular(32),
+                    )),
               ),
-              onPressed: () {},
+              onPressed: () {
+
+              },
             ),
             SizedBox(height: 30),
             Row(
