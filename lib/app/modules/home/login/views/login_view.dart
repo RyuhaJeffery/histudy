@@ -20,7 +20,7 @@ class LoginView extends GetView<LoginController> {
             style: TextStyle(fontSize: 20),
           ),
           onPressed: (){
-            AuthService.to.handleSignIn();
+            AuthService.to.signInWithGoogle();
           },
         ),
       ),
