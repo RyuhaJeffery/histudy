@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 
+import '../../../services/auth_service.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
