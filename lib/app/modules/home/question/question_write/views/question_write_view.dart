@@ -1,15 +1,24 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
 import '../../../../../routes/app_pages.dart';
-import '../controllers/report_write_controller.dart';
+import '../controllers/question_write_controller.dart';
 
-class ReportWriteView extends GetView<ReportWriteController> {
+class QuestionWriteView extends GetView<QuestionWriteController> {
+  final List<String> subjectItems = [
+    '객체지향 설계 패턴',
+    '소프트웨어 공학',
+    '데이타구조',
+    '운영체제'
+  ];
+
+  String? selectedValue;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffFDFFFE),
       body: ListView(
         children: [
           Column(
@@ -22,7 +31,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                 height: 22,
               ),
               Text(
-                '스터디모임 보고서 작성',
+                'Q&A',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold
@@ -48,7 +57,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '인증샷 올리기 (* 파일명에 한글이 들어가면 오류가 날 수 있음)',
+                      '사진 올리기 (* 파일명에 한글이 들어가면 오류가 날 수 있음)',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -114,135 +123,104 @@ class ReportWriteView extends GetView<ReportWriteController> {
                     SizedBox(
                       height: 16,
                     ),
-                    InkWell(
-                      child: Container(
-                        height: 17,
-                        width: 48,
-                        decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.all(
-                                Radius.circular(3)
-                            )
+                    Row(
+                      children: [
+                        Text(
+                          '제목',
+                          style: TextStyle(
+                            color: Colors.grey,
+                          ),
                         ),
-                        child: Center(
-                          child: Text(
-                            '코드 생성',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
+                        SizedBox(
+                          width: 16,
+                        ),
+                        Container(
+                          height: 25,
+                          width: 670,
+                          child: TextFormField(
+                            maxLines: 1,
+                            decoration: InputDecoration(
+                                contentPadding: EdgeInsets.only(left:8 ,bottom: 4),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    borderSide: BorderSide(color: Colors.black)
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(8),
+                                    ),
+                                    borderSide: BorderSide(color: Colors.black)
+                                )
                             ),
                           ),
                         ),
-                      ),
-                      onTap: () {
-                        print("Clicked");
-                      },
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      height: 1,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      '참여 멤버',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
+                      ],
                     ),
                     SizedBox(
                       height: 16,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 6,
-                          width: 6,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.black
-                            )
+                        Text(
+                          '과목',
+                          style: TextStyle(
+                            color: Colors.grey,
                           ),
                         ),
                         SizedBox(
-                          width: 7,
+                          width: 16,
                         ),
-                        Text(
-                          '류운선(yws2121@naver.com)',
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
                         Container(
-                          height: 6,
-                          width: 6,
-                          decoration: BoxDecoration(
+                          height: 25,
+                          width: 200,
+                          child: DropdownButtonFormField2(
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.zero,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            isExpanded: true,
+                            hint: const Text(
+                              '과목을 선택하여주세요.',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                            iconSize: 30,
+                            buttonHeight: 60,
+                            buttonPadding: const EdgeInsets.only(left: 20, right: 10),
+                            dropdownDecoration: BoxDecoration(
                               border: Border.all(
+                                  width: 1,
                                   color: Colors.black
-                              )
+                              ),
+                            ),
+                            items: subjectItems
+                                .map((item) =>
+                                DropdownMenuItem<String>(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ))
+                                .toList(),
+                            validator: (value) {
+                              if (value == null) {
+                                return 'Please select gender.';
+                              }
+                            },
+                            onChanged: (value) {
+                              //Do something when changing the item if you want.
+                            },
+                            onSaved: (value) {
+                              selectedValue = value.toString();
+                            },
                           ),
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          '류운선(yws2121@naver.com)',
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 6,
-                          width: 6,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black
-                              )
-                          ),
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          '류운선(yws2121@naver.com)',
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 6,
-                          width: 6,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Colors.black
-                              )
-                          ),
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Text(
-                          '류운선(yws2121@naver.com)',
                         )
                       ],
                     ),
@@ -257,104 +235,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                       height: 16,
                     ),
                     Text(
-                      '스터디 시작 시간 입력',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                          hintText: '시작시간을 입력하세요.',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              borderSide: BorderSide(color: Colors.black)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              borderSide: BorderSide(color: Colors.black)
-                          )
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      '스터디 시간 입력(분단위)',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                          hintText: '끝시간을 입력하세요.',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              borderSide: BorderSide(color: Colors.black)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              borderSide: BorderSide(color: Colors.black)
-                          )
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Container(
-                      height: 1,
-                      color: Colors.black,
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      '스터디 제목',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    TextFormField(
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                          hintText: '제목을 입력하세요.',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              borderSide: BorderSide(color: Colors.black)
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(8),
-                              ),
-                              borderSide: BorderSide(color: Colors.black)
-                          )
-                      ),
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Text(
-                      '스터디 내용',
+                      'Q&A 내용',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
@@ -436,7 +317,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                             ),
                           ),
                           onTap: () {
-                            Get.rootDelegate.toNamed(Routes.HOME2);
+                            Get.rootDelegate.toNamed(Routes.QUESTION);
                           },
                         ),
                       ],
