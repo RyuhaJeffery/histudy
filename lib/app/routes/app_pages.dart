@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:histudy/app/modules/home/views/home_view2.dart';
 
 import '../modules/home/admin/bindings/admin_binding.dart';
 import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
@@ -21,18 +20,12 @@ import '../modules/home/login/views/login_view.dart';
 import '../modules/home/my_page/bindings/my_page_binding.dart';
 import '../modules/home/my_page/views/my_page_view.dart';
 import '../modules/home/question/bindings/question_binding.dart';
-import '../modules/home/question/question_detail/bindings/question_detail_binding.dart';
-import '../modules/home/question/question_detail/views/question_detail_view.dart';
-import '../modules/home/question/question_write/bindings/question_write_binding.dart';
-import '../modules/home/question/question_write/views/question_write_view.dart';
 import '../modules/home/question/views/question_view.dart';
 import '../modules/home/rank/bindings/rank_binding.dart';
 import '../modules/home/rank/views/rank_view.dart';
 import '../modules/home/register/bindings/register_binding.dart';
 import '../modules/home/register/views/register_view.dart';
 import '../modules/home/report_list/bindings/report_list_binding.dart';
-import '../modules/home/report_list/report_detail/bindings/report_detail_binding.dart';
-import '../modules/home/report_list/report_detail/views/report_detail_view.dart';
 import '../modules/home/report_list/report_write/bindings/report_write_binding.dart';
 import '../modules/home/report_list/report_write/views/report_write_view.dart';
 import '../modules/home/report_list/views/report_list_view.dart';
@@ -51,11 +44,6 @@ class AppPages {
       page: () => HomeView(),
       binding: HomeBinding(),
       children: [
-        GetPage(
-          name: _Paths.HOME2,
-          page: () => HomeView2(),
-          binding: RankBinding(),
-        ),
         GetPage(
           name: _Paths.LOGIN,
           page: () => LoginView(),
@@ -84,18 +72,6 @@ class AppPages {
           ],
         ),
         GetPage(
-          name: _Paths.REPORT_LIST,
-          page: () => ReportListView(),
-          binding: ReportListBinding(),
-          children: [
-            GetPage(
-              name: _Paths.REPORT_DETAIL,
-              page: () => ReportDetailView(),
-              binding: ReportDetailBinding(),
-            ),
-          ],
-        ),
-        GetPage(
           name: _Paths.ANNOUNCE,
           page: () => AnnounceView(),
           binding: AnnounceBinding(),
@@ -114,30 +90,6 @@ class AppPages {
           name: _Paths.QUESTION,
           page: () => QuestionView(),
           binding: QuestionBinding(),
-        ),
-        GetPage(
-          name: _Paths.QUESTION,
-          page: () => QuestionView(),
-          binding: QuestionBinding(),
-          children: [
-            GetPage(
-              name: _Paths.QUESTION_WRITE,
-              page: () => QuestionWriteView(),
-              binding: QuestionWriteBinding(),
-            ),
-          ],
-        ),
-        GetPage(
-          name: _Paths.QUESTION,
-          page: () => QuestionView(),
-          binding: QuestionBinding(),
-          children: [
-            GetPage(
-              name: _Paths.QUESTION_DETAIL,
-              page: () => QuestionDetailView(),
-              binding: QuestionDetailBinding(),
-            ),
-          ],
         ),
         GetPage(
           name: _Paths.MY_PAGE,
