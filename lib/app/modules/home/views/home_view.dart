@@ -107,7 +107,7 @@ class HomeView extends GetView<HomeController> {
                 )),
               ),
               onPressed: () {
-                AuthService.to.handleSignIn();
+                AuthService.to.signInWithGoogle();
               },
             ),
             SizedBox(
