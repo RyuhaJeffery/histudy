@@ -19,6 +19,7 @@ abstract class Routes {
   static const STUDENT_LIST = _Paths.HOME + _Paths.ADMIN + _Paths.STUDENT_LIST;
   static const GROUP_ADD = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_ADD;
   static const GROUP_DEL = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_DEL;
+  static const HOME2 = _Paths.HOME2;
 }
 
 abstract class _Paths {
@@ -38,4 +39,5 @@ abstract class _Paths {
   static const STUDENT_LIST = '/student-list';
   static const GROUP_ADD = '/group-add';
   static const GROUP_DEL = '/group-del';
+  static const HOME2 = '/home2';
 }
