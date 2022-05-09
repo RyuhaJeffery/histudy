@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:histudy/app/repository/report_repository.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 
+import '../../../../models/report_model.dart';
 import '../controllers/home2_controller.dart';
 
 class Home2View extends GetView<Home2Controller> {
@@ -79,71 +81,64 @@ class Home2View extends GetView<Home2Controller> {
           ]),
         ),
         Container(
+          width: 1500,
           child:Column(children: [
             Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:[
                   //SizedBox(width: 180,),
                   Text('등록된 스터디모임 보고서'),
-                  SizedBox(width: 200,),
                   ElevatedButton(onPressed: (){
                     Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
                   }, child: const Text('보고서 작성'))
                 ]
             ),
-            DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                  label: Text(
-                    ' ',
-
-                  ),
+            SizedBox(
+              height: 16,
+            ),
+            Divider(
+              height: 1,
+              color: Colors.black,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Divider(
+              height: 1,
+              color: Colors.black,
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: 100,
                 ),
-                DataColumn(
-                  label: Text(
-                    '제목',
-
-                  ),
+                Text(""),
+                SizedBox(
+                  width: 400,
                 ),
-                DataColumn(
-                  label: Text(
-                    '작성자',
-                  ),
+                Text("제목"),
+                SizedBox(
+                  width: 350,
                 ),
-                DataColumn(
-                  label: Text(
-                    '날짜',
-
-                  ),
+                Text("작성자"),
+                SizedBox(
+                  width: 350,
                 ),
-
-              ],
-              rows: <DataRow>[
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('1')),
-                    DataCell(Text('개념 2 스터디 ')),
-                    DataCell(Text('홍길동')),
-                    DataCell(Text('2022-10-22')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2')),
-                    DataCell(Text('개념 3 스터디')),
-                    DataCell(Text('김길동')),
-                    DataCell(Text('2022-10-23')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('3')),
-                    DataCell(Text('개념 4 스터디 Lec10' )),
-                    DataCell(Text('관리자')),
-                    DataCell(Text('2022-10-23')),
-                  ],
+                Text("날짜"),
+                SizedBox(
+                  width: 200,
                 ),
               ],
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            Divider(
+              height: 1,
+              color: Colors.black,
             ),
           ],
           ),
@@ -152,4 +147,6 @@ class Home2View extends GetView<Home2Controller> {
       ),
     );
   }
+
+  _reportBlock(ReportModel reportModel) {}
 }

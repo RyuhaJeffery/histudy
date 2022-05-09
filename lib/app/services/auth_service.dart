@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../models/profile_model.dart';
 
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
@@ -46,6 +49,16 @@ class AuthService extends GetxService {
     await auth.value.signInWithCredential(credential);
     print(auth.value.currentUser);
     print(auth.value.currentUser!.email);
+
+    FirebaseFirestore.instance.collection("Profile").doc(auth.value.currentUser!.email).set({
+      "email": auth.value.currentUser!.email,
+      "group": 0,
+      "isAdmin": false,
+      "name": auth.value.currentUser!.displayName,
+      "phone": "-",
+      "studentNumber": "-",
+      "myClasses": [],
+    });
   }
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.

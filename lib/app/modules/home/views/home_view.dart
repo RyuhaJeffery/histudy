@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
@@ -9,9 +10,12 @@ import '../../../services/auth_service.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
+
   @override
   Widget build(BuildContext context) {
+
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
+
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
         body: Column(
@@ -99,12 +103,12 @@ class HomeView extends GetView<HomeController> {
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(382, 56)),
                 backgroundColor: MaterialStateProperty.all<Color>(
-                  Colors.blue
+                    Colors.blue
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                )),
+                      borderRadius: BorderRadius.circular(32),
+                    )),
               ),
               onPressed: () {
                 AuthService.to.signInWithGoogle();
@@ -131,7 +135,7 @@ class HomeView extends GetView<HomeController> {
                     )),
               ),
               onPressed: () {
-
+                AuthService.to.googleSignOut();
               },
             ),
             SizedBox(height: 30),
