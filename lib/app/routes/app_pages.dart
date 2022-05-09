@@ -44,18 +44,18 @@ part 'app_routes.dart';
 class AppPages {
   AppPages._();
 
-  static const INITIAL = Routes.HOME;
+  static const INITIAL = Routes.LOGIN;
 
   static final routes = [
     GetPage(
-      name: _Paths.HOME,
-      page: () => HomeView(),
-      binding: HomeBinding(),
+      name: _Paths.LOGIN,
+      page: () => LoginView(),
+      binding: LoginBinding(),
       children: [
         GetPage(
-          name: _Paths.LOGIN,
-          page: () => LoginView(),
-          binding: LoginBinding(),
+          name: _Paths.HOME,
+          page: () => HomeView(),
+          binding: HomeBinding(),
         ),
         GetPage(
           name: _Paths.GUIDELINE,
