@@ -19,13 +19,6 @@ class AuthService extends GetxService {
     super.onInit();
   }
 
-  // Future<void> handleSignIn() async {
-  //   try {
-  //     await _googleSignIn.signIn();
-  //   } catch (error) {
-  //     print(error);
-  //   }
-  // }
 
   //구글 로그인을 통해 로그인을 하는 코드이다.
   Future<void> signInWithGoogle() async {
