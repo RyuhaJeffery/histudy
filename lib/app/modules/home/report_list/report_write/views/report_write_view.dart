@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:histudy/app/services/image_picker_service.dart';
 
 import '../../../../../routes/app_pages.dart';
+import '../../../../../widgets/top_bar_widget.dart';
 import '../controllers/report_write_controller.dart';
 
 class ReportWriteView extends GetView<ReportWriteController> {
+  var imagePickerService = ImagePickerService();
+  File? pickedImage;
+  RxBool isImagePicked = false.obs;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,10 +22,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
         children: [
           Column(
             children: [
-              Container(
-                height: 100,
-                color: Colors.blue,
-              ),
+              topBar(),
               SizedBox(
                 height: 22,
               ),
@@ -53,53 +58,65 @@ class ReportWriteView extends GetView<ReportWriteController> {
                         color: Colors.grey,
                       ),
                     ),
-                    SizedBox(
-                      height: 16,
-                    ),
+                    SizedBox(height: 16),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          height: 17,
-                          width: 113,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey
-                            ),
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(3)
-                            )
-                          ),
-                        ),
-                        SizedBox(
-                          width: 6,
-                        ),
                         InkWell(
-                          child: Container(
-                            height: 17,
-                            width: 113,
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    width: 1,
-                                    color: Colors.blue
-                                ),
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(3)
-                                )
-                            ),
-                            child: Center(
-                              child: Text(
-                                '사진 촬영/이미지 업로드',
-                                style: TextStyle(
+                          child: Obx(() {
+                              return isImagePicked.value == true ?
+                              Container(
+                                height: 17,
+                                width: 113,
+                                decoration: BoxDecoration(
                                   color: Colors.blue,
-                                  fontSize: 8,
+                                    border: Border.all(
+                                        width: 1,
+                                        color: Colors.blue
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(3)
+                                    )
                                 ),
-                              ),
-                            ),
+                                child: Center(
+                                  child: Text(
+                                    '사진 촬영/이미지 업로드',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
+                              ) :
+                              Container(
+                                height: 17,
+                                width: 113,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1,
+                                        color: Colors.blue
+                                    ),
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(3)
+                                    )
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    '사진 촬영/이미지 업로드',
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 8,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
                           ),
-                          onTap: () {
-                            print("Clicked");
+                          onTap: () async {
+                            pickedImage = await imagePickerService.pickImg();
+                            if (pickedImage != null) {
+                              isImagePicked.value = true ;
+                            }
                           },
                         )
                       ],
