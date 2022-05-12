@@ -35,14 +35,14 @@ class ReportWriteView extends GetView<ReportWriteController> {
         builder: (context, snapshot) {
           print("야호");
           if (snapshot.hasData) {
-            //ProfileModel profile = snapshot.data as ProfileModel;
+            ProfileModel profile = snapshot.data as ProfileModel;
             return Scaffold(
                 backgroundColor: Color(0xffFDFFFE),
                 body: ListView(
                   children: [
                     Column(
                       children: [
-                        //Text(profile.group.toString()),
+                        Text(profile.name.toString()),
                         topBar(),
                         _sizedBoxWidget(22),
                         _mainTitleWidget(),
