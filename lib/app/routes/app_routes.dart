@@ -26,6 +26,7 @@ abstract class Routes {
   static const GROUP_ADD = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_ADD;
   static const GROUP_DEL = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_DEL;
   static const HOME2 = _Paths.HOME + _Paths.HOME2;
+  static const SIGN_UP = _Paths.HOME + _Paths.SIGN_UP;
 }
 
 abstract class _Paths {
@@ -49,4 +50,5 @@ abstract class _Paths {
   static const GROUP_ADD = '/group-add';
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
+  static const SIGN_UP = '/sign-up';
 }
