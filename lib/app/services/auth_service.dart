@@ -7,6 +7,7 @@ import '../models/profile_model.dart';
 
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
+  User? currentUser;
   GoogleSignIn _googleSignIn = GoogleSignIn(
     // Optional clientId
     // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
@@ -39,19 +40,49 @@ class AuthService extends GetxService {
     );
 
     // Once signed in, return the UserCredential
-    await auth.value.signInWithCredential(credential);
-    print(auth.value.currentUser);
-    print(auth.value.currentUser!.email);
+   // await auth.value.signInWithCredential(credential);
+    //firestore에 user 저장
+    User? user = (await auth.value.signInWithCredential(credential)).user;
+    if (user != null) {
+      final QuerySnapshot addUser = await FirebaseFirestore.instance
+          .collection('Profile')
+          .where('uid', isEqualTo: user.uid)
+          .get();
 
-    FirebaseFirestore.instance.collection("Profile").doc(auth.value.currentUser!.email).set({
-      "email": auth.value.currentUser!.email,
-      "group": 0,
-      "isAdmin": false,
-      "name": auth.value.currentUser!.displayName,
-      "phone": "-",
-      "studentNumber": "-",
-      "myClasses": [],
-    });
+      final List<DocumentSnapshot> userList = addUser.docs;
+      print(userList.isEmpty);
+      if (userList.isEmpty) {
+        FirebaseFirestore.instance.collection('Profile').doc(user.uid).set({
+
+            "email": auth.value.currentUser!.email,
+            "group": 0,
+            "isAdmin": false,
+            "name": auth.value.currentUser!.displayName,
+            "phone": "-",
+            "studentNumber": "-",
+            "myClasses": [],
+
+        });
+
+        currentUser = user;
+      }
+    }
+    print(auth.value.currentUser!.email);
+    //  await FirebaseFirestore.instance.collection('count').doc('counter').update({"count": FieldValue.increment(1)});
+
+
+    // print(auth.value.currentUser);
+    // print(auth.value.currentUser!.email);
+    //
+    // FirebaseFirestore.instance.collection("Profile").doc(auth.value.currentUser!.email).set({
+    //   "email": auth.value.currentUser!.email,
+    //   "group": 0,
+    //   "isAdmin": false,
+    //   "name": auth.value.currentUser!.displayName,
+    //   "phone": "-",
+    //   "studentNumber": "-",
+    //   "myClasses": [],
+    // });
   }
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.
