@@ -19,16 +19,6 @@ abstract class Routes {
   static const QUESTION_WRITE =
       _Paths.LOGIN + _Paths.QUESTION + _Paths.QUESTION_WRITE;
   static const QUESTION_DETAIL =
-<<<<<<< HEAD
-      _Paths.HOME + _Paths.QUESTION + _Paths.QUESTION_DETAIL;
-  static const MY_PAGE = _Paths.HOME + _Paths.MY_PAGE;
-  static const ADMIN = _Paths.HOME + _Paths.ADMIN;
-  static const STUDENT_LIST = _Paths.HOME + _Paths.ADMIN + _Paths.STUDENT_LIST;
-  static const GROUP_ADD = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_ADD;
-  static const GROUP_DEL = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_DEL;
-  static const HOME2 = _Paths.HOME + _Paths.HOME2;
-  static const SIGN_UP = _Paths.HOME + _Paths.SIGN_UP;
-=======
       _Paths.LOGIN + _Paths.QUESTION + _Paths.QUESTION_DETAIL;
   static const MY_PAGE = _Paths.LOGIN + _Paths.MY_PAGE;
   static const ADMIN = _Paths.LOGIN + _Paths.ADMIN;
@@ -36,7 +26,6 @@ abstract class Routes {
   static const GROUP_ADD = _Paths.LOGIN + _Paths.ADMIN + _Paths.GROUP_ADD;
   static const GROUP_DEL = _Paths.LOGIN + _Paths.ADMIN + _Paths.GROUP_DEL;
   static const HOME2 = _Paths.LOGIN + _Paths.HOME2;
->>>>>>> 74938f456a375f4dceb5aa83a740a9492c5eb73e
 }
 
 abstract class _Paths {
@@ -60,5 +49,4 @@ abstract class _Paths {
   static const GROUP_ADD = '/group-add';
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
-  static const SIGN_UP = '/sign-up';
 }

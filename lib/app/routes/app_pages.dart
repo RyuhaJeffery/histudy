@@ -37,8 +37,6 @@ import '../modules/home/report_list/report_detail/views/report_detail_view.dart'
 import '../modules/home/report_list/report_write/bindings/report_write_binding.dart';
 import '../modules/home/report_list/report_write/views/report_write_view.dart';
 import '../modules/home/report_list/views/report_list_view.dart';
-import '../modules/home/sign_up/bindings/sign_up_binding.dart';
-import '../modules/home/sign_up/views/sign_up_view.dart';
 import '../modules/home/views/home_view.dart';
 
 part 'app_routes.dart';
@@ -168,11 +166,6 @@ class AppPages {
           name: _Paths.HOME2,
           page: () => Home2View(),
           binding: Home2Binding(),
-        ),
-        GetPage(
-          name: _Paths.SIGN_UP,
-          page: () => SignUpView(),
-          binding: SignUpBinding(),
         ),
       ],
     ),
