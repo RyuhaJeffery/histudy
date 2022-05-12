@@ -21,6 +21,19 @@ class HomeView extends GetView<HomeController> {
               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Row(
                   children: [
+                    //current user를 test하는 dummy code
+                    //refresh 할 때에도 로그인 유지됨.
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     print("\nCurrent User is : \n${AuthService.to.auth.value.currentUser}\n");
+                    //   },
+                    //   child: Text(
+                    //     'IsLogined?',
+                    //     textAlign: TextAlign.center,
+                    //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    //   ),
+                    // ),
+                    
                     SizedBox(
                         height: 100,
                         width: 100,
@@ -76,6 +89,7 @@ class HomeView extends GetView<HomeController> {
                         },
                         child: Text("GUIDELINE")),
                     ElevatedButton(onPressed: () {
+                      AuthService.to.googleSignOut();
                     }, child: Text('LOGOUT'))
                   ],
                 ),
