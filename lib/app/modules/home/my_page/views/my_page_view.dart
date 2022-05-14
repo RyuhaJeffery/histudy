@@ -12,21 +12,10 @@ import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class MyPageView extends GetView<MyPageController> {
 
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? currentUser;
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-  User? get userProfile => auth.currentUser;
-
-  final TextEditingController _nameController = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-
-    Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
-        .collection('Profile')
-        .doc(userProfile!.uid)
-        .snapshots();
 
 
     return Scaffold(
@@ -142,29 +131,11 @@ class MyPageView extends GetView<MyPageController> {
                         SizedBox(
                           height: 10,
                         ),
-                        StreamBuilder<DocumentSnapshot>(
-                          stream: _userStream,
-                          builder:
-                              (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                            final getdata = snapshot.data;
-                            if (snapshot.hasData) {
-                              return Text(
-                                '${getdata?["name"]}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
+
                         Row(
                           children: [
                             Flexible(
-                              child: TextField(
+                              child: TextFormField(
                                 //controller: _nameController,
                                 decoration: InputDecoration(
                                   hintText: '이름',
@@ -185,7 +156,7 @@ class MyPageView extends GetView<MyPageController> {
                             ),
                             SizedBox(width: 30),
                             Flexible(
-                              child: TextField(
+                              child: TextFormField(
                                 decoration: InputDecoration(
                                   hintText: '학번',
                                   filled: true,
@@ -209,7 +180,7 @@ class MyPageView extends GetView<MyPageController> {
                         Row(
                           children: [
                             Flexible(
-                              child: TextField(
+                              child: TextFormField(
                                 decoration: InputDecoration(
                                   hintText: '이메일',
                                   filled: true,
@@ -229,7 +200,7 @@ class MyPageView extends GetView<MyPageController> {
                             ),
                             SizedBox(width: 30),
                             Flexible(
-                              child: TextField(
+                              child: TextFormField(
                                 decoration: InputDecoration(
                                   hintText: '전화번호',
                                   filled: true,
@@ -250,7 +221,7 @@ class MyPageView extends GetView<MyPageController> {
                           ],
                         ),
                         SizedBox(height: 30),
-                        TextField(
+                        TextFormField(
                           decoration: InputDecoration(
                             hintText: '수강중인 과목 1',
                             filled: true,
@@ -268,7 +239,7 @@ class MyPageView extends GetView<MyPageController> {
                           ),
                         ),
                         SizedBox(height: 30),
-                        TextField(
+                        TextFormField(
                           decoration: InputDecoration(
                             hintText: '수강중인 과목 2',
                             filled: true,
@@ -286,7 +257,7 @@ class MyPageView extends GetView<MyPageController> {
                           ),
                         ),
                         SizedBox(height: 30),
-                        TextField(
+                        TextFormField(
                           decoration: InputDecoration(
                             hintText: '수강중인 과목 3',
                             filled: true,
@@ -304,7 +275,7 @@ class MyPageView extends GetView<MyPageController> {
                           ),
                         ),
                         SizedBox(height: 30),
-                        TextField(
+                        TextFormField(
                           decoration: InputDecoration(
                             hintText: '수강중인 과목 4',
                             filled: true,
@@ -341,11 +312,6 @@ class MyPageView extends GetView<MyPageController> {
                                 child: Center(child: Text("제 출"))),
                             onPressed: () async {
 
-                                FirebaseFirestore.instance
-                                    .collection('Profile')
-                                    .doc(userProfile!.uid)
-                                    .update(
-                                    {'name': _nameController.text});
 
 
                             },
