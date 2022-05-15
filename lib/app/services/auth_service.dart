@@ -16,15 +16,16 @@ class AuthService extends GetxService {
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
   @override
   void onInit() {
-    authCheck();
+    //authCheck();
     super.onInit();
   }
 
-  Future<User?> authCheck() async{
-    print("authCheck function is executed\n");
-    User? user = await auth.value.authStateChanges().first;
-    return user;
-  }
+  // Future<User?> authCheck() async {
+  //   print("authCheck function is executed\n");
+  //   User? user = await auth.value.authStateChanges().first;
+  //   return user;
+  // }
+
   //구글 로그인을 통해 로그인을 하는 코드이다.
   Future<void> signInWithGoogle() async {
     // Trigger the authentication flow
@@ -51,11 +52,15 @@ class AuthService extends GetxService {
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.
   void googleSignOut() async {
-    // await auth.;
+    if (auth.value.currentUser != null) {
+      print(
+          "before sign out: " + auth.value.currentUser!.displayName.toString());
+    } else {
+      print("No Auth");
+      return;
+    }
     await _googleSignIn.signOut();
     await auth.value.signOut();
-    print("before sign out: " + auth.value.currentUser.toString());
     print("User Sign Out");
-    print("After sign out: " + auth.value.currentUser.toString());
   }
 }
