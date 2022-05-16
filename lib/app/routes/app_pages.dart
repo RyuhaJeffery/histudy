@@ -86,7 +86,7 @@ class AppPages {
           binding: ReportListBinding(),
           participatesInRootNavigator: true,
           middlewares: [
-            EnsureNotAuthedMiddleware(),
+            EnsureAuthMiddleware(),
           ],
           children: [
             GetPage(
@@ -94,12 +94,18 @@ class AppPages {
               page: () => ReportDetailView(),
               binding: ReportDetailBinding(),
               participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware()
+              ]
             ),
             GetPage(
               name: _Paths.REPORT_WRITE,
               page: () => ReportWriteView(),
               binding: ReportWriteBinding(),
               participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware()
+              ]
             ),
           ],
         ),
@@ -109,12 +115,18 @@ class AppPages {
           page: () => AnnounceView(),
           binding: AnnounceBinding(),
           participatesInRootNavigator: true,
+          middlewares: [
+            EnsureAuthMiddleware()
+          ]
         ),
         GetPage(
           name: _Paths.GROUP_INFO,
           page: () => GroupInfoView(),
           binding: GroupInfoBinding(),
           participatesInRootNavigator: true,
+          middlewares: [
+            EnsureAuthMiddleware()
+          ]
         ),
         GetPage(
           name: _Paths.REGISTER,
@@ -127,32 +139,27 @@ class AppPages {
           page: () => QuestionView(),
           binding: QuestionBinding(),
           participatesInRootNavigator: true,
-        ),
-        GetPage(
-          name: _Paths.QUESTION,
-          page: () => QuestionView(),
-          binding: QuestionBinding(),
-          participatesInRootNavigator: true,
+          middlewares: [
+            EnsureAuthMiddleware()
+          ],
           children: [
             GetPage(
               name: _Paths.QUESTION_WRITE,
               page: () => QuestionWriteView(),
               binding: QuestionWriteBinding(),
               participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware()
+              ]
             ),
-          ],
-        ),
-        GetPage(
-          name: _Paths.QUESTION,
-          page: () => QuestionView(),
-          binding: QuestionBinding(),
-          participatesInRootNavigator: true,
-          children: [
             GetPage(
               name: _Paths.QUESTION_DETAIL,
               page: () => QuestionDetailView(),
               binding: QuestionDetailBinding(),
               participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware()
+              ]
             ),
           ],
         ),
@@ -161,6 +168,9 @@ class AppPages {
           page: () => MyPageView(),
           binding: MyPageBinding(),
           participatesInRootNavigator: true,
+          middlewares: [
+            EnsureAuthMiddleware()
+          ]
         ),
         GetPage(
           name: _Paths.ADMIN,
