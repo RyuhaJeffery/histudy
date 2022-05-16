@@ -52,6 +52,8 @@ class AuthService extends GetxService {
     // if(auth.value.currentUser!=null){
     //   print("\n\nSuccessfully logined, your current user is\n${auth.value.currentUser}");
     // }
+
+    Get.rootDelegate.refresh();
   }
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.

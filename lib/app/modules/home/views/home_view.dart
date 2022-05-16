@@ -103,7 +103,7 @@ class HomeView extends GetView<HomeController> {
                                 onPressed: () {
                                   //
                                 },
-                                child: Text('LOGIN'))
+                                child: Text('PLEASE LOGIN'))
                       ],
                     ),
                   ]),
