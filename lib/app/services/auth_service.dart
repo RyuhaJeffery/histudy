@@ -30,10 +30,12 @@ class AuthService extends GetxService {
   Future<void> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    print("auth_service.dart 33 : Sign in With Google Success!");
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
+    print("auth_service.dart 38 : googleAuth assigned");
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -43,6 +45,8 @@ class AuthService extends GetxService {
 
     // Once signed in, return the UserCredential
     await auth.value.signInWithCredential(credential);
+    print("auth_service.dart 48 : auth signInWithCredential success");
+
     // print(auth.value.currentUser);
     // print(auth.value.currentUser!.email);
     // if(auth.value.currentUser!=null){
@@ -53,14 +57,15 @@ class AuthService extends GetxService {
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.
   void googleSignOut() async {
     if (auth.value.currentUser != null) {
-      print(
-          "before sign out: " + auth.value.currentUser!.displayName.toString());
+      print("auth_service.dart 61 :before sign out: " +
+          auth.value.currentUser!.displayName.toString());
     } else {
-      print("No Auth");
+      print("auth_service.dart 63 :No Auth");
       return;
     }
     await _googleSignIn.signOut();
+    print("auth_service.dart 67 : GoogleSignIn.signOut success!");
     await auth.value.signOut();
-    print("User Sign Out");
+    print("auth_service.dart 69 : Auth signOut success");
   }
 }
