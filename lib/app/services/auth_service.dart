@@ -16,15 +16,15 @@ class AuthService extends GetxService {
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
   @override
   void onInit() {
-    //authCheck();
+    authCheck();
     super.onInit();
   }
 
-  // Future<User?> authCheck() async {
-  //   print("authCheck function is executed\n");
-  //   User? user = await auth.value.authStateChanges().first;
-  //   return user;
-  // }
+  Future<User?> authCheck() async {
+    print("authCheck function is executed\n");
+    User? user = await auth.value.authStateChanges().first;
+    return user;
+  }
 
   //구글 로그인을 통해 로그인을 하는 코드이다.
   Future<void> signInWithGoogle() async {
@@ -63,9 +63,11 @@ class AuthService extends GetxService {
       print("auth_service.dart 63 :No Auth");
       return;
     }
-    await _googleSignIn.signOut();
-    print("auth_service.dart 67 : GoogleSignIn.signOut success!");
+
     await auth.value.signOut();
-    print("auth_service.dart 69 : Auth signOut success");
+    print("auth_service.dart 68 : Auth signOut success");
+
+    // await _googleSignIn.signOut();
+    // print("auth_service.dart 71 : GoogleSignIn.signOut success!");
   }
 }
