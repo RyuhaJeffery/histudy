@@ -4,7 +4,6 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
-  static const LOGIN = _Paths.HOME + _Paths.LOGIN;
   static const GUIDELINE = _Paths.HOME + _Paths.GUIDELINE;
   static const RANK = _Paths.HOME + _Paths.RANK;
   static const REPORT_LIST = _Paths.HOME + _Paths.REPORT_LIST;
@@ -33,12 +32,12 @@ abstract class Routes {
 
   static String SIGNUP_THEN(String afterSuccessfulSignUp) =>
       '$SIGN_UP?then=${Uri.encodeQueryComponent(afterSuccessfulSignUp)}';
+  static const LOGIN = _Paths.LOGIN;
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
-  static const LOGIN = '/login';
   static const GUIDELINE = '/guideline';
   static const RANK = '/rank';
   static const REPORT_LIST = '/report-list';
@@ -57,4 +56,5 @@ abstract class _Paths {
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
   static const SIGN_UP = '/sign-up';
+  static const LOGIN = '/login';
 }
