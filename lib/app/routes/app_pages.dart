@@ -177,6 +177,9 @@ class AppPages {
           page: () => AdminView(),
           binding: AdminBinding(),
           participatesInRootNavigator: true,
+          middlewares:[
+            EnsureAdminMiddleware(),
+          ],
           children: [
             GetPage(
               name: _Paths.STUDENT_LIST,

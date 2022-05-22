@@ -10,14 +10,13 @@ import '../services/auth_service.dart';
 import '../routes/app_pages.dart';
 
 FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-Future<DocumentSnapshot> user = _firebaseFirestore
+Future<DocumentSnapshot<Map<String, dynamic>>> user = _firebaseFirestore
     .collection("Profile")
     .doc(AuthService.to.auth.value.currentUser!.uid).get();
 
 class EnsureAuthMiddleware extends GetMiddleware {
   @override
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    // print(1);
     User? loggedInUser = await AuthService.to.authCheck();
     // User? loggedInUser = AuthService.to.auth.value.currentUser;
     if (loggedInUser == null) {
@@ -54,6 +53,11 @@ class EnsureAdminMiddleware extends GetMiddleware {
   @override
   //TODO: implement EnsureAdminMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
+    user.then((DocumentSnapshot documentSnapshot) {
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+      print(data['isAdmin']);
+    });
     if (AuthService.to.auth.value.currentUser != null) {
       return GetNavConfig.fromRoute(Routes.HOME);
     }
