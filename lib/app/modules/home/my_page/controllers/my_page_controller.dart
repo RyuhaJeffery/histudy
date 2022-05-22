@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 class MyPageController extends GetxController {
   //TODO: Implement MyPageController
 
+
+ var form_enabled =false.obs;
   final count = 0.obs;
   @override
   void onInit() {
@@ -15,6 +17,11 @@ class MyPageController extends GetxController {
     super.onReady();
   }
 
+  changed_enabled(){
+    form_enabled =true.obs;
+    update();
+    print(form_enabled);
+  }
   @override
   void onClose() {}
   void increment() => count.value++;
