@@ -3,21 +3,21 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const LOGIN = _Paths.LOGIN;
-  static const HOME = _Paths.LOGIN + _Paths.HOME;
-  static const GUIDELINE = _Paths.LOGIN + _Paths.GUIDELINE;
-  static const RANK = _Paths.LOGIN + _Paths.RANK;
-  static const REPORT_LIST = _Paths.LOGIN + _Paths.REPORT_LIST;
-  static const ANNOUNCE = _Paths.LOGIN + _Paths.ANNOUNCE;
-  static const GROUP_INFO = _Paths.LOGIN + _Paths.GROUP_INFO;
+  static const HOME = _Paths.HOME;
+  static const LOGIN = _Paths.HOME + _Paths.LOGIN;
+  static const GUIDELINE = _Paths.HOME + _Paths.GUIDELINE;
+  static const RANK = _Paths.HOME + _Paths.RANK;
+  static const REPORT_LIST = _Paths.HOME + _Paths.REPORT_LIST;
+  static const ANNOUNCE = _Paths.HOME + _Paths.ANNOUNCE;
+  static const GROUP_INFO = _Paths.HOME + _Paths.GROUP_INFO;
   static const REPORT_WRITE =
-      _Paths.LOGIN + _Paths.REPORT_LIST + _Paths.REPORT_WRITE;
+      _Paths.HOME + _Paths.REPORT_LIST + _Paths.REPORT_WRITE;
   static const REPORT_DETAILE =
-      _Paths.LOGIN + _Paths.REPORT_LIST + _Paths.REPORT_DETAIL;
-  static const REGISTER = _Paths.LOGIN + _Paths.REGISTER;
-  static const QUESTION = _Paths.LOGIN + _Paths.QUESTION;
+      _Paths.HOME + _Paths.REPORT_LIST + _Paths.REPORT_DETAIL;
+  static const REGISTER = _Paths.HOME + _Paths.REGISTER;
+  static const QUESTION = _Paths.HOME + _Paths.QUESTION;
   static const QUESTION_WRITE =
-      _Paths.LOGIN + _Paths.QUESTION + _Paths.QUESTION_WRITE;
+      _Paths.HOME + _Paths.QUESTION + _Paths.QUESTION_WRITE;
   static const QUESTION_DETAIL =
       _Paths.HOME + _Paths.QUESTION + _Paths.QUESTION_DETAIL;
   static const MY_PAGE = _Paths.HOME + _Paths.MY_PAGE;
@@ -29,7 +29,7 @@ abstract class Routes {
   static const SIGN_UP = _Paths.HOME + _Paths.SIGN_UP;
 
   static String LOGIN_THEN(String afterSuccessfulLogin) =>
-      '$HOME?then=${Uri.encodeQueryComponent(afterSuccessfulLogin)}';
+      '$LOGIN?then=${Uri.encodeQueryComponent(afterSuccessfulLogin)}';
 
   static String SIGNUP_THEN(String afterSuccessfulSignUp) =>
       '$SIGN_UP?then=${Uri.encodeQueryComponent(afterSuccessfulSignUp)}';
