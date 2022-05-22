@@ -58,7 +58,7 @@ class EnsureAdminMiddleware extends GetMiddleware {
           documentSnapshot.data() as Map<String, dynamic>;
       print(data['isAdmin']);
       if(data['isAdmin'] == false){
-        return GetNavConfig.fromRoute(Routes.ADMIN);
+        return Get.rootDelegate.toNamed(Routes.HOME);
       }
     });
     return await super.redirectDelegate(route);
