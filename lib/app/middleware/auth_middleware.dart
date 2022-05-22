@@ -53,11 +53,11 @@ class EnsureAdminMiddleware extends GetMiddleware {
   @override
   //TODO: implement EnsureAdminMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    user.get().then((DocumentSnapshot documentSnapshot) {
+    await user.get().then((DocumentSnapshot documentSnapshot) {
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
       print(data['isAdmin']);
-      if(data['isAdmin'] == true){
+      if(data['isAdmin'] == false){
         return GetNavConfig.fromRoute(Routes.ADMIN);
       }
     });
