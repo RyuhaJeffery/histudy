@@ -1,4 +1,5 @@
 # This is a generated file; do not edit or check into version control.
+<<<<<<< HEAD
 cloud_firestore=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.15/
 cloud_firestore_web=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.6.15/
 desktop_webview_auth=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/desktop_webview_auth-0.0.9/
@@ -21,3 +22,32 @@ image_picker_web=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.da
 sign_in_with_apple=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/sign_in_with_apple-3.3.0/
 sign_in_with_apple_web=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/sign_in_with_apple_web-1.0.1/
 twitter_login=/Users/seonwookkim/development/flutter/.pub-cache/hosted/pub.dartlang.org/twitter_login-4.2.3/
+=======
+cloud_firestore=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore-3.1.13/
+cloud_firestore_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/cloud_firestore_web-2.6.13/
+desktop_webview_auth=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/desktop_webview_auth-0.0.7/
+firebase_auth=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.3.16/
+firebase_auth_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.13/
+firebase_core=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.15.0/
+firebase_core_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.2/
+firebase_database=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database-9.0.12/
+firebase_database_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_database_web-0.2.0+11/
+firebase_dynamic_links=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_dynamic_links-4.2.1/
+firebase_storage=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage-10.2.14/
+firebase_storage_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_storage_web-3.2.13/
+flutter_facebook_auth=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth-4.3.0/
+flutter_facebook_auth_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_web-3.1.0/
+flutter_plugin_android_lifecycle=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.5/
+google_sign_in=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-5.3.0/
+google_sign_in_android=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_android-5.2.6/
+google_sign_in_ios=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_ios-5.2.6/
+google_sign_in_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.1/
+image_cropper=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_cropper-1.5.1/
+image_picker=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.5/
+image_picker_android=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_android-0.8.4+11/
+image_picker_for_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_for_web-2.1.6/
+image_picker_ios=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker_ios-0.8.5/
+sign_in_with_apple=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/sign_in_with_apple-3.3.0/
+sign_in_with_apple_web=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/sign_in_with_apple_web-1.0.1/
+twitter_login=/Users/baesubin/development/flutter/.pub-cache/hosted/pub.dartlang.org/twitter_login-4.2.3/
+>>>>>>> 31cfed3fcd181ff48cb43193bd9edf2bba109c21
