@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:histudy/app/routes/app_pages.dart';
 
 import '../models/profile_model.dart';
 
@@ -18,20 +19,29 @@ class AuthService extends GetxService {
   );
 
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
+  Rx<FirebaseFirestore> firestore =  FirebaseFirestore.instance.obs;
   @override
   void onInit() {
+    authCheck();
     super.onInit();
   }
 
+  Future<User?> authCheck() async {
+    print("authCheck function is executed\n");
+    User? user = await auth.value.authStateChanges().first;
+    return user;
+  }
 
   //구글 로그인을 통해 로그인을 하는 코드이다.
   Future<void> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    print("auth_service.dart 33 : Sign in With Google Success!");
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
         await googleUser?.authentication;
+    print("auth_service.dart 38 : googleAuth assigned");
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -40,58 +50,40 @@ class AuthService extends GetxService {
     );
 
     // Once signed in, return the UserCredential
-   // await auth.value.signInWithCredential(credential);
-    //firestore에 user 저장
-    User? user = (await auth.value.signInWithCredential(credential)).user;
-    if (user != null) {
-      final QuerySnapshot addUser = await FirebaseFirestore.instance
-          .collection('Profile')
-          .where('uid', isEqualTo: user.uid)
-          .get();
+    await auth.value.signInWithCredential(credential);
+    print("auth_service.dart 48 : auth signInWithCredential success");
 
-      final List<DocumentSnapshot> userList = addUser.docs;
-      print(userList.isEmpty);
-      if (userList.isEmpty) {
-        FirebaseFirestore.instance.collection('Profile').doc(user.uid).set({
-
-            "email": auth.value.currentUser!.email,
-            "group": 0,
-            "isAdmin": false,
-            "name": auth.value.currentUser!.displayName,
-            "phone": "-",
-            "studentNumber": "-",
-            "myClasses": [],
-
-        });
-
-        currentUser = user;
+    //구글 정보가 firestore에 있으면~
+    //그냥 로그인이고
+    firestore.value.collection('Profile').doc(auth.value.currentUser!.uid).get()
+    .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists == false) {
+        print('\nThere is no current user in firestore\n');
+        Get.rootDelegate.toNamed(Routes.SIGN_UP);
       }
-    }
-    print(auth.value.currentUser!.email);
-    //  await FirebaseFirestore.instance.collection('count').doc('counter').update({"count": FieldValue.increment(1)});
+    });
+      
+    
+    //없으면 간단한 정보 추가 후 is 어쩌구
+  
 
-
-    // print(auth.value.currentUser);
-    // print(auth.value.currentUser!.email);
-    //
-    // FirebaseFirestore.instance.collection("Profile").doc(auth.value.currentUser!.email).set({
-    //   "email": auth.value.currentUser!.email,
-    //   "group": 0,
-    //   "isAdmin": false,
-    //   "name": auth.value.currentUser!.displayName,
-    //   "phone": "-",
-    //   "studentNumber": "-",
-    //   "myClasses": [],
-    // });
+    Get.rootDelegate.refresh();
   }
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.
   void googleSignOut() async {
-    // await auth.;
-    await _googleSignIn.signOut();
+    if (auth.value.currentUser != null) {
+      print("auth_service.dart 61 :before sign out: " +
+          auth.value.currentUser!.displayName.toString());
+    } else {
+      print("auth_service.dart 63 :No Auth");
+      return;
+    }
+
     await auth.value.signOut();
-    print("before sign out: " + auth.value.currentUser.toString());
-    print("User Sign Out");
-    print("After sign out: " + auth.value.currentUser.toString());
+    print("auth_service.dart 68 : Auth signOut success");
+
+    // await _googleSignIn.signOut();
+    // print("auth_service.dart 71 : GoogleSignIn.signOut success!");
   }
 }
