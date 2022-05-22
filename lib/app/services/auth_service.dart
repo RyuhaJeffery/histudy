@@ -19,7 +19,7 @@ class AuthService extends GetxService {
   );
 
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
-  Rx<FirebaseFirestore> firestore =  FirebaseFirestore.instance.obs;
+  Rx<FirebaseFirestore> firestore = FirebaseFirestore.instance.obs;
   @override
   void onInit() {
     authCheck();
@@ -55,17 +55,24 @@ class AuthService extends GetxService {
 
     //구글 정보가 firestore에 있으면~
     //그냥 로그인이고
-    firestore.value.collection('Profile').doc(auth.value.currentUser!.uid).get()
-    .then((DocumentSnapshot documentSnapshot) {
+    firestore.value
+        .collection('Profile')
+        .doc(auth.value.currentUser!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists == false) {
         print('\nThere is no current user in firestore\n');
         Get.rootDelegate.toNamed(Routes.SIGN_UP);
       }
     });
-      
-    
+    await AuthService.to.firestore.value
+        .collection('Profile')
+        .doc(AuthService.to.auth.value.currentUser!.uid)
+        .collection("classScore")
+        .doc('classScore')
+        .set({});
+
     //없으면 간단한 정보 추가 후 is 어쩌구
-  
 
     Get.rootDelegate.refresh();
   }
