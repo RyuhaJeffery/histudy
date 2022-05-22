@@ -3,8 +3,8 @@ part of 'app_pages.dart';
 
 abstract class Routes {
   Routes._();
-  static const LOGIN = _Paths.LOGIN;
-  static const HOME = _Paths.LOGIN + _Paths.HOME;
+  static const HOME = _Paths.HOME;
+  static const LOGIN = _Paths.HOME + _Paths.LOGIN;
   static const GUIDELINE = _Paths.LOGIN + _Paths.GUIDELINE;
   static const RANK = _Paths.LOGIN + _Paths.RANK;
   static const REPORT_LIST = _Paths.LOGIN + _Paths.REPORT_LIST;
