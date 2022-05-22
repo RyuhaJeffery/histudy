@@ -60,7 +60,7 @@ class EnsureAdminMiddleware extends GetMiddleware {
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
       print(data['isAdmin']);
-      if (data['isAdmin'] == false) {
+      if(data['isAdmin'] == false){
         return Get.rootDelegate.toNamed(Routes.HOME);
       }
     });
