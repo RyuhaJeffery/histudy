@@ -42,9 +42,12 @@ class EnsureSignUpMiddleware extends GetMiddleware {
   @override
   //TODO: implement EnsureSignUpMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    if (AuthService.to.auth.value.currentUser != null) {
-      return GetNavConfig.fromRoute(Routes.HOME);
-    }
+    await user.get().then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists == false) {
+        print('\nThere is no current user in firestore\n');
+        return Get.rootDelegate.toNamed(Routes.SIGN_UP);
+      }
+    });
     return await super.redirectDelegate(route);
   }
 }
@@ -57,8 +60,8 @@ class EnsureAdminMiddleware extends GetMiddleware {
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
       print(data['isAdmin']);
-      if(data['isAdmin'] == false){
-        return GetNavConfig.fromRoute(Routes.ADMIN);
+      if (data['isAdmin'] == false) {
+        return Get.rootDelegate.toNamed(Routes.HOME);
       }
     });
     return await super.redirectDelegate(route);
