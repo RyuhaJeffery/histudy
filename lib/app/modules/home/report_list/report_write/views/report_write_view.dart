@@ -22,7 +22,7 @@ import '../controllers/report_write_controller.dart';
 // 4. 저장을 누르면 Group의 SubCollection에 해당 Date로 Report가 작성되어야 함
 
 class ReportWriteView extends GetView<ReportWriteController> {
-  var imagePickerService = ImagePickerService();
+  //var imagePickerService = ImagePickerService();
   File? pickedImage;
   RxBool isImagePicked = false.obs;
   final _formKey = GlobalKey<FormState>();
@@ -238,7 +238,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
-        pickedImage = await imagePickerService.pickImg();
+        //pickedImage = await imagePickerService.pickImg();
         if (pickedImage != null) {
           isImagePicked.value = true ;
         }
