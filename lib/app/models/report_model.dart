@@ -5,15 +5,15 @@ class ReportModel {
   String? code;
   Timestamp? codeDatetime;
   Timestamp? dateTime;
-  int? duration;
-  int? group;
+  String? duration;
+  String? group;
   String? image;
   List<String>? participants;
-  int? sem;
+  String? sem;
   String? studyStartTime;
   String? text;
   String? title;
-  int? year;
+  String? year;
 
   ReportModel({
     this.author,

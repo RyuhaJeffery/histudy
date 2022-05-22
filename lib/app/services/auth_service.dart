@@ -53,7 +53,7 @@ class AuthService extends GetxService {
       print(userList.isEmpty);
       if (userList.isEmpty) {
         FirebaseFirestore.instance.collection('Profile').doc(user.uid).set({
-
+            "uid": auth.value.currentUser!.uid,
             "email": auth.value.currentUser!.email,
             "group": 0,
             "isAdmin": false,

@@ -26,6 +26,7 @@ void main() async {
             Get.put(AuthService());
           }),
           getPages: AppPages.routes,
+          supportedLocales: [Locale('en', 'US')],
         );
       }
     ),

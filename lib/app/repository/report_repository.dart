@@ -4,15 +4,45 @@ import 'package:histudy/app/models/report_model.dart';
 
 class ReportRepository {
   static final reportCollection = FirebaseFirestore.instance.collection('Report');
+  static final groupCollection = FirebaseFirestore.instance.collection('Group');
 
-  static Future<List<ReportModel>> getReportList() async {
-    List<ReportModel> userList = [];
-    try {
-      await reportCollection.doc().get().then((DocumentSnapshot ds) {
-      });
-    } catch (e) {
-      Get.snackbar('Error getting user list', e.toString());
-    }
-    return userList;
+  // static Future<List<ReportModel>> getReportList(String group) async {
+  //   return await groupCollection.doc(group).collection('reports').snapshots().first.then((value){
+  //     return value.docs.map((item) => ReportModel.fromSnapshot(item)).toList();
+  //   });
+  // }
+
+  static Future<List<ReportModel>> getReportList(String group) async {
+    return groupCollection
+        .doc(group)
+        .collection('reports')
+        .get()
+        .then((value){
+          return value.docs.map((item) {
+            return ReportModel.fromSnapshot(item);
+          }).toList();
+    });
+  }
+
+  static uploadReport(String author, String code, DateTime codeDatetime, DateTime dateTime, String duration, String group, String image, List<String> participants, String studyStartTime, String text, String title) {
+    groupCollection
+        .doc(group)
+        .collection("reports")
+        .doc(dateTime.toString())
+        .set({
+      'author' : author,
+      'code' : code,
+      'codeDatetime' : codeDatetime,
+      'dateTime' : dateTime,
+      'duration' : duration,
+      'group' : group,
+      'image' : "",
+      'participants' : participants,
+      'studyStartTime' : studyStartTime,
+      'text' : text,
+      'title' : title,
+      'sem' : "1",
+      'year' : "2022",
+    });
   }
 }
