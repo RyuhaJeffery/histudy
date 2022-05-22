@@ -4,8 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 
+import '../models/profile_model.dart';
+
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
+  User? currentUser;
   GoogleSignIn _googleSignIn = GoogleSignIn(
     // Optional clientId
     // clientId: '479882132969-9i9aqik3jfjd7qhci1nqf0bm2g71rm1u.apps.googleusercontent.com',
@@ -65,7 +68,6 @@ class AuthService extends GetxService {
   
 
     Get.rootDelegate.refresh();
-
   }
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.
