@@ -33,6 +33,8 @@ abstract class Routes {
 
   static String SIGNUP_THEN(String afterSuccessfulSignUp) =>
       '$SIGN_UP?then=${Uri.encodeQueryComponent(afterSuccessfulSignUp)}';
+  static const MY_PAGE_SETTING =
+      _Paths.HOME + _Paths.MY_PAGE + _Paths.MY_PAGE_SETTING;
 }
 
 abstract class _Paths {
@@ -57,4 +59,5 @@ abstract class _Paths {
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
   static const SIGN_UP = '/sign-up';
+  static const MY_PAGE_SETTING = '/my-page-setting';
 }
