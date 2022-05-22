@@ -238,10 +238,10 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
-        pickedImage = await imagePickerService.pickImg();
-        if (pickedImage != null) {
-          isImagePicked.value = true ;
-        }
+        // pickedImage = await imagePickerService.pickImg();
+        // if (pickedImage != null) {
+        //   isImagePicked.value = true ;
+        // }
       },
     );
   }

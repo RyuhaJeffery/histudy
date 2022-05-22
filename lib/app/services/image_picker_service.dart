@@ -7,15 +7,15 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerService {
   static final ImagePickerService _instance = ImagePickerService._internal();
 
-  final _androidUiSettings = const AndroidUiSettings(
-    initAspectRatio: CropAspectRatioPreset.original,
-    lockAspectRatio: false,
-    showCropGrid: true,
-    hideBottomControls: true,
-  );
-  final _iosUiSettings = const IOSUiSettings(
-    hidesNavigationBar: true,
-  );
+  // final _androidUiSettings = const AndroidUiSettings(
+  //   initAspectRatio: CropAspectRatioPreset.original,
+  //   lockAspectRatio: false,
+  //   showCropGrid: true,
+  //   hideBottomControls: true,
+  // );
+  // final _iosUiSettings = const IOSUiSettings(
+  //   hidesNavigationBar: true,
+  // );
 
   factory ImagePickerService() {
     return _instance;
@@ -29,27 +29,27 @@ class ImagePickerService {
     await FirebaseStorage.instance.ref().child('reportPhoto').child('$uid.png').putFile(file);
   }
 
-  Future<File?> pickImg() async {
-    XFile? image =
-    await picker.pickImage(imageQuality: 90, source: ImageSource.gallery);
+  // Future<File?> pickImg() async {
+  //   XFile? image =
+  //   await picker.pickImage(imageQuality: 90, source: ImageSource.gallery);
+  //
+  //   return image == null ? null : _cropImage(image.path);
+  // }
 
-    return image == null ? null : _cropImage(image.path);
-  }
-
-  Future<File?> _cropImage(filePath) async {
-    File? croppedImage = await ImageCropper().cropImage(
-        sourcePath: filePath,
-        maxWidth: 1080,
-        maxHeight: 1080,
-        aspectRatioPresets: [CropAspectRatioPreset.square],
-        cropStyle: CropStyle.circle,
-        compressQuality: 80,
-        androidUiSettings: _androidUiSettings
-        iosUiSettings: _iosUiSettings
-    );
-
-    return croppedImage;
-  }
+  // Future<File?> _cropImage(filePath) async {
+  //   File? croppedImage = await ImageCropper().cropImage(
+  //       sourcePath: filePath,
+  //       maxWidth: 1080,
+  //       maxHeight: 1080,
+  //       aspectRatioPresets: [CropAspectRatioPreset.square],
+  //       cropStyle: CropStyle.circle,
+  //       compressQuality: 80,
+  //       androidUiSettings: _androidUiSettings
+  //       iosUiSettings: _iosUiSettings
+  //   );
+  //
+  //   return croppedImage;
+  // }
 
   Future<String> downloadURL(String uid) async {
     String downloadURL = await FirebaseStorage.instance
