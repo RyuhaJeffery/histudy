@@ -13,9 +13,7 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
-
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
-
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
         body: Column(
@@ -141,9 +139,10 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 25,
             ),
+
             ElevatedButton(
               child: Text(
-                'ADMIN LOGIN',
+                'Register Histudy',
                 style: TextStyle(
                   fontSize: 25,
                 ),
@@ -158,24 +157,24 @@ class HomeView extends GetView<HomeController> {
               ),
               onPressed: () {},
             ),
-            SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.GROUP_ADD);
-                  },
-                  child: Text('GROUP ADD'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.GROUP_DEL);
-                  },
-                  child: Text('GROUP DEL'),
-                )
-              ],
-            )
+            // SizedBox(height: 30),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     TextButton(
+            //       onPressed: () {
+            //         Get.rootDelegate.toNamed(Routes.GROUP_ADD);
+            //       },
+            //       child: Text('GROUP ADD'),
+            //     ),
+            //     TextButton(
+            //       onPressed: () {
+            //         Get.rootDelegate.toNamed(Routes.GROUP_DEL);
+            //       },
+            //       child: Text('GROUP DEL'),
+            //     )
+            //   ],
+            // )
             // ElevatedButton(
             //   child: Text(
             //     'SIGN IN WITH GOOGLE',
