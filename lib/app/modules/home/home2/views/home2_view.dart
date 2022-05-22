@@ -50,7 +50,7 @@ class Home2View extends GetView<Home2Controller> {
               SizedBox(
                 height: 16,
               ),
-              _reportList(),
+              // _reportList(),
               SizedBox(
                 height: 16,
               ),
