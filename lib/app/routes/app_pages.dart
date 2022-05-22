@@ -152,7 +152,18 @@ class AppPages {
             page: () => MyPageView(),
             binding: MyPageBinding(),
             participatesInRootNavigator: true,
-            middlewares: [EnsureAuthMiddleware()]),
+            middlewares: [
+              EnsureAuthMiddleware(),
+            ],
+          children: [
+            GetPage(
+              name: _Paths.MY_PAGE_SETTING,
+              page: () => MyPageSettingView(),
+              binding: MyPageSettingBinding(),
+              participatesInRootNavigator: true,
+            )
+          ]
+        ),
         GetPage(
           name: _Paths.ADMIN,
           page: () => AdminView(),
@@ -160,11 +171,6 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAdminMiddleware(),
-            GetPage(
-              name: _Paths.MY_PAGE_SETTING,
-              page: () => MyPageSettingView(),
-              binding: MyPageSettingBinding(),
-            ),
           ],
           children: [
             GetPage(
