@@ -56,4 +56,5 @@ abstract class _Paths {
   static const GROUP_ADD = '/group-add';
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
+  static const SIGN_UP = '/sign-up';
 }

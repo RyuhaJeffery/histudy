@@ -39,6 +39,8 @@ import '../modules/home/report_list/report_write/bindings/report_write_binding.d
 import '../modules/home/report_list/report_write/views/report_write_view.dart';
 import '../modules/home/report_list/views/report_list_view.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/home/sign_up/views/sign_up_view.dart';
+import '../modules/home/sign_up/bindings/sign_up_binding.dart';
 
 part 'app_routes.dart';
 
