@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:histudy/app/routes/app_pages.dart';
 
 class AuthService extends GetxService {
   static AuthService get to => Get.find();
@@ -14,6 +16,7 @@ class AuthService extends GetxService {
   );
 
   Rx<FirebaseAuth> auth = FirebaseAuth.instance.obs;
+  Rx<FirebaseFirestore> firestore =  FirebaseFirestore.instance.obs;
   @override
   void onInit() {
     authCheck();
@@ -47,13 +50,22 @@ class AuthService extends GetxService {
     await auth.value.signInWithCredential(credential);
     print("auth_service.dart 48 : auth signInWithCredential success");
 
-    // print(auth.value.currentUser);
-    // print(auth.value.currentUser!.email);
-    // if(auth.value.currentUser!=null){
-    //   print("\n\nSuccessfully logined, your current user is\n${auth.value.currentUser}");
-    // }
+    //구글 정보가 firestore에 있으면~
+    //그냥 로그인이고
+    firestore.value.collection('Profile').doc(auth.value.currentUser!.uid).get()
+    .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists == false) {
+        print('\nThere is no current user in firestore\n');
+        Get.rootDelegate.toNamed(Routes.SIGN_UP);
+      }
+    });
+      
+    
+    //없으면 간단한 정보 추가 후 is 어쩌구
+  
 
     Get.rootDelegate.refresh();
+
   }
 
 //구글 로그인에서 로그아웃 할때 설정해주었던 모든 것들을 다시 초기화 시켜주는 작업도 함께 해준다.

@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:histudy/app/routes/app_pages.dart';
+import 'package:histudy/app/services/auth_service.dart';
 
 import '../controllers/sign_up_controller.dart';
 
 
 class SignUpView extends GetView<SignUpController> {
+  final nameController = TextEditingController();
+  final studentIDController = TextEditingController();
+  final phoneNumberController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,8 +53,9 @@ class SignUpView extends GetView<SignUpController> {
                           height: 30,
                         ),
                         TextFormField(
+                          controller: nameController,
                           decoration: InputDecoration(
-                            hintText: 'ID',
+                            hintText: 'name',
                             filled: true,
                             fillColor: Colors.blueGrey[50],
                             labelStyle: TextStyle(fontSize: 12),
@@ -66,8 +72,9 @@ class SignUpView extends GetView<SignUpController> {
                         ),
                         SizedBox(height: 30),
                         TextFormField(
+                          controller: studentIDController,
                           decoration: InputDecoration(
-                            hintText: 'Password',
+                            hintText: 'student ID',
                             filled: true,
                             fillColor: Colors.blueGrey[50],
                             labelStyle: TextStyle(fontSize: 12),
@@ -82,6 +89,26 @@ class SignUpView extends GetView<SignUpController> {
                             ),
                           ),
                         ),
+                        SizedBox(height: 30),
+                        TextFormField(
+                          controller: phoneNumberController,
+                          decoration: InputDecoration(
+                            hintText: 'phone number',
+                            filled: true,
+                            fillColor: Colors.blueGrey[50],
+                            labelStyle: TextStyle(fontSize: 12),
+                            contentPadding: EdgeInsets.only(left: 30),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                        ),
+                        
                         SizedBox(height: 60),
                         Container(
                           decoration: BoxDecoration(
@@ -100,7 +127,24 @@ class SignUpView extends GetView<SignUpController> {
                                 width: 100,
                                 height: 50,
                                 child: Center(child: Text("제출"))),
-                            onPressed: () async {},
+                            onPressed: () async {
+                              if(nameController.isBlank == false && studentIDController.isBlank == false && phoneNumberController.isBlank == false){
+                                await AuthService.to.firestore.value.collection('Profile')
+                                .doc(AuthService.to.auth.value.currentUser!.uid)
+                                .set({
+                                  'classRegister': false,
+                                  'email': AuthService.to.auth.value.currentUser!.email,
+                                  'group': 0,
+                                  'isAdmin': false,
+                                  'myClasses':[],
+                                  'name': nameController.text,
+                                  'phone': phoneNumberController.text,
+                                  'studentNumber': studentIDController.text,
+                                  'uid': AuthService.to.auth.value.currentUser!.uid
+                                });
+                                Get.rootDelegate.toNamed(Routes.HOME);
+                              }
+                            },
                             style: ElevatedButton.styleFrom(
                               primary: Colors.deepPurple,
                               onPrimary: Colors.white,
