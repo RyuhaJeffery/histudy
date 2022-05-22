@@ -16,8 +16,6 @@ import 'package:histudy/app/repository/group_repository.dart';
 import 'package:histudy/app/repository/report_repository.dart';
 import 'package:histudy/app/repository/user_repository.dart';
 import 'package:histudy/app/services/auth_service.dart';
-import 'package:histudy/app/services/image_picker_service.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../../../../routes/app_pages.dart';
@@ -28,12 +26,12 @@ import '../controllers/report_write_controller.dart';
 // Report 추가 할 때, 총 시간 값을 Group field로 만들어 duration을 더해주기
 
 class ReportWriteView extends GetView<ReportWriteController> {
-  var imagePickerService = ImagePickerService();
+  // var imagePickerService = ImagePickerService();
   File? pickedImage;
   RxBool isImagePicked = false.obs;
 
   html.File? imageFile ;
-  PickedFile? pickedFile ;
+  // PickedFile? pickedFile ;
 
   List<String> finalCheckedMembers = [];
   RxString startingTime = ''.obs;
@@ -197,12 +195,6 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
-<<<<<<< HEAD
-        // pickedImage = await imagePickerService.pickImg();
-        // if (pickedImage != null) {
-        //   isImagePicked.value = true ;
-        // }
-=======
         // pickedFile = await ImagePicker().getImage(
         //   source: ImageSource.gallery,
         // );
@@ -214,7 +206,6 @@ class ReportWriteView extends GetView<ReportWriteController> {
         //   print(pickedImage);
         // }
         // print(pickedImage);
->>>>>>> seonwook
       },
     );
   }

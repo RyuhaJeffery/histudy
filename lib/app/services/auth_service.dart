@@ -50,34 +50,8 @@ class AuthService extends GetxService {
     );
 
     // Once signed in, return the UserCredential
-<<<<<<< HEAD
     await auth.value.signInWithCredential(credential);
     print("auth_service.dart 48 : auth signInWithCredential success");
-=======
-   // await auth.value.signInWithCredential(credential);
-    //firestore에 user 저장
-    User? user = (await auth.value.signInWithCredential(credential)).user;
-    if (user != null) {
-      final QuerySnapshot addUser = await FirebaseFirestore.instance
-          .collection('Profile')
-          .where('uid', isEqualTo: user.uid)
-          .get();
-
-      final List<DocumentSnapshot> userList = addUser.docs;
-      print(userList.isEmpty);
-      if (userList.isEmpty) {
-        FirebaseFirestore.instance.collection('Profile').doc(user.uid).set({
-            "uid": auth.value.currentUser!.uid,
-            "email": auth.value.currentUser!.email,
-            "group": 0,
-            "isAdmin": false,
-            "name": auth.value.currentUser!.displayName,
-            "phone": "-",
-            "studentNumber": "-",
-            "myClasses": [],
-
-        });
->>>>>>> seonwook
 
     //구글 정보가 firestore에 있으면~
     //그냥 로그인이고
