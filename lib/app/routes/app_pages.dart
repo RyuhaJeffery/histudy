@@ -55,6 +55,9 @@ class AppPages {
       page: () => HomeView(),
       binding: HomeBinding(),
       participatesInRootNavigator: true,
+      middlewares: [
+        EnsureAuthMiddleware(),
+      ],
       children: [
         GetPage(
           name: _Paths.LOGIN,
