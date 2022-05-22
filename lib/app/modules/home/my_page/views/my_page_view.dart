@@ -17,7 +17,10 @@ class MyPageView extends GetView<MyPageController> {
   var firebaseUser = FirebaseAuth.instance.currentUser;
 
   User? get userProfile => auth.currentUser;
-
+  String name = "";
+  String phone = "";
+  String studentNumber = "";
+  String email = "";
   @override
   Widget build(BuildContext context) {
     Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
@@ -130,8 +133,8 @@ class MyPageView extends GetView<MyPageController> {
                                 IconButton(
                                   onPressed: () {
                                     //controller.changed_enabled();
-
-                                    Get.to(MyPageSettingView());
+print("name"+name);
+                                   Get.to(MyPageSettingView(),arguments:{'name': name,'studentNumber':studentNumber,'email': email,'phone':phone} );
                                   },
 
                                   icon: Icon(
@@ -151,6 +154,7 @@ class MyPageView extends GetView<MyPageController> {
                                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                                     final getdata = snapshot.data;
                                     if (snapshot.hasData) {
+                                      name = '${getdata?["name"]}';
                                       return Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -196,6 +200,8 @@ class MyPageView extends GetView<MyPageController> {
                                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                                     final getdata = snapshot.data;
                                     if (snapshot.hasData) {
+                                     studentNumber = '${getdata?["studentNumber"]}';
+
                                       return Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -245,6 +251,7 @@ class MyPageView extends GetView<MyPageController> {
                                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                                     final getdata = snapshot.data;
                                     if (snapshot.hasData) {
+                                   email  = '${getdata?["email"]}';
                                       return Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -290,6 +297,7 @@ class MyPageView extends GetView<MyPageController> {
                                       AsyncSnapshot<DocumentSnapshot> snapshot) {
                                     final getdata = snapshot.data;
                                     if (snapshot.hasData) {
+                                      phone = '${getdata?["phone"]}';
                                       return Column(
                                         crossAxisAlignment:
                                         CrossAxisAlignment.start,

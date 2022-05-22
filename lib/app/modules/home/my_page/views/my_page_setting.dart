@@ -9,7 +9,7 @@ import '../controllers/my_page_controller.dart';
 
 class MyPageSettingView extends GetView<MyPageController> {
   final List<String> subjectItems = ['객체지향 설계 패턴', '소프트웨어 공학', '데이타구조', '운영체제'];
-
+  late final List<String> subjectIs;
   String? subject1;
   String? subject2;
   String? subject3;
@@ -31,19 +31,7 @@ class MyPageSettingView extends GetView<MyPageController> {
   String email = "";
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection('Profile')
-        .doc(userProfile!.uid)
-        .get()
-        .then((DocumentSnapshot ds) {
-      name = ds["name"];
-      phone = ds["phone"];
-      studentNumber = ds["studentNumber"];
-      email = ds["email"];
-
-
-    });
-
+    print("setting "+"${Get.parameters['name']}");
     return Scaffold(
       body: ListView(
         children: [
@@ -150,8 +138,11 @@ class MyPageSettingView extends GetView<MyPageController> {
                         ),
                         Row(
                           children: [
+
+                            Text("${Get.parameters['name']}"),
                             Flexible(
                               child: TextFormField(
+                           //     initialValue: Get.arguments,
                                 controller: _nameController,
                                 decoration: InputDecoration(
                                   suffixIcon: IconButton(
@@ -162,7 +153,8 @@ class MyPageSettingView extends GetView<MyPageController> {
                                     ),
                                   ),
                                  // hintText: name,
-                                  hintText:"이 름" ,
+
+                                 // hintText:"이 름" ,
                                   hintStyle: TextStyle(fontSize: 13,color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white,

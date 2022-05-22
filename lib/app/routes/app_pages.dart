@@ -160,13 +160,13 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAdminMiddleware(),
+          ],
+          children: [
             GetPage(
               name: _Paths.MY_PAGE_SETTING,
               page: () => MyPageSettingView(),
               binding: MyPageSettingBinding(),
             ),
-          ],
-          children: [
             GetPage(
               name: _Paths.STUDENT_LIST,
               page: () => StudentListView(),
