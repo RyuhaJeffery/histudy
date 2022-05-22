@@ -10,9 +10,9 @@ import '../services/auth_service.dart';
 import '../routes/app_pages.dart';
 
 FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
-Future<DocumentSnapshot<Map<String, dynamic>>> user = _firebaseFirestore
+DocumentReference<Map<String, dynamic>> user = _firebaseFirestore
     .collection("Profile")
-    .doc(AuthService.to.auth.value.currentUser!.uid).get();
+    .doc(AuthService.to.auth.value.currentUser!.uid);
 
 class EnsureAuthMiddleware extends GetMiddleware {
   @override
@@ -53,14 +53,14 @@ class EnsureAdminMiddleware extends GetMiddleware {
   @override
   //TODO: implement EnsureAdminMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    user.then((DocumentSnapshot documentSnapshot) {
+    user.get().then((DocumentSnapshot documentSnapshot) {
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
       print(data['isAdmin']);
+      if(data['isAdmin'] == true){
+        return GetNavConfig.fromRoute(Routes.ADMIN);
+      }
     });
-    if (AuthService.to.auth.value.currentUser != null) {
-      return GetNavConfig.fromRoute(Routes.HOME);
-    }
     return await super.redirectDelegate(route);
   }
 }
