@@ -1,4 +1,7 @@
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutterfire_ui/auth.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,6 +41,18 @@ class EnsureNotAuthedMiddleware extends GetMiddleware {
 
 class EnsureSignUpMiddleware extends GetMiddleware {
   @override
+  //TODO: implement EnsureSignUpMiddleware
+  Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
+    if (AuthService.to.auth.value.currentUser != null) {
+      return GetNavConfig.fromRoute(Routes.HOME);
+    }
+    return await super.redirectDelegate(route);
+  }
+}
+
+class EnsureAdminMiddleware extends GetMiddleware {
+  @override
+  //TODO: implement EnsureAdminMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
     if (AuthService.to.auth.value.currentUser != null) {
       return GetNavConfig.fromRoute(Routes.HOME);
