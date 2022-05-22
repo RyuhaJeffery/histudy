@@ -55,7 +55,7 @@ class AuthService extends GetxService {
 
     //구글 정보가 firestore에 있으면~
     //그냥 로그인이고
-    firestore.value
+    await firestore.value
         .collection('Profile')
         .doc(auth.value.currentUser!.uid)
         .get()

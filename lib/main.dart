@@ -18,7 +18,7 @@ void main() async {
     ScreenUtilInit(
       designSize: const Size(1366, 778),
       minTextAdapt: true,
-      builder: (_, context) {
+      builder: (context,_) {
         return GetMaterialApp.router(
           debugShowCheckedModeBanner:false,
           title: "Application",
