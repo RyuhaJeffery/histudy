@@ -80,6 +80,7 @@ class AnnounceView extends GetView<AnnounceController> {
                 ),
               ]),
             ),
+
             Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children:[
@@ -89,60 +90,7 @@ class AnnounceView extends GetView<AnnounceController> {
 
 
 
-            DataTable(
-              columns: const <DataColumn>[
-                DataColumn(
-                  label: Text(
-                    ' ',
 
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    '제목',
-
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    '글쓴이',
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    '최신 보고서 날짜',
-
-                  ),
-                ),
-
-              ],
-              rows: <DataRow>[
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('1')),
-                    DataCell(Text('안녕하세요. 관리자 입니다. ')),
-                    DataCell(Text('관리자')),
-                    DataCell(Text('2022-10-23')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('2')),
-                    DataCell(Text('전전 스터디 보고서 등록 수칙')),
-                    DataCell(Text('관리자')),
-                    DataCell(Text('2022-10-23')),
-                  ],
-                ),
-                DataRow(
-                  cells: <DataCell>[
-                    DataCell(Text('3')),
-                    DataCell(Text('마일리지 인정 기준 안내합니다.' )),
-                    DataCell(Text('관리자')),
-                    DataCell(Text('2022-10-23')),
-                  ],
-                ),
-              ],
-            ),
           ],
           ),
         ),
