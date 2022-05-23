@@ -13,15 +13,13 @@ class ReportRepository {
   // }
 
   static Future<List<ReportModel>> getReportList(String group) async {
-    return groupCollection
+    var k = await groupCollection
         .doc(group)
         .collection('reports')
-        .get()
-        .then((value){
-          return value.docs.map((item) {
-            return ReportModel.fromSnapshot(item);
-          }).toList();
-    });
+        .get();
+    return k.docs.map((item) {
+      return ReportModel.fromSnapshot(item);
+    }).toList();
   }
 
   static uploadReport(String author, String code, DateTime codeDatetime, DateTime dateTime, String duration, String group, String image, List<String> participants, String studyStartTime, String text, String title) {
