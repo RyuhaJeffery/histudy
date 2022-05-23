@@ -338,33 +338,14 @@ class ReportWriteView extends GetView<ReportWriteController> {
         );
       }
     );
-    // return TextFormField(
-    //   maxLines: 1,
-    //   decoration: InputDecoration(
-    //       hintText: '시작시간을 입력하세요.',
-    //       border: OutlineInputBorder(
-    //           borderRadius: BorderRadius.all(
-    //             Radius.circular(8),
-    //           ),
-    //           borderSide: BorderSide(color: Colors.black)
-    //       ),
-    //       enabledBorder: OutlineInputBorder(
-    //           borderRadius: BorderRadius.all(
-    //             Radius.circular(8),
-    //           ),
-    //           borderSide: BorderSide(color: Colors.black)
-    //       )
-    //   ),
-    // );
   }
 
   Widget _durationInputWidget() {
     return TextFormField(
       maxLines: 1,
-      initialValue: duration,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-          hintText: '수행 시간을 입력하세요.',
+          hintText: '수행 시간을 입력하세요.(분 단위로 숫자만 입력하여 주세요.)',
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(8.r),
@@ -473,8 +454,8 @@ class ReportWriteView extends GetView<ReportWriteController> {
               if (finalCheckedMembers.isEmpty || startingTime.isEmpty || duration.isEmpty || title.isEmpty || contents.isEmpty) {
                 Get.snackbar('Retry', 'You have not entered anything');
               } else {
-                ReportRepository.uploadReport(profileModel.uid.toString(), code.toString(), makingCodeTime, DateTime.now(), duration, profileModel.group.toString(), "", finalCheckedMembers, startingTime.toString(), contents, title);
-                Get.rootDelegate.toNamed(Routes.HOME2);
+                ReportRepository.uploadReport(profileModel.name.toString(), code.toString(), makingCodeTime, DateTime.now(), duration, profileModel.group.toString(), "", finalCheckedMembers, startingTime.toString(), contents, title);
+                Get.rootDelegate.toNamed(Routes.REPORT_LIST);
               }
             }
           },
