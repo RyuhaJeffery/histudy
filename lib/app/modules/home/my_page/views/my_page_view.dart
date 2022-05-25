@@ -466,7 +466,8 @@ void createGroup() async {
   int allCount = profileLen;
   //현재는 4개에 맞추어져 있음.
   int groupMember = 4;
-  int groupNumber = -3;
+  //여기 필수로 수정해줘야함.
+  int groupNumber = -2;
   print("allcount");
   print(allCount);
   print("groupMember");
@@ -547,6 +548,10 @@ void createGroup() async {
           profileList[maxNode[2]],
           profileList[maxNode[3]],
         ],
+        'no': 0,
+        'sem': 0,
+        'time': 0,
+        'year': 2022,
       });
       FirebaseFirestore.instance
           .collection("Group")
@@ -593,6 +598,10 @@ void createGroup() async {
       .set({
     'meeting': 0,
     'members': FieldValue.arrayUnion(leftProfile),
+    'no': 0,
+    'sem': 0,
+    'time': 0,
+    'year': 2022,
   });
 
   FirebaseFirestore.instance
@@ -601,5 +610,25 @@ void createGroup() async {
       .collection("reports")
       .add({});
 
+  //create extra group
+  for (int i = 0; i < 4; i++) {
+    groupNumber--;
+    FirebaseFirestore.instance
+        .collection("Group")
+        .doc((-1 * groupNumber).toString())
+        .set({
+      'meeting': 0,
+      'members': [],
+      'no': 0,
+      'sem': 0,
+      'time': 0,
+      'year': 2022,
+    });
+    FirebaseFirestore.instance
+        .collection("Group")
+        .doc((-1 * groupNumber).toString())
+        .collection("reports")
+        .add({});
+  }
   Get.snackbar("그룹 배정 완료", "DB를 확인하세요");
 }
