@@ -1,28 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 
+import '../../../models/profile_model.dart';
+import '../../../repository/user_repository.dart';
 import '../../../services/auth_service.dart';
 import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? currentUser;
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-
-  User? get userProfile => auth.currentUser;
   @override
   Widget build(BuildContext context) {
-    Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
-        .collection('Profile')
-        .doc(userProfile!.uid)
-        .snapshots();
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
@@ -149,42 +143,74 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 25,
             ),
-            StreamBuilder<DocumentSnapshot>(
-              stream: _userStream,
-              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                final getdata = snapshot.data;
+            FutureBuilder<ProfileModel?>(
+              future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
+              builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return getdata?['classRegister']
-                      ? Container(
-                          child: Text("You already applied study"),
-                        )
-                      : ElevatedButton(
-                          child: Text(
-                            'Register Histudy',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            minimumSize:
-                                MaterialStateProperty.all(Size(382, 56)),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
-                            )),
-                          ),
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.REGISTER);
-                          },
-                        );
+                  ProfileModel profile = snapshot.data!;
+                  return profile.classRegister == true ? Container(
+                    child: Text("You already applied study"),
+                  ) : ElevatedButton(
+                    child: Text(
+                      'Register Histudy',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      minimumSize:
+                      MaterialStateProperty.all(Size(382, 56)),
+                      backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.black),
+                      shape: MaterialStateProperty.all<
+                          RoundedRectangleBorder>(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      )),
+                    ),
+                    onPressed: () {
+                      Get.rootDelegate.toNamed(Routes.REGISTER);
+                    },
+                  );
                 } else {
-                  return Container();
+                  return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
                 }
               },
             ),
-
+            // StreamBuilder<DocumentSnapshot>(
+            //   stream: _userStream,
+            //   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            //     final getdata = snapshot.data;
+            //     if (snapshot.hasData) {
+            //       return getdata?['classRegister']
+            //           ? Container(
+            //               child: Text("You already applied study"),
+            //             )
+            //           : ElevatedButton(
+            //               child: Text(
+            //                 'Register Histudy',
+            //                 style: TextStyle(
+            //                   fontSize: 25,
+            //                 ),
+            //               ),
+            //               style: ButtonStyle(
+            //                 minimumSize:
+            //                     MaterialStateProperty.all(Size(382, 56)),
+            //                 backgroundColor:
+            //                     MaterialStateProperty.all<Color>(Colors.black),
+            //                 shape: MaterialStateProperty.all<
+            //                     RoundedRectangleBorder>(RoundedRectangleBorder(
+            //                   borderRadius: BorderRadius.circular(32),
+            //                 )),
+            //               ),
+            //               onPressed: () {
+            //                 Get.rootDelegate.toNamed(Routes.REGISTER);
+            //               },
+            //             );
+            //     } else {
+            //       return Container();
+            //     }
+            //   },
+            // ),
             // SizedBox(height: 30),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
