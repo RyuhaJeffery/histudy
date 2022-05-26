@@ -5,6 +5,7 @@ import 'package:flutterfire_ui/auth.dart';
 
 import 'package:get/get.dart';
 import 'package:histudy/app/modules/home/my_page/views/my_page_setting.dart';
+import 'package:histudy/app/services/auth_service.dart';
 
 import '../../../../routes/app_pages.dart';
 import '../controllers/my_page_controller.dart';
@@ -94,7 +95,11 @@ class MyPageView extends GetView<MyPageController> {
                               },
                               child: Text("GUIDELINE")),
                           ElevatedButton(
-                              onPressed: () {}, child: Text('LOGOUT'))
+                              onPressed: () {
+                                AuthService.to.googleSignOut();
+                                Get.rootDelegate.toNamed(Routes.LOGIN);
+                              },
+                              child: Text('LOGOUT'))
                         ],
                       ),
                     ]),
@@ -372,7 +377,37 @@ class MyPageView extends GetView<MyPageController> {
                                         createGroup();
                                       },
                                     )
-                                  : Container();
+                                  : getdata?['classRegister']
+                                      ? Container(
+                                          child:
+                                              Text("You already applied study"),
+                                        )
+                                      : ElevatedButton(
+                                          child: Text(
+                                            'Register Histudy',
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            minimumSize:
+                                                MaterialStateProperty.all(
+                                                    Size(382, 56)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.black),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32),
+                                            )),
+                                          ),
+                                          onPressed: () {
+                                            Get.rootDelegate
+                                                .toNamed(Routes.REGISTER);
+                                          },
+                                        );
                             } else {
                               return Container();
                             }

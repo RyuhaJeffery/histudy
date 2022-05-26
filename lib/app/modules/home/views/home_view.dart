@@ -15,8 +15,19 @@ import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // User? currentUser;
+  // var firebaseUser = FirebaseAuth.instance.currentUser;
+
+  // User? get userProfile => auth.currentUser;
   @override
   Widget build(BuildContext context) {
+    // Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
+    //     .collection('Profile')
+    //     .doc(userProfile!.uid)
+    //     .snapshots();
+
+    bool test = true;
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
@@ -100,15 +111,14 @@ class HomeView extends GetView<HomeController> {
                         FirebaseAuth.instance.currentUser != null
                             ? ElevatedButton(
                                 onPressed: () {
-                                  AuthService.to.googleSignOut();
-                                  Get.rootDelegate.refresh();
+                                  Get.rootDelegate.toNamed(Routes.MY_PAGE);
                                 },
-                                child: Text('LOGOUT'))
+                                child: Text('MY PAGE'))
                             : ElevatedButton(
                                 onPressed: () {
-                                  //
+                                  Get.rootDelegate.toNamed(Routes.LOGIN);
                                 },
-                                child: Text('PLEASE LOGIN'))
+                                child: Text('LOGIN'))
                       ],
                     ),
                   ]),
@@ -121,96 +131,29 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 76.h,
             ),
-            ElevatedButton(
-              child: Text(
-                'SIGN IN WITH GOOGLE',
-                style: TextStyle(
-                  fontSize: 25.sp,
-                ),
-              ),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(382.w, 56.h)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.r),
-                )),
-              ),
-              onPressed: () {
-                AuthService.to.signInWithGoogle();
-              },
-            ),
-            SizedBox(
-              height: 25.h,
-            ),
-            FutureBuilder<ProfileModel?>(
-              future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  ProfileModel profile = snapshot.data!;
-                  return profile.classRegister == true ? Container(
-                    child: Text("You already applied study"),
-                  ) : ElevatedButton(
-                    child: Text(
-                      'Register Histudy',
-                      style: TextStyle(
-                        fontSize: 25.sp,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      minimumSize:
-                      MaterialStateProperty.all(Size(382.w, 56.h)),
-                      backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.black),
-                      shape: MaterialStateProperty.all<
-                          RoundedRectangleBorder>(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.r),
-                      )),
-                    ),
-                    onPressed: () {
-                      Get.rootDelegate.toNamed(Routes.REGISTER);
-                    },
-                  );
-                } else {
-                  return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
-                }
-              },
-            ),
-            // StreamBuilder<DocumentSnapshot>(
-            //   stream: _userStream,
-            //   builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            //     final getdata = snapshot.data;
-            //     if (snapshot.hasData) {
-            //       return getdata?['classRegister']
-            //           ? Container(
-            //               child: Text("You already applied study"),
-            //             )
-            //           : ElevatedButton(
-            //               child: Text(
-            //                 'Register Histudy',
-            //                 style: TextStyle(
-            //                   fontSize: 25,
-            //                 ),
-            //               ),
-            //               style: ButtonStyle(
-            //                 minimumSize:
-            //                     MaterialStateProperty.all(Size(382, 56)),
-            //                 backgroundColor:
-            //                     MaterialStateProperty.all<Color>(Colors.black),
-            //                 shape: MaterialStateProperty.all<
-            //                     RoundedRectangleBorder>(RoundedRectangleBorder(
-            //                   borderRadius: BorderRadius.circular(32),
-            //                 )),
-            //               ),
-            //               onPressed: () {
-            //                 Get.rootDelegate.toNamed(Routes.REGISTER);
-            //               },
-            //             );
-            //     } else {
-            //       return Container();
-            //     }
+            // ElevatedButton(
+            //   child: Text(
+            //     'SIGN IN WITH GOOGLE',
+            //     style: TextStyle(
+            //       fontSize: 25,
+            //     ),
+            //   ),
+            //   style: ButtonStyle(
+            //     minimumSize: MaterialStateProperty.all(Size(382, 56)),
+            //     backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(32),
+            //     )),
+            //   ),
+            //   onPressed: () {
+            //     AuthService.to.signInWithGoogle();
             //   },
             // ),
+            // SizedBox(
+            //   height: 25,
+            // ),
+
             // SizedBox(height: 30),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,

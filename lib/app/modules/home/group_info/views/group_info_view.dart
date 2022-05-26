@@ -19,15 +19,20 @@ class _HomePageState extends State<GroupInfoView> {
   // final FirebaseAuth _firebaseAuth =
   User? user = FirebaseAuth.instance.currentUser;
 
-  bool admin = false ;
+  bool admin = false;
   int curuser = 0;
+
+  final CollectionReference _group =
+      FirebaseFirestore.instance.collection('Group');
 
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance.collection('Profile')
-        .doc( user?.uid).get()
-        .then((DocumentSnapshot ds){
+    FirebaseFirestore.instance
+        .collection('Profile')
+        .doc(user?.uid)
+        .get()
+        .then((DocumentSnapshot ds) {
       setState(() {
         admin = ds['isAdmin'];
         curuser = ds['group'];
@@ -37,12 +42,14 @@ class _HomePageState extends State<GroupInfoView> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
-  final CollectionReference _profile = FirebaseFirestore.instance.collection('Profile');
+  final CollectionReference _profile =
+      FirebaseFirestore.instance.collection('Profile');
 
-  bool isSwitched=false;
+  bool isSwitched = false;
   User? currentUser;
 
-  Future<void> _createOrUpdate([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _createOrUpdate(
+      [DocumentSnapshot? documentSnapshot, int? preGroup]) async {
     String action = 'create';
     if (documentSnapshot != null) {
       action = 'update';
@@ -68,7 +75,7 @@ class _HomePageState extends State<GroupInfoView> {
               children: [
                 TextField(
                   keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+                      const TextInputType.numberWithOptions(decimal: true),
                   controller: _groupController,
                   decoration: const InputDecoration(
                     labelText: 'change group number ',
@@ -93,17 +100,27 @@ class _HomePageState extends State<GroupInfoView> {
                   onPressed: () async {
                     //final String? name = _nameController.text;
                     final double? group =
-                    double.tryParse(_groupController.text);
+                        double.tryParse(_groupController.text);
                     if (group != null) {
                       if (action == 'update') {
+                        await _group.doc(preGroup.toString()).update({
+                          "members":
+                              FieldValue.arrayRemove([documentSnapshot!.id]),
+                        });
+
+                        //이동할 그룹에 유저 데이터를 추가
+                        await _group.doc(group.toString()).update({
+                          "members":
+                              FieldValue.arrayUnion([documentSnapshot.id]),
+                        });
                         await _profile
-                            .doc(documentSnapshot!.id)
-                            .update({ "group": group,"isAdmin":isSwitched});
+                            .doc(documentSnapshot.id)
+                            .update({"group": group, "isAdmin": isSwitched});
                       }
 
                       // Clear the text fields
                       _nameController.text = '';
-                      _groupController.text ='';
+                      _groupController.text = '';
 
                       // Hide the bottom sheet
                       Navigator.of(context).pop();
@@ -116,7 +133,6 @@ class _HomePageState extends State<GroupInfoView> {
         });
   }
 
-
   Future<void> _deleteProduct(String productId) async {
     await _profile.doc(productId).delete();
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -125,155 +141,158 @@ class _HomePageState extends State<GroupInfoView> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        body:
-        Column(
-            children:[
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                          height: 100,
-                          width: 100,
-                          child: Image.asset('assets/handong_logo.png')),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.rootDelegate.toNamed(Routes.HOME);
-                        },
-                        child: Text(
-                          'HISTUDY',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      TextButton(
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.HOME2);
-                          },
-                          child: Text("HOME")),
-                      TextButton(
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                          },
-                          child: Text("TEAM")),
-                      TextButton(
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.QUESTION);
-                          },
-                          child: Text("Q&A")),
-                      TextButton(
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                          },
-                          child: Text("ANNOUNCEMENT")),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.RANK);
-                          },
-                          child: Text("RANK")),
-                      TextButton(
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.GUIDELINE);
-                          },
-                          child: Text("GUIDELINE")),
-                      ElevatedButton(onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.MY_PAGE);
-                      }, child: Text('MY PAGE'))
-                    ],
-                  ),
-                ]),
+    return Scaffold(
+        body: Column(children: [
+      Padding(
+        padding: const EdgeInsets.all(20.0),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Row(
+            children: [
+              SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Image.asset('assets/handong_logo.png')),
+              SizedBox(
+                width: 8,
               ),
-              admin ? Flexible(
-                child: Column(
-                children:[
-                  Divider(
-                    thickness: 0.11,
-                    color: Colors.black,
-                  ),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  Divider(
-                    thickness: 0.1,
-                    color: Colors.black,
-                  ),
-                Row(
-                    children: [
-                      SizedBox(
-                        width: 280.w,
-                      ),
-                      Expanded(child:Text('  이름')),
-                      Expanded(child: Text('  이메일')),
-                      Expanded(child: Text('  그룹')),
-                      Expanded(child: Text('  관리자')),
-                      Expanded(child: Text(' ')),
-                    ]
-                ) ,
+              GestureDetector(
+                onTap: () {
+                  Get.rootDelegate.toNamed(Routes.HOME);
+                },
+                child: Text(
+                  'HISTUDY',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.HOME2);
+                  },
+                  child: Text("HOME")),
+              TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                  },
+                  child: Text("TEAM")),
+              TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.QUESTION);
+                  },
+                  child: Text("Q&A")),
+              TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                  },
+                  child: Text("ANNOUNCEMENT")),
+            ],
+          ),
+          Row(
+            children: [
+              TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.RANK);
+                  },
+                  child: Text("RANK")),
+              TextButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.GUIDELINE);
+                  },
+                  child: Text("GUIDELINE")),
+              ElevatedButton(
+                  onPressed: () {
+                    Get.rootDelegate.toNamed(Routes.MY_PAGE);
+                  },
+                  child: Text('MY PAGE'))
+            ],
+          ),
+        ]),
+      ),
+      admin
+          ? Flexible(
+              child: Column(children: [
                 Divider(
-                    thickness: 0.1,
-                    color: Colors.black,
-                    height: 10,
+                  thickness: 0.11,
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Divider(
+                  thickness: 0.1,
+                  color: Colors.black,
+                ),
+                Row(children: [
+                  SizedBox(
+                    width: 280.w,
                   ),
+                  Expanded(child: Text('  이름')),
+                  Expanded(child: Text('  이메일')),
+                  Expanded(child: Text('  그룹')),
+                  Expanded(child: Text('  관리자')),
+                  Expanded(child: Text(' ')),
+                ]),
+                Divider(
+                  thickness: 0.1,
+                  color: Colors.black,
+                  height: 10,
+                ),
                 Flexible(
                   child: StreamBuilder(
                     //stream: _profile.snapshots(),
-                    stream: _profile.orderBy('group',descending: true).snapshots(),
-                    builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                    stream:
+                        _profile.orderBy('group', descending: true).snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                       if (streamSnapshot.hasData) {
                         return ListView.builder(
                           itemCount: streamSnapshot.data!.docs.length,
                           itemBuilder: (context, index) {
                             final DocumentSnapshot documentSnapshot =
-                            streamSnapshot.data!.docs[index];
+                                streamSnapshot.data!.docs[index];
                             return Container(
                               margin: const EdgeInsets.all(10),
-                              child: Column(
-                                  children:[
-                                    ListTile(
-                                      // title: Text(documentSnapshot['name']),
-                                      title: Row(
-                                          children: <Widget>[
-                                            Expanded(child: Text('${index+1}')),
-                                            Expanded(child: Text(documentSnapshot['name'])),
-                                            Expanded(child: Text(documentSnapshot['email'].toString())),
-                                            Expanded(child: Text(documentSnapshot['group'].toString())),
-                                            Expanded(child: Text(documentSnapshot['isAdmin'].toString())),
-                                          ]
-                                      ),
-                                      // documentSnapshot['isAdmin'].toString() ?
+                              child: Column(children: [
+                                ListTile(
+                                  // title: Text(documentSnapshot['name']),
+                                  title: Row(children: <Widget>[
+                                    Expanded(child: Text('${index + 1}')),
+                                    Expanded(
+                                        child: Text(documentSnapshot['name'])),
+                                    Expanded(
+                                        child: Text(documentSnapshot['email']
+                                            .toString())),
+                                    Expanded(
+                                        child: Text(documentSnapshot['group']
+                                            .toString())),
+                                    Expanded(
+                                        child: Text(documentSnapshot['isAdmin']
+                                            .toString())),
+                                  ]),
+                                  // documentSnapshot['isAdmin'].toString() ?
 
-                                      trailing:  SizedBox(
-                                        width: 100,
-                                        child: Row(
-                                          children: [
-
-                                            IconButton(
-                                                icon: const Icon(Icons.edit),
-                                                onPressed: () =>
-                                                    _createOrUpdate(documentSnapshot)),
-                                            IconButton(
-                                                icon: const Icon(Icons.delete),
-                                                onPressed: () =>
-                                                    _deleteProduct(documentSnapshot.id)),
-                                          ],
-                                        ),
-                                      ),
-
+                                  trailing: SizedBox(
+                                    width: 100,
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                            icon: const Icon(Icons.edit),
+                                            onPressed: () => _createOrUpdate(
+                                                documentSnapshot,
+                                                documentSnapshot['group'])),
+                                        IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () => _deleteProduct(
+                                                documentSnapshot.id)),
+                                      ],
                                     ),
-                                  ]
-                              ),
+                                  ),
+                                ),
+                              ]),
                             );
                           },
                         );
@@ -284,50 +303,48 @@ class _HomePageState extends State<GroupInfoView> {
                     },
                   ),
                 ),
-        ]),
-              ) :Flexible(
-                child: Column(
-                 children:[
-                    Row(
-                    children: [
-                      Expanded(child:Text('      no.')),
-                      Expanded(child:Text('  이름')),
-                      Expanded(child: Text('  이메일')),
-                      Expanded(child: Text('  그룹')),
-
-                    ]
-                    ) ,
-                  Divider(
-                    thickness: 0.1,
-                    color: Colors.black,
-                    height: 10,
-                  ),
-                 Flexible(
-                   child: StreamBuilder(
-                   stream: _profile.where("group",isEqualTo: curuser).snapshots(),
-                   builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              ]),
+            )
+          : Flexible(
+              child: Column(children: [
+              Row(children: [
+                Expanded(child: Text('      no.')),
+                Expanded(child: Text('  이름')),
+                Expanded(child: Text('  이메일')),
+                Expanded(child: Text('  그룹')),
+              ]),
+              Divider(
+                thickness: 0.1,
+                color: Colors.black,
+                height: 10,
+              ),
+              Flexible(
+                child: StreamBuilder(
+                  stream:
+                      _profile.where("group", isEqualTo: curuser).snapshots(),
+                  builder:
+                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     if (streamSnapshot.hasData) {
                       return ListView.builder(
                         itemCount: streamSnapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                          final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+                          final DocumentSnapshot documentSnapshot =
+                              streamSnapshot.data!.docs[index];
                           return Container(
                             margin: const EdgeInsets.all(10),
-                            child: Column(
-                                children:[
-                                  ListTile(
-                                    title: Row(
-                                        children: <Widget>[
-                                          Expanded(child: Text('${index+1}')),
-                                          Expanded(child: Text(documentSnapshot['name'])),
-                                          Expanded(child: Text(documentSnapshot['email'].toString())),
-                                          Expanded(child: Text(documentSnapshot['group'].toString())),
-                                        ]
-                                    )
-
-                                  ),
-                                ]
-                            ),
+                            child: Column(children: [
+                              ListTile(
+                                  title: Row(children: <Widget>[
+                                Expanded(child: Text('${index + 1}')),
+                                Expanded(child: Text(documentSnapshot['name'])),
+                                Expanded(
+                                    child: Text(
+                                        documentSnapshot['email'].toString())),
+                                Expanded(
+                                    child: Text(
+                                        documentSnapshot['group'].toString())),
+                              ])),
+                            ]),
                           );
                         },
                       );
@@ -337,10 +354,8 @@ class _HomePageState extends State<GroupInfoView> {
                     );
                   },
                 ),
-              ), ]))
-
-            ]
-        )
-    );
+              ),
+            ]))
+    ]));
   }
 }
