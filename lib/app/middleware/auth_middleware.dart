@@ -20,7 +20,8 @@ class EnsureAuthMiddleware extends GetMiddleware {
     User? loggedInUser = await AuthService.to.authCheck();
     // User? loggedInUser = AuthService.to.auth.value.currentUser;
     if (loggedInUser == null) {
-      return Get.rootDelegate.toNamed(Routes.LOGIN);
+      final newRoute = Routes.LOGIN_THEN(route.location!);
+      return GetNavConfig.fromRoute(newRoute);
     } else {
       return await super.redirectDelegate(route);
     }

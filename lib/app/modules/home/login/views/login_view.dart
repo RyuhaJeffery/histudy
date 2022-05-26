@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
-import '../../../routes/app_pages.dart';
-import '../../../services/auth_service.dart';
+import '../../../../routes/app_pages.dart';
+import '../../../../services/auth_service.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
@@ -54,5 +54,3 @@ class LoginView extends GetView<LoginController> {
     );
   }
 }
-
-
