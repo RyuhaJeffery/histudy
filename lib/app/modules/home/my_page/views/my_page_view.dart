@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 
 import 'package:get/get.dart';
+import 'package:histudy/app/modules/home/my_page/my_page_setting/views/my_page_setting_view.dart';
 
 import '../../../../routes/app_pages.dart';
 import '../controllers/my_page_controller.dart';
@@ -11,25 +12,25 @@ import '../controllers/my_page_controller.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class MyPageView extends GetView<MyPageController> {
-
   FirebaseAuth auth = FirebaseAuth.instance;
   User? currentUser;
   var firebaseUser = FirebaseAuth.instance.currentUser;
+
   User? get userProfile => auth.currentUser;
-
-  final TextEditingController _nameController = TextEditingController();
-
+  String name = "";
+  String phone = "";
+  String studentNumber = "";
+  String email = "";
 
   @override
   Widget build(BuildContext context) {
-
     Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
         .collection('Profile')
         .doc(userProfile!.uid)
         .snapshots();
-
-
+    //  print(userProfile!.uid);
     return Scaffold(
+      backgroundColor: Color(0xffFDFFFE),
       body: ListView(
         children: [
           Column(
@@ -42,8 +43,8 @@ class MyPageView extends GetView<MyPageController> {
                       Row(
                         children: [
                           SizedBox(
-                              height: 100,
-                              width: 100,
+                              height: 70,
+                              width: 70,
                               child: Image.asset('assets/handong_logo.png')),
                           SizedBox(
                             width: 8,
@@ -56,7 +57,7 @@ class MyPageView extends GetView<MyPageController> {
                               'HISTUDY',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
+                                  fontWeight: FontWeight.bold, fontSize: 26),
                             ),
                           ),
                           SizedBox(
@@ -66,22 +67,34 @@ class MyPageView extends GetView<MyPageController> {
                               onPressed: () {
                                 Get.rootDelegate.toNamed(Routes.HOME2);
                               },
-                              child: Text("HOME")),
+                              child: Text(
+                                "HOME",
+                                style: TextStyle(color: Color(0xff04589C)),
+                              )),
                           TextButton(
                               onPressed: () {
                                 Get.rootDelegate.toNamed(Routes.GROUP_INFO);
                               },
-                              child: Text("TEAM")),
+                              child: Text(
+                                "TEAM",
+                                style: TextStyle(color: Color(0xff04589C)),
+                              )),
                           TextButton(
                               onPressed: () {
                                 Get.rootDelegate.toNamed(Routes.QUESTION);
                               },
-                              child: Text("Q&A")),
+                              child: Text(
+                                "Q&A",
+                                style: TextStyle(color: Color(0xff04589C)),
+                              )),
                           TextButton(
                               onPressed: () {
                                 Get.rootDelegate.toNamed(Routes.ANNOUNCE);
                               },
-                              child: Text("ANNOUNCEMENT")),
+                              child: Text(
+                                "ANNOUNCEMENT",
+                                style: TextStyle(color: Color(0xff04589C)),
+                              )),
                         ],
                       ),
                       Row(
@@ -90,27 +103,52 @@ class MyPageView extends GetView<MyPageController> {
                               onPressed: () {
                                 Get.rootDelegate.toNamed(Routes.RANK);
                               },
-                              child: Text("RANK")),
+                              child: Text(
+                                "RANK",
+                                style: TextStyle(color: Color(0xff04589C)),
+                              )),
                           TextButton(
                               onPressed: () {
                                 Get.rootDelegate.toNamed(Routes.GUIDELINE);
                               },
-                              child: Text("GUIDELINE")),
-                          ElevatedButton(
-                              onPressed: () {}, child: Text('LOGOUT'))
+                              child: Text(
+                                "GUIDELINE",
+                                style: TextStyle(color: Color(0xff04589C)),
+                              )),
+                          SizedBox(
+                            width: 88,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xff04589C),
+                                  side: BorderSide(width: 1),
+                                  shape: RoundedRectangleBorder(
+                                      //to set border radius to button
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                                onPressed: () {},
+                                child: Text('LOGOUT')),
+                          )
                         ],
                       ),
                     ]),
+              ),
+              SizedBox(
+                height: 22,
+              ),
+              Text("마이 페이지",
+    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
+              SizedBox(
+                height: 22,
               ),
               Center(
                   child: Container(
                 width: 600,
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
+                      color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 5,
                       blurRadius: 7,
                       offset: Offset(0, 3), // changes position of shadow
@@ -118,8 +156,8 @@ class MyPageView extends GetView<MyPageController> {
                   ],
                 ),
                 child: Container(
-                  width: 450,
-                  height: 650,
+                  width: 400,
+                  height: 600,
                   padding: EdgeInsets.all(30),
                   child: SingleChildScrollView(
                     child: Column(
@@ -127,237 +165,407 @@ class MyPageView extends GetView<MyPageController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("마이 페이지"),
-                            SizedBox(
-                              width: 200,
-                            ),
                             IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                //controller.changed_enabled();
+                                print("name" + name);
+                                Get.to(MyPageSettingView(), arguments: {
+                                  'name': name,
+                                  'studentNumber': studentNumber,
+                                  'email': email,
+                                  'phone': phone
+                                });
+                              },
                               icon: Icon(
                                 PhosphorIcons.pencil, // Pencil Icon
                               ),
                             )
                           ],
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        StreamBuilder<DocumentSnapshot>(
-                          stream: _userStream,
-                          builder:
-                              (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                            final getdata = snapshot.data;
-                            if (snapshot.hasData) {
-                              return Text(
-                                '${getdata?["name"]}',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
                         Row(
                           children: [
-                            Flexible(
-                              child: TextField(
-                                //controller: _nameController,
-                                decoration: InputDecoration(
-                                  hintText: '이름',
-                                  filled: true,
-                                  fillColor: Colors.blueGrey[50],
-                                  labelStyle: TextStyle(fontSize: 12),
-                                  contentPadding: EdgeInsets.only(left: 30),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                              ),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  name = '${getdata?["name"]}';
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "이름",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 250,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["name"]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
                             ),
                             SizedBox(width: 30),
-                            Flexible(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: '학번',
-                                  filled: true,
-                                  fillColor: Colors.blueGrey[50],
-                                  labelStyle: TextStyle(fontSize: 12),
-                                  contentPadding: EdgeInsets.only(left: 30),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                              ),
-                            )
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  studentNumber =
+                                      '${getdata?["studentNumber"]}';
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "학번",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 250,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["studentNumber"]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+                        Row(
+                          children: [
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  email = '${getdata?["email"]}';
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "이메일",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 250,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["email"]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                            SizedBox(width: 30),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  phone = '${getdata?["phone"]}';
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "전화 번호",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 250,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["phone"]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
                           ],
                         ),
                         SizedBox(height: 30),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: '이메일',
-                                  filled: true,
-                                  fillColor: Colors.blueGrey[50],
-                                  labelStyle: TextStyle(fontSize: 12),
-                                  contentPadding: EdgeInsets.only(left: 30),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 30),
-                            Flexible(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  hintText: '전화번호',
-                                  filled: true,
-                                  fillColor: Colors.blueGrey[50],
-                                  labelStyle: TextStyle(fontSize: 12),
-                                  contentPadding: EdgeInsets.only(left: 30),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 30),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: '수강중인 과목 1',
-                            filled: true,
-                            fillColor: Colors.blueGrey[50],
-                            labelStyle: TextStyle(fontSize: 12),
-                            contentPadding: EdgeInsets.only(left: 30),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: '수강중인 과목 2',
-                            filled: true,
-                            fillColor: Colors.blueGrey[50],
-                            labelStyle: TextStyle(fontSize: 12),
-                            contentPadding: EdgeInsets.only(left: 30),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: '수강중인 과목 3',
-                            filled: true,
-                            fillColor: Colors.blueGrey[50],
-                            labelStyle: TextStyle(fontSize: 12),
-                            contentPadding: EdgeInsets.only(left: 30),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 30),
-                        TextField(
-                          decoration: InputDecoration(
-                            hintText: '수강중인 과목 4',
-                            filled: true,
-                            fillColor: Colors.blueGrey[50],
-                            labelStyle: TextStyle(fontSize: 12),
-                            contentPadding: EdgeInsets.only(left: 30),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 40),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0xFFD1C4E9),
-                                spreadRadius: 10,
-                                blurRadius: 20,
-                              ),
-                            ],
-                          ),
-                          child: ElevatedButton(
-                            child: Container(
-                                width: double.infinity,
-                                height: 50,
-                                child: Center(child: Text("제 출"))),
-                            onPressed: () async {
+/*
 
-                                FirebaseFirestore.instance
-                                    .collection('Profile')
-                                    .doc(userProfile!.uid)
-                                    .update(
-                                    {'name': _nameController.text});
-
-
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.deepPurple,
-                              onPrimary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "수강중인 과목 1",
+                                        style: TextStyle(fontSize: 12,color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 530,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["myClasses"][1]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
                             ),
-                          ),
-                        ),
+                            SizedBox(height: 20),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "수강중인 과목 2",
+                                        style: TextStyle(fontSize: 12,color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 520,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["myClasses"][2]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "수강중인 과목 3",
+                                        style: TextStyle(fontSize: 12,color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 520,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["myClasses"][3]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            StreamBuilder<DocumentSnapshot>(
+                              stream: _userStream,
+                              builder: (context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot) {
+                                final getdata = snapshot.data;
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "수강중인 과목 4",
+                                        style: TextStyle(fontSize: 12,color: Colors.black54),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Container(
+                                        width: 520,
+                                        //margin: EdgeInsets.all(4),
+                                        padding: EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                          BorderRadius.circular(15),
+                                          border: Border.all(
+                                            color: Color(0xFFECEFF1),
+                                            width: 1,
+                                          ),
+                                        ),
+                                        child: Text(
+                                          '${getdata?["myClasses"][4]}',
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              },
+                            ),
+*/
                       ],
                     ),
                   ),
@@ -373,4 +581,3 @@ class MyPageView extends GetView<MyPageController> {
     );
   }
 }
-

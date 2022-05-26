@@ -6,18 +6,8 @@ import '../models/profile_model.dart';
 class UserRepositroy {
   static final userCollection = FirebaseFirestore.instance.collection('Profile');
 
-  static Future<ProfileModel> getUser(String uid) async {
-    ProfileModel userModel = ProfileModel();
-    try {
-      await userCollection.doc(uid).get().then((DocumentSnapshot ds) {
-        if (kDebugMode) {
-          print('getUser');
-        }
-        userModel = ProfileModel.fromSnapshot(ds);
-      });
-    } catch (e) {
-      print("error");
-    }
-    return userModel;
+  static Future<ProfileModel?> getUser(String uid) async {
+      var ds = await userCollection.doc(uid).get();
+      return ProfileModel.fromSnapshot(ds);
   }
 }

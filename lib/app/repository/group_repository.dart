@@ -4,16 +4,10 @@ import 'package:get/get.dart';
 import '../models/group_model.dart';
 
 class GroupRepository {
-  static final reportCollection = FirebaseFirestore.instance.collection('Group');
+  static final groupCollection = FirebaseFirestore.instance.collection('Group');
 
-  static Future<List<GroupModel>> getGroupList(String groupNum) async {
-    List<GroupModel> groupList = [];
-    try {
-      await reportCollection.doc(groupNum).get().then((DocumentSnapshot ds) {
-      });
-    } catch (e) {
-      Get.snackbar('Error getting user list', e.toString());
-    }
-    return groupList;
+  static Future<GroupModel?> getGroup(String groupNum) async {
+    var ds = await groupCollection.doc(groupNum).get();
+    return GroupModel.fromSnapshot(ds);
   }
 }

@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
 
@@ -11,11 +13,23 @@ import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
+  User? currentUser;
+  var firebaseUser = FirebaseAuth.instance.currentUser;
+  //  final QuerySnapshot profileResult =
+
+  Rx<bool> classRegister = false.obs;
   @override
   Widget build(BuildContext context) {
-
+    FirebaseFirestore.instance
+        .collection("Profile")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then(
+      (DocumentSnapshot ds) {
+        classRegister.value = ds['classRegister'];
+      },
+    );
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
-
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
         body: Column(
@@ -27,22 +41,9 @@ class HomeView extends GetView<HomeController> {
                   children: [
                     Row(
                       children: [
-                        //current user를 test하는 dummy code
-                        //refresh 할 때에도 로그인 유지됨.
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     print("\nCurrent User is : \n${AuthService.to.auth.value.currentUser}\n");
-                        //   },
-                        //   child: Text(
-                        //     'IsLogined?',
-                        //     textAlign: TextAlign.center,
-                        //     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                        //   ),
-                        // ),
-
                         SizedBox(
-                            height: 100,
-                            width: 100,
+                            height: 70,
+                            width: 70,
                             child: Image.asset('assets/handong_logo.png')),
                         SizedBox(
                           width: 8,
@@ -55,7 +56,7 @@ class HomeView extends GetView<HomeController> {
                             'HISTUDY',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                                fontWeight: FontWeight.bold, fontSize: 26),
                           ),
                         ),
                         SizedBox(
@@ -65,22 +66,34 @@ class HomeView extends GetView<HomeController> {
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.HOME2);
                             },
-                            child: Text("HOME")),
+                            child: Text(
+                              "HOME",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
                         TextButton(
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.GROUP_INFO);
                             },
-                            child: Text("TEAM")),
+                            child: Text(
+                              "TEAM",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
                         TextButton(
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.QUESTION);
                             },
-                            child: Text("Q&A")),
+                            child: Text(
+                              "Q&A",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
                         TextButton(
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.ANNOUNCE);
                             },
-                            child: Text("ANNOUNCEMENT")),
+                            child: Text(
+                              "ANNOUNCEMENT",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
                       ],
                     ),
                     Row(
@@ -89,31 +102,41 @@ class HomeView extends GetView<HomeController> {
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.RANK);
                             },
-                            child: Text("RANK")),
+                            child: Text(
+                              "RANK",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
                         TextButton(
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.GUIDELINE);
                             },
-                            child: Text("GUIDELINE")),
-                        FirebaseAuth.instance.currentUser != null
-                            ? ElevatedButton(
-                                onPressed: () {
-                                  AuthService.to.googleSignOut();
-                                  Get.rootDelegate.refresh();
-                                },
-                                child: Text('LOGOUT'))
-                            : ElevatedButton(
-                                onPressed: () {
-                                  //
-                                },
-                                child: Text('PLEASE LOGIN'))
+                            child: Text(
+                              "GUIDELINE",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                        SizedBox(
+                          width: 88,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xff04589C),
+                                side: BorderSide(width: 1),
+                                shape: RoundedRectangleBorder(
+                                  //to set border radius to button
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                              onPressed: () {},
+                              child: Text('LOGOUT')),
+                        )
                       ],
                     ),
                   ]),
             ),
             SizedBox(
-              height: 281,
-              width: 367,
+              height: 50,
+            ),
+            SizedBox(
+              height: 200,
+              width: 300,
               child: Image(image: AssetImage('assets/people.png')),
             ),
             SizedBox(
@@ -123,16 +146,20 @@ class HomeView extends GetView<HomeController> {
               child: Text(
                 'SIGN IN WITH GOOGLE',
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
+                  color: Colors.black
                 ),
               ),
+
               style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                minimumSize: MaterialStateProperty.all(Size(350, 56)),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
+      side: BorderSide(width: 2, color: Colors.black26)
                 )),
+
               ),
               onPressed: () {
                 AuthService.to.signInWithGoogle();
@@ -141,41 +168,50 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 25,
             ),
-            ElevatedButton(
-              child: Text(
-                'ADMIN LOGIN',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
-              ),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                )),
-              ),
-              onPressed: () {},
-            ),
-            SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.GROUP_ADD);
-                  },
-                  child: Text('GROUP ADD'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.GROUP_DEL);
-                  },
-                  child: Text('GROUP DEL'),
-                )
-              ],
-            )
+
+            classRegister.value
+                ? Container(
+                    child: Text("You already applied"),
+                  )
+                : ElevatedButton(
+                    child: Text(
+                      'REGISTER HISTUDY',
+                      style: TextStyle(
+                        fontSize: 20,
+
+                      ),
+                    ),
+                    style: ButtonStyle(
+                      minimumSize: MaterialStateProperty.all(Size(350, 56)),
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.black87),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32),
+                      )),
+                    ),
+                    onPressed: () {
+                      Get.rootDelegate.toNamed(Routes.REGISTER);
+                    },
+                  ),
+            // SizedBox(height: 30),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     TextButton(
+            //       onPressed: () {
+            //         Get.rootDelegate.toNamed(Routes.GROUP_ADD);
+            //       },
+            //       child: Text('GROUP ADD'),
+            //     ),
+            //     TextButton(
+            //       onPressed: () {
+            //         Get.rootDelegate.toNamed(Routes.GROUP_DEL);
+            //       },
+            //       child: Text('GROUP DEL'),
+            //     )
+            //   ],
+            // )
             // ElevatedButton(
             //   child: Text(
             //     'SIGN IN WITH GOOGLE',

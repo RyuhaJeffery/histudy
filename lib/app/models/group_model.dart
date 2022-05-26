@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GroupModel {
   int? meeting;
-  List<String>? members;
+  List? members;
   int? no;
   int? sem;
   int? time;

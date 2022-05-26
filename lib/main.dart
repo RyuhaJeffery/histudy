@@ -18,14 +18,16 @@ void main() async {
     ScreenUtilInit(
       designSize: const Size(1366, 778),
       minTextAdapt: true,
-      builder: (context) {
+      builder: (context,_) {
         return GetMaterialApp.router(
+
           debugShowCheckedModeBanner:false,
           title: "Application",
           initialBinding: BindingsBuilder((){
             Get.put(AuthService());
           }),
           getPages: AppPages.routes,
+          supportedLocales: [Locale('en', 'US')],
         );
       }
     ),

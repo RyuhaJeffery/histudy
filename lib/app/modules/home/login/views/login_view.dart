@@ -30,18 +30,16 @@ class LoginView extends GetView<LoginController> {
               child: Text(
                 'SIGN IN WITH GOOGLE',
                 style: TextStyle(
-                  fontSize: 25.sp,
+                  fontSize: 10.sp,
                 ),
               ),
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(382.h, 56.w)),
-                backgroundColor: MaterialStateProperty.all<Color>(
-                    Colors.blue
-                ),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.r),
-                    )),
+                        borderRadius: BorderRadius.circular(32.r),
+                        side: BorderSide(width: 2, color: Colors.black26))),
               ),
               onPressed: () {
                 AuthService.to.signInWithGoogle();
