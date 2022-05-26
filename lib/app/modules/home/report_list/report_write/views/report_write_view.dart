@@ -295,7 +295,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                               ProfileModel profileModelInGroup = profileSnapshot.data!;
                               return Text(profileModelInGroup.name.toString());
                             } else {
-                              return CircularProgressIndicator();
+                              return Container();
                             }
                           },
                         ),
