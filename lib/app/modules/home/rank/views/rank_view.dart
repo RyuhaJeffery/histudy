@@ -40,7 +40,7 @@ class RankView extends GetView<RankController> {
                         ),
                         TextButton(
                             onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.HOME2);
+                              Get.rootDelegate.toNamed(Routes.HOME);
                             },
                             child: Text("HOME")),
                         TextButton(
