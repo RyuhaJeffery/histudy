@@ -28,8 +28,17 @@ import '../controllers/report_write_controller.dart';
 // Report 추가 할 때, 총 시간 값을 Group field로 만들어 duration을 더해주기
 
 class ReportWriteView extends GetView<ReportWriteController> {
+<<<<<<< HEAD
   var imagePickerService = ImagePickerService();
   XFile? pickedImage;
+=======
+<<<<<<< HEAD
+  // var imagePickerService = ImagePickerService();
+=======
+  //var imagePickerService = ImagePickerService();
+>>>>>>> e325832e6d0cc6bd27ebf27d3ea84298102a4ea8
+  File? pickedImage;
+>>>>>>> subin
   RxBool isImagePicked = false.obs;
   List<String> finalCheckedMembers = [];
   RxString startingTime = ''.obs;
@@ -194,7 +203,28 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
+<<<<<<< HEAD
         pickedImage = await imagePickerService.pickImage();
+=======
+<<<<<<< HEAD
+        // pickedFile = await ImagePicker().getImage(
+        //   source: ImageSource.gallery,
+        // );
+        // imageFile = await ImagePickerWeb.getImageAsFile();
+        // print(imageFile);
+        // pickedImage = await imagePickerService.pickImg();
+        // if (pickedImage != null) {
+        //   isImagePicked.value = true ;
+        //   print(pickedImage);
+        // }
+        // print(pickedImage);
+=======
+        //pickedImage = await imagePickerService.pickImg();
+        if (pickedImage != null) {
+          isImagePicked.value = true ;
+        }
+>>>>>>> e325832e6d0cc6bd27ebf27d3ea84298102a4ea8
+>>>>>>> subin
       },
     );
   }
