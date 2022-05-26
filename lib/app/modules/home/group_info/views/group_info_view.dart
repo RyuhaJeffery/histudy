@@ -20,6 +20,7 @@ class _HomePageState extends State<GroupInfoView> {
   User? user = FirebaseAuth.instance.currentUser;
 
   bool admin = false;
+  bool loading = true;
   int curuser = 0;
 
   final CollectionReference _group =
@@ -36,6 +37,7 @@ class _HomePageState extends State<GroupInfoView> {
       setState(() {
         admin = ds['isAdmin'];
         curuser = ds['group'];
+        loading = false;
       });
     });
   }
@@ -212,54 +214,139 @@ class _HomePageState extends State<GroupInfoView> {
           ),
         ]),
       ),
-      admin
-          ? Flexible(
-              child: Column(children: [
-                Divider(
-                  thickness: 0.11,
-                  color: Colors.black,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Divider(
-                  thickness: 0.1,
-                  color: Colors.black,
-                ),
-                Row(children: [
-                  SizedBox(
-                    width: 280.w,
+      loading
+          ? Container()
+          : admin
+              ? Flexible(
+                  child: Column(children: [
+                    Divider(
+                      thickness: 0.11,
+                      color: Colors.black,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Divider(
+                      thickness: 0.1,
+                      color: Colors.black,
+                    ),
+                    Row(children: [
+                      SizedBox(
+                        width: 280.w,
+                      ),
+                      Expanded(child: Text('  이름')),
+                      Expanded(child: Text('  이메일')),
+                      Expanded(child: Text('  그룹')),
+                      Expanded(child: Text('  관리자')),
+                      Expanded(child: Text(' ')),
+                    ]),
+                    Divider(
+                      thickness: 0.1,
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Flexible(
+                      child: StreamBuilder(
+                        //stream: _profile.snapshots(),
+                        stream: _profile
+                            .orderBy('group', descending: true)
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                          if (streamSnapshot.hasData) {
+                            return ListView.builder(
+                              itemCount: streamSnapshot.data!.docs.length,
+                              itemBuilder: (context, index) {
+                                final DocumentSnapshot documentSnapshot =
+                                    streamSnapshot.data!.docs[index];
+                                return Container(
+                                  margin: const EdgeInsets.all(10),
+                                  child: Column(children: [
+                                    ListTile(
+                                      // title: Text(documentSnapshot['name']),
+                                      title: Row(children: <Widget>[
+                                        Expanded(child: Text('${index + 1}')),
+                                        Expanded(
+                                            child:
+                                                Text(documentSnapshot['name'])),
+                                        Expanded(
+                                            child: Text(
+                                                documentSnapshot['email']
+                                                    .toString())),
+                                        Expanded(
+                                            child: Text(
+                                                documentSnapshot['group']
+                                                    .toString())),
+                                        Expanded(
+                                            child: Text(
+                                                documentSnapshot['isAdmin']
+                                                    .toString())),
+                                      ]),
+                                      // documentSnapshot['isAdmin'].toString() ?
+
+                                      trailing: SizedBox(
+                                        width: 100,
+                                        child: Row(
+                                          children: [
+                                            IconButton(
+                                                icon: const Icon(Icons.edit),
+                                                onPressed: () =>
+                                                    _createOrUpdate(
+                                                        documentSnapshot,
+                                                        documentSnapshot[
+                                                            'group'])),
+                                            IconButton(
+                                                icon: const Icon(Icons.delete),
+                                                onPressed: () => _deleteProduct(
+                                                    documentSnapshot.id)),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
+                                );
+                              },
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      ),
+                    ),
+                  ]),
+                )
+              : Flexible(
+                  child: Column(children: [
+                  Row(children: [
+                    Expanded(child: Text('      no.')),
+                    Expanded(child: Text('  이름')),
+                    Expanded(child: Text('  이메일')),
+                    Expanded(child: Text('  그룹')),
+                  ]),
+                  Divider(
+                    thickness: 0.1,
+                    color: Colors.black,
+                    height: 10,
                   ),
-                  Expanded(child: Text('  이름')),
-                  Expanded(child: Text('  이메일')),
-                  Expanded(child: Text('  그룹')),
-                  Expanded(child: Text('  관리자')),
-                  Expanded(child: Text(' ')),
-                ]),
-                Divider(
-                  thickness: 0.1,
-                  color: Colors.black,
-                  height: 10,
-                ),
-                Flexible(
-                  child: StreamBuilder(
-                    //stream: _profile.snapshots(),
-                    stream:
-                        _profile.orderBy('group', descending: true).snapshots(),
-                    builder:
-                        (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                      if (streamSnapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: streamSnapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            final DocumentSnapshot documentSnapshot =
-                                streamSnapshot.data!.docs[index];
-                            return Container(
-                              margin: const EdgeInsets.all(10),
-                              child: Column(children: [
-                                ListTile(
-                                  // title: Text(documentSnapshot['name']),
-                                  title: Row(children: <Widget>[
+                  Flexible(
+                    child: StreamBuilder(
+                      stream: _profile
+                          .where("group", isEqualTo: curuser)
+                          .snapshots(),
+                      builder: (context,
+                          AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                        if (streamSnapshot.hasData) {
+                          return ListView.builder(
+                            itemCount: streamSnapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+                              return Container(
+                                margin: const EdgeInsets.all(10),
+                                child: Column(children: [
+                                  ListTile(
+                                      title: Row(children: <Widget>[
                                     Expanded(child: Text('${index + 1}')),
                                     Expanded(
                                         child: Text(documentSnapshot['name'])),
@@ -269,93 +356,19 @@ class _HomePageState extends State<GroupInfoView> {
                                     Expanded(
                                         child: Text(documentSnapshot['group']
                                             .toString())),
-                                    Expanded(
-                                        child: Text(documentSnapshot['isAdmin']
-                                            .toString())),
-                                  ]),
-                                  // documentSnapshot['isAdmin'].toString() ?
-
-                                  trailing: SizedBox(
-                                    width: 100,
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                            icon: const Icon(Icons.edit),
-                                            onPressed: () => _createOrUpdate(
-                                                documentSnapshot,
-                                                documentSnapshot['group'])),
-                                        IconButton(
-                                            icon: const Icon(Icons.delete),
-                                            onPressed: () => _deleteProduct(
-                                                documentSnapshot.id)),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ]),
-                            );
-                          },
-                        );
-                      }
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    },
-                  ),
-                ),
-              ]),
-            )
-          : Flexible(
-              child: Column(children: [
-              Row(children: [
-                Expanded(child: Text('      no.')),
-                Expanded(child: Text('  이름')),
-                Expanded(child: Text('  이메일')),
-                Expanded(child: Text('  그룹')),
-              ]),
-              Divider(
-                thickness: 0.1,
-                color: Colors.black,
-                height: 10,
-              ),
-              Flexible(
-                child: StreamBuilder(
-                  stream:
-                      _profile.where("group", isEqualTo: curuser).snapshots(),
-                  builder:
-                      (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                    if (streamSnapshot.hasData) {
-                      return ListView.builder(
-                        itemCount: streamSnapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final DocumentSnapshot documentSnapshot =
-                              streamSnapshot.data!.docs[index];
-                          return Container(
-                            margin: const EdgeInsets.all(10),
-                            child: Column(children: [
-                              ListTile(
-                                  title: Row(children: <Widget>[
-                                Expanded(child: Text('${index + 1}')),
-                                Expanded(child: Text(documentSnapshot['name'])),
-                                Expanded(
-                                    child: Text(
-                                        documentSnapshot['email'].toString())),
-                                Expanded(
-                                    child: Text(
-                                        documentSnapshot['group'].toString())),
-                              ])),
-                            ]),
+                                  ])),
+                                ]),
+                              );
+                            },
                           );
-                        },
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  },
-                ),
-              ),
-            ]))
+                        }
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      },
+                    ),
+                  ),
+                ]))
     ]));
   }
 }
