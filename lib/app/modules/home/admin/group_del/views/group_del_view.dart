@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../../routes/app_pages.dart';
 import '../controllers/group_del_controller.dart';
@@ -66,9 +67,9 @@ class GroupDelView extends GetView<GroupDelController> {
                       },
                       child: Text("RANK")),
                   TextButton(
-                      onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.GUIDELINE);
-                      },
+                      onPressed: () async{
+                              await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
+                            },
                       child: Text("GUIDELINE")),
                   ElevatedButton(onPressed: () {
                   }, child: Text('LOGOUT'))

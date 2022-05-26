@@ -6,6 +6,7 @@ import 'package:flutterfire_ui/auth.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/modules/home/my_page/views/my_page_setting.dart';
 import 'package:histudy/app/services/auth_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../routes/app_pages.dart';
 import '../controllers/my_page_controller.dart';
@@ -90,9 +91,9 @@ class MyPageView extends GetView<MyPageController> {
                               },
                               child: Text("RANK")),
                           TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.GUIDELINE);
-                              },
+                              onPressed: () async{
+                              await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
+                            },
                               child: Text("GUIDELINE")),
                           ElevatedButton(
                               onPressed: () {
