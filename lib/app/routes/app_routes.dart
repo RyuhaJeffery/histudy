@@ -4,7 +4,6 @@ part of 'app_pages.dart';
 abstract class Routes {
   Routes._();
   static const HOME = _Paths.HOME;
-  static const LOGIN = _Paths.HOME + _Paths.LOGIN;
   static const GUIDELINE = _Paths.HOME + _Paths.GUIDELINE;
   static const RANK = _Paths.HOME + _Paths.RANK;
   static const REPORT_LIST = _Paths.HOME + _Paths.REPORT_LIST;
@@ -27,6 +26,7 @@ abstract class Routes {
   static const GROUP_DEL = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_DEL;
   static const HOME2 = _Paths.HOME + _Paths.HOME2;
   static const SIGN_UP = _Paths.HOME + _Paths.SIGN_UP;
+<<<<<<< HEAD
 
   static String LOGIN_THEN(String afterSuccessfulLogin) =>
       '$LOGIN?then=${Uri.encodeQueryComponent(afterSuccessfulLogin)}';
@@ -35,12 +35,14 @@ abstract class Routes {
       '$SIGN_UP?then=${Uri.encodeQueryComponent(afterSuccessfulSignUp)}';
   static const MY_PAGE_SETTING =
       _Paths.HOME + _Paths.MY_PAGE + _Paths.MY_PAGE_SETTING;
+=======
+  static const LOGIN = _Paths.LOGIN;
+>>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
 }
 
 abstract class _Paths {
   _Paths._();
   static const HOME = '/home';
-  static const LOGIN = '/login';
   static const GUIDELINE = '/guideline';
   static const RANK = '/rank';
   static const REPORT_LIST = '/report-list';
@@ -59,5 +61,9 @@ abstract class _Paths {
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
   static const SIGN_UP = '/sign-up';
+<<<<<<< HEAD
   static const MY_PAGE_SETTING = '/my-page-setting';
+=======
+  static const LOGIN = '/login';
+>>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
 }
