@@ -109,14 +109,14 @@ class HomeView extends GetView<HomeController> {
                             ? ElevatedButton(
                                 onPressed: () {
                                   AuthService.to.googleSignOut();
-                                  Get.rootDelegate.refresh();
+                                  Get.rootDelegate.toNamed(Routes.LOGIN);
                                 },
                                 child: Text('LOGOUT'))
                             : ElevatedButton(
                                 onPressed: () {
-                                  //
+                                  Get.rootDelegate.toNamed(Routes.MY_PAGE);
                                 },
-                                child: Text('PLEASE LOGIN'))
+                                child: Text('MY PAGE'))
                       ],
                     ),
                   ]),
@@ -129,28 +129,28 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 76,
             ),
-            ElevatedButton(
-              child: Text(
-                'SIGN IN WITH GOOGLE',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
-              ),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                )),
-              ),
-              onPressed: () {
-                AuthService.to.signInWithGoogle();
-              },
-            ),
-            SizedBox(
-              height: 25,
-            ),
+            // ElevatedButton(
+            //   child: Text(
+            //     'SIGN IN WITH GOOGLE',
+            //     style: TextStyle(
+            //       fontSize: 25,
+            //     ),
+            //   ),
+            //   style: ButtonStyle(
+            //     minimumSize: MaterialStateProperty.all(Size(382, 56)),
+            //     backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(32),
+            //     )),
+            //   ),
+            //   onPressed: () {
+            //     AuthService.to.signInWithGoogle();
+            //   },
+            // ),
+            // SizedBox(
+            //   height: 25,
+            // ),
 
             // SizedBox(height: 30),
             // Row(

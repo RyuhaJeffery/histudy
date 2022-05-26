@@ -31,7 +31,9 @@ class EnsureAuthMiddleware extends GetMiddleware {
 class EnsureNotAuthedMiddleware extends GetMiddleware {
   @override
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    if (AuthService.to.auth.value.currentUser != null) {
+    User? loggedInUser = await AuthService.to.authCheck();
+    if (loggedInUser != null) {
+      Get.rootDelegate.toNamed(Routes.HOME);
       return GetNavConfig.fromRoute(Routes.HOME);
     }
     return await super.redirectDelegate(route);

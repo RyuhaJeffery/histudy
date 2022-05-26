@@ -102,13 +102,19 @@ class AppPages {
           page: () => AnnounceView(),
           binding: AnnounceBinding(),
           participatesInRootNavigator: true,
-          middlewares: [EnsureAuthMiddleware(),],),
+          middlewares: [
+            EnsureAuthMiddleware(),
+          ],
+        ),
         GetPage(
           name: _Paths.GROUP_INFO,
           page: () => GroupInfoView(),
           binding: GroupInfoBinding(),
           participatesInRootNavigator: true,
-          middlewares: [EnsureAuthMiddleware(),],),
+          middlewares: [
+            EnsureAuthMiddleware(),
+          ],
+        ),
         GetPage(
           name: _Paths.REGISTER,
           page: () => RegisterView(),
@@ -123,18 +129,22 @@ class AppPages {
           page: () => QuestionView(),
           binding: QuestionBinding(),
           participatesInRootNavigator: true,
-          middlewares: [EnsureAuthMiddleware(),],
+          middlewares: [
+            EnsureAuthMiddleware(),
+          ],
           children: [
             GetPage(
               name: _Paths.QUESTION_WRITE,
               page: () => QuestionWriteView(),
               binding: QuestionWriteBinding(),
-              participatesInRootNavigator: true,),
+              participatesInRootNavigator: true,
+            ),
             GetPage(
               name: _Paths.QUESTION_DETAIL,
               page: () => QuestionDetailView(),
               binding: QuestionDetailBinding(),
-              participatesInRootNavigator: true,),
+              participatesInRootNavigator: true,
+            ),
           ],
         ),
         GetPage(
@@ -142,7 +152,10 @@ class AppPages {
           page: () => MyPageView(),
           binding: MyPageBinding(),
           participatesInRootNavigator: true,
-          middlewares: [EnsureAuthMiddleware(),],),
+          middlewares: [
+            EnsureAuthMiddleware(),
+          ],
+        ),
         GetPage(
           name: _Paths.ADMIN,
           page: () => AdminView(),
@@ -197,6 +210,9 @@ class AppPages {
       page: () => LoginView(),
       binding: LoginBinding(),
       participatesInRootNavigator: true,
+      middlewares:  [
+        EnsureNotAuthedMiddleware(),
+      ]
     ),
   ];
 }
