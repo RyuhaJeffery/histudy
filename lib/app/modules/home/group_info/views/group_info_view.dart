@@ -251,7 +251,7 @@ class _HomePageState extends State<GroupInfoView> {
                                             Expanded(child: Text('${index+1}')),
                                             Expanded(child: Text(documentSnapshot['name'])),
                                             Expanded(child: Text(documentSnapshot['email'].toString())),
-                                            Expanded(child: Text(documentSnapshot['group'].toString())),
+                                            Expanded(child: Text('Group ${documentSnapshot['group'].toString()}')),
                                             Expanded(child: Text(documentSnapshot['isAdmin'].toString())),
                                           ]
                                       ),
@@ -296,7 +296,7 @@ class _HomePageState extends State<GroupInfoView> {
                       Expanded(child:Text('      no.')),
                       Expanded(child:Text('  이름')),
                       Expanded(child: Text('  이메일')),
-                      Expanded(child: Text('  그룹')),
+                      Expanded(child: Text('  그룹 번호')),
 
                     ]
                     ) ,
@@ -324,7 +324,7 @@ class _HomePageState extends State<GroupInfoView> {
                                           Expanded(child: Text('${index+1}')),
                                           Expanded(child: Text(documentSnapshot['name'])),
                                           Expanded(child: Text(documentSnapshot['email'].toString())),
-                                          Expanded(child: Text(documentSnapshot['group'].toString())),
+                                          Expanded(child: Text('Group ${documentSnapshot['group'].toString()}')),
                                         ]
                                     )
 

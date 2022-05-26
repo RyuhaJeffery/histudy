@@ -132,11 +132,9 @@ class AnnounceView extends GetView<AnnounceController> {
                                                     style:TextButton.styleFrom(
                                                       textStyle:TextStyle(
                                                           color: Colors.black,
-
                                                       ),
-                                                      ),
+                                                    ),
                                                     onPressed: () {
-
                                                 })),
                                                 Expanded(child: Text(documentSnapshot['sem'].toString())),
                                               ]
