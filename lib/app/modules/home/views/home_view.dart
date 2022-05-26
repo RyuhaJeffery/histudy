@@ -23,7 +23,7 @@ class HomeView extends GetView<HomeController> {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -43,8 +43,8 @@ class HomeView extends GetView<HomeController> {
                         // ),
 
                         SizedBox(
-                            height: 100,
-                            width: 100,
+                            height: 100.h,
+                            width: 100.w,
                             child: Image.asset('assets/handong_logo.png')),
                         SizedBox(
                           width: 8,
@@ -57,7 +57,7 @@ class HomeView extends GetView<HomeController> {
                             'HISTUDY',
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
+                                fontWeight: FontWeight.bold, fontSize: 20.sp),
                           ),
                         ),
                         SizedBox(
@@ -114,26 +114,26 @@ class HomeView extends GetView<HomeController> {
                   ]),
             ),
             SizedBox(
-              height: 281,
-              width: 367,
+              height: 281.h,
+              width: 367.w,
               child: Image(image: AssetImage('assets/people.png')),
             ),
             SizedBox(
-              height: 76,
+              height: 76.h,
             ),
             ElevatedButton(
               child: Text(
                 'SIGN IN WITH GOOGLE',
                 style: TextStyle(
-                  fontSize: 25,
+                  fontSize: 25.sp,
                 ),
               ),
               style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(382, 56)),
+                minimumSize: MaterialStateProperty.all(Size(382.w, 56.h)),
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
+                  borderRadius: BorderRadius.circular(32.r),
                 )),
               ),
               onPressed: () {
@@ -141,7 +141,7 @@ class HomeView extends GetView<HomeController> {
               },
             ),
             SizedBox(
-              height: 25,
+              height: 25.h,
             ),
             FutureBuilder<ProfileModel?>(
               future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
@@ -154,17 +154,17 @@ class HomeView extends GetView<HomeController> {
                     child: Text(
                       'Register Histudy',
                       style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 25.sp,
                       ),
                     ),
                     style: ButtonStyle(
                       minimumSize:
-                      MaterialStateProperty.all(Size(382, 56)),
+                      MaterialStateProperty.all(Size(382.w, 56.h)),
                       backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.black),
                       shape: MaterialStateProperty.all<
                           RoundedRectangleBorder>(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
+                        borderRadius: BorderRadius.circular(32.r),
                       )),
                     ),
                     onPressed: () {
