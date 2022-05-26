@@ -12,26 +12,25 @@ class GroupInfoView extends StatefulWidget {
 
   @override
   _HomePageState createState() => _HomePageState();
-
 }
 
 class _HomePageState extends State<GroupInfoView> {
   //var firebaseUser = FirebaseAuth.instance.currentUser;
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   String admin = '';
 
-  void getData() async{
+  void getData() async {
     User? user = _firebaseAuth.currentUser;
     FirebaseFirestore.instance
         .collection('Profile')
         .doc(user?.uid)
         .snapshots()
         .listen((userData) {
-          setState(() {
-
-            admin = userData.data()!['isAdmin'].toString();
-          });
-        });
+      setState(() {
+        admin = userData.data()!['isAdmin'].toString();
+      });
+    });
   }
 
   @override
@@ -42,19 +41,23 @@ class _HomePageState extends State<GroupInfoView> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
-  final CollectionReference _profile = FirebaseFirestore.instance.collection('Profile');
+  final CollectionReference _profile =
+      FirebaseFirestore.instance.collection('Profile');
 
-  bool isSwitched=false;
+  final CollectionReference _group =
+      FirebaseFirestore.instance.collection('Group');
+
+  bool isSwitched = false;
   User? currentUser;
 
-  Future<void> _createOrUpdate([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _createOrUpdate(
+      [DocumentSnapshot? documentSnapshot, int? preGroup]) async {
     String action = 'create';
     if (documentSnapshot != null) {
       action = 'update';
       isSwitched = documentSnapshot['isAdmin'];
       _nameController.text = documentSnapshot['name'];
       _groupController.text = documentSnapshot['group'].toString();
-
     }
 
     await showModalBottomSheet(
@@ -80,7 +83,6 @@ class _HomePageState extends State<GroupInfoView> {
                     labelText: 'change group number ',
                   ),
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
@@ -103,14 +105,26 @@ class _HomePageState extends State<GroupInfoView> {
                         double.tryParse(_groupController.text);
                     if (group != null) {
                       if (action == 'update') {
+                        //이전 그룹에서 유저 데이터를 삭제
+                        await _group.doc(preGroup.toString()).update({
+                          "members":
+                              FieldValue.arrayRemove([documentSnapshot!.id]),
+                        });
+
+                        //이동할 그룹에 유저 데이터를 추가
+                        await _group.doc(group.toString()).update({
+                          "members":
+                              FieldValue.arrayUnion([documentSnapshot.id]),
+                        });
+                        //현재 자신 업데이트
                         await _profile
-                            .doc(documentSnapshot!.id)
-                            .update({ "group": group,"isAdmin":isSwitched});
+                            .doc(documentSnapshot.id)
+                            .update({"group": group, "isAdmin": isSwitched});
                       }
 
                       // Clear the text fields
                       _nameController.text = '';
-                      _groupController.text ='';
+                      _groupController.text = '';
 
                       // Hide the bottom sheet
                       Navigator.of(context).pop();
@@ -123,7 +137,6 @@ class _HomePageState extends State<GroupInfoView> {
         });
   }
 
-
   Future<void> _deleteProduct(String productId) async {
     await _profile.doc(productId).delete();
 
@@ -133,85 +146,80 @@ class _HomePageState extends State<GroupInfoView> {
 
   @override
   Widget build(BuildContext context) {
-
     //firebaseUser.uid.collection('Profile');
     return Scaffold(
-     body:
-     // SingleChildScrollView(
-     //    child: Column(
-     //     children: [
-     //       Text(
-     //         'Student List',
-     //         style: TextStyle(fontSize: 25),
-     //       ),
-     //     SizedBox(height: 5),
-     //
-     //     Expanded(
-     //     child:
-        StreamBuilder(
-              stream: _profile.snapshots(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                if (streamSnapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: streamSnapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final DocumentSnapshot documentSnapshot =
-                          streamSnapshot.data!.docs[index];
-                      return Container(
-                        margin: const EdgeInsets.all(10),
-                        child: Column(
-                          children:[
-                            ListTile(
-                            //title: Text(documentSnapshot['name']),
-                            title: Row(
-                                children: <Widget>[
-                                  //null값 수정 필
-                                  Expanded(child: Text('${index+1}')),
-                                  //Expanded(child: Text(admin)),
+        body:
+            // SingleChildScrollView(
+            //    child: Column(
+            //     children: [
+            //       Text(
+            //         'Student List',
+            //         style: TextStyle(fontSize: 25),
+            //       ),
+            //     SizedBox(height: 5),
+            //
+            //     Expanded(
+            //     child:
+            StreamBuilder(
+      stream: _profile.snapshots(),
+      builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+        if (streamSnapshot.hasData) {
+          return ListView.builder(
+            itemCount: streamSnapshot.data!.docs.length,
+            itemBuilder: (context, index) {
+              final DocumentSnapshot documentSnapshot =
+                  streamSnapshot.data!.docs[index];
+              return Container(
+                margin: const EdgeInsets.all(10),
+                child: Column(children: [
+                  ListTile(
+                    //title: Text(documentSnapshot['name']),
+                    title: Row(children: <Widget>[
+                      //null값 수정 필
+                      Expanded(child: Text('${index + 1}')),
+                      //Expanded(child: Text(admin)),
 
-                                  Expanded(child: Text(documentSnapshot['name'])),
-                                  Expanded(child: Text(documentSnapshot['email'].toString())),
-                                  Expanded(child: Text(documentSnapshot['group'].toString())),
-                                  Expanded(child: Text(documentSnapshot['isAdmin'].toString())),
-                                ]
-                            ),
-                            //documentSnapshot['isAdmin'].toString() ?
-                              //
-                            trailing:  SizedBox(
-                              width: 100,
-                              child: Row(
-                                children: [
-
-                                  IconButton(
-                                      icon: const Icon(Icons.edit),
-                                      onPressed: () =>
-                                          _createOrUpdate(documentSnapshot)),
-                                 IconButton(
-                                      icon: const Icon(Icons.delete),
-                                      onPressed: () =>
-                                          _deleteProduct(documentSnapshot.id)),
-                                ],
-                              ),
-                            ),
-
-                          ),
-                              ]
-                        ),
-                      );
-                    },
-                  );
-                 }
-                //else {
-                //   return const Center(
-                //   child: CircularProgressIndicator());
-                // }
-                //
-                 return const Center(
-                   child: CircularProgressIndicator(),
-                 );
-              },
-            )
-    );
+                      Expanded(child: Text(documentSnapshot['name'])),
+                      Expanded(
+                          child: Text(documentSnapshot['email'].toString())),
+                      Expanded(
+                          child: Text(documentSnapshot['group'].toString())),
+                      Expanded(
+                          child: Text(documentSnapshot['isAdmin'].toString())),
+                    ]),
+                    //documentSnapshot['isAdmin'].toString() ?
+                    //
+                    trailing: SizedBox(
+                      width: 100,
+                      child: Row(
+                        children: [
+                          IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () => _createOrUpdate(
+                                  documentSnapshot, documentSnapshot['group'])),
+                          IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () =>
+                                  _deleteProduct(documentSnapshot.id)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ]),
+              );
+            },
+          );
+        }
+        //else {
+        //   return const Center(
+        //   child: CircularProgressIndicator());
+        // }
+        //
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    ));
     //      ),
     //        SizedBox(height: 100),
     //      ],
