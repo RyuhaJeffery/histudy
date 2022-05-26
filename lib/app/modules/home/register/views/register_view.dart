@@ -33,10 +33,10 @@ class RegisterView extends GetView<RegisterController> {
           SizedBox(height: 30.h),
           Center(
             child: Container(
-              width: 600,
+              width: 600.w,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(30.r),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.withOpacity(0.5),
@@ -47,57 +47,59 @@ class RegisterView extends GetView<RegisterController> {
                 ],
               ),
               child: Container(
-                width: 450,
-                height: 700,
-                padding: EdgeInsets.all(30),
+                width: 450.w,
+                height: 600.h,
+                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
                 child: StreamBuilder(
                   stream: classInfo.snapshots(),
                   builder:
                       (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
                     length = streamSnapshot.data!.docs.length;
                     if (streamSnapshot.hasData) {
-                      return ListView.builder(
-                          itemCount: length,
-                          itemBuilder: (context, index) {
-                            _scoreController.add(TextEditingController());
+                      return Expanded(
+                        child: ListView.builder(
+                            itemCount: length,
+                            itemBuilder: (context, index) {
+                              _scoreController.add(TextEditingController());
 
-                            final DocumentSnapshot documentSnapshot =
-                                streamSnapshot.data!.docs[index];
-                            _classCodeList.add(documentSnapshot.id);
-                            // _scoreController[index].text = '0';
-                            return Card(
-                              margin: EdgeInsets.all(10),
-                              child: ListTile(
-                                leading: Text("${index + 1}"),
-                                title: Column(
-                                  children: [
-                                    Text(documentSnapshot['class']),
-                                    Text(
-                                        "과목코드: ${documentSnapshot['code']} / ${documentSnapshot['professor']} 교수님"),
-                                  ],
+                              final DocumentSnapshot documentSnapshot =
+                                  streamSnapshot.data!.docs[index];
+                              _classCodeList.add(documentSnapshot.id);
+                              // _scoreController[index].text = '0';
+                              return Card(
+                                margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                child: ListTile(
+                                  leading: Text("${index + 1}"),
+                                  title: Column(
+                                    children: [
+                                      Text(documentSnapshot['class']),
+                                      Text(
+                                          "과목코드: ${documentSnapshot['code']} / ${documentSnapshot['professor']} 교수님"),
+                                    ],
+                                  ),
+                                  subtitle: Column(
+                                    children: [
+                                      TextFormField(
+                                        controller: _scoreController[index],
+                                        decoration: const InputDecoration(
+                                            labelText: '가중치 입력',
+                                            hintText: "0~10"),
+                                        validator: (String? value) {
+                                          if (value!.isEmpty) {
+                                            return 'Please enter score';
+                                          } else if (int.parse(value) < 0) {
+                                            return '가중치는 0보다 커야합니다. ';
+                                          } else if (int.parse(value) > 10) {
+                                            return '가중치는 10보다 작아야합니다. ';
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                                subtitle: Column(
-                                  children: [
-                                    TextFormField(
-                                      controller: _scoreController[index],
-                                      decoration: const InputDecoration(
-                                          labelText: '가중치 입력',
-                                          hintText: "0~10"),
-                                      validator: (String? value) {
-                                        if (value!.isEmpty) {
-                                          return 'Please enter score';
-                                        } else if (int.parse(value) < 0) {
-                                          return '가중치는 0보다 커야합니다. ';
-                                        } else if (int.parse(value) > 10) {
-                                          return '가중치는 10보다 작아야합니다. ';
-                                        }
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          });
+                              );
+                            }),
+                      );
                     }
 
                     return const Center(
@@ -151,7 +153,7 @@ class RegisterView extends GetView<RegisterController> {
               primary: Colors.deepPurple,
               onPrimary: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(15.r),
               ),
             ),
           ),
