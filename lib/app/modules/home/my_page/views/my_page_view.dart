@@ -502,7 +502,7 @@ void createGroup() async {
   //현재는 4개에 맞추어져 있음.
   int groupMember = 4;
   //여기 필수로 수정해줘야함.
-  int groupNumber = -2;
+  int groupNumber = -1;
   print("allcount");
   print(allCount);
   print("groupMember");
