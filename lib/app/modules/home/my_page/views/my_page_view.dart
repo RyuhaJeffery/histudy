@@ -634,12 +634,6 @@ void createGroup() async {
     'year': 2022,
   });
 
-  FirebaseFirestore.instance
-      .collection("Group")
-      .doc((-1 * groupNumber).toString())
-      .collection("reports")
-      .add({});
-
   //create extra group
   for (int i = 0; i < 4; i++) {
     groupNumber--;
