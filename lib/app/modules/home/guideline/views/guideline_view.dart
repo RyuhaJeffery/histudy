@@ -11,6 +11,7 @@ class GuidelineView extends GetView<GuidelineController> {
       appBar: AppBar(
         title: Text('GuidelineView'),
         centerTitle: true,
+
       ),
       body: Center(
         child: Text(

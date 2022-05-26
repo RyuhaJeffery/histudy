@@ -10,8 +10,8 @@ Widget topBar() {
       Row(
         children: [
           SizedBox(
-              height: 100,
-              width: 100,
+              height: 70,
+              width: 70,
               child: Image.asset('assets/handong_logo.png')),
           SizedBox(
             width: 8,
@@ -23,7 +23,7 @@ Widget topBar() {
             child: Text(
               'HISTUDY',
               textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
             ),
           ),
           SizedBox(
@@ -33,22 +33,22 @@ Widget topBar() {
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.HOME2);
               },
-              child: Text("HOME")),
+              child: Text("HOME",style: TextStyle(color: Color(0xff04589C)),)),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.GROUP_INFO);
               },
-              child: Text("TEAM")),
+              child: Text("TEAM",style: TextStyle(color: Color(0xff04589C)),)),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.QUESTION);
               },
-              child: Text("Q&A")),
+              child: Text("Q&A",style: TextStyle(color: Color(0xff04589C)),)),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.ANNOUNCE);
               },
-              child: Text("ANNOUNCEMENT")),
+              child: Text("ANNOUNCEMENT",style: TextStyle(color: Color(0xff04589C)),)),
         ],
       ),
       Row(
@@ -57,15 +57,18 @@ Widget topBar() {
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.RANK);
               },
-              child: Text("RANK")),
+              child: Text("RANK",style: TextStyle(color: Color(0xff04589C)),)),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.GUIDELINE);
               },
-              child: Text("GUIDELINE")),
-          ElevatedButton(onPressed: () {
-            Get.rootDelegate.toNamed(Routes.MY_PAGE);
-          }, child: Text('MY PAGE'))
+              child: Text("GUIDELINE",style: TextStyle(color: Color(0xff04589C)),)),
+          TextButton(
+              onPressed: () {
+                Get.rootDelegate.toNamed(Routes.MY_PAGE);
+              },
+              child: Text("MY PAGE",style: TextStyle(color: Color(0xff04589C)),)),
+
         ],
       ),
     ]),

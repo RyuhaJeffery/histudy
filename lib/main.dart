@@ -20,6 +20,7 @@ void main() async {
       minTextAdapt: true,
       builder: (context,_) {
         return GetMaterialApp.router(
+
           debugShowCheckedModeBanner:false,
           title: "Application",
           initialBinding: BindingsBuilder((){

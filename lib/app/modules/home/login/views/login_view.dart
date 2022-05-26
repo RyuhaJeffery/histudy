@@ -30,7 +30,7 @@ class LoginView extends GetView<LoginController> {
               child: Text(
                 'SIGN IN WITH GOOGLE',
                 style: TextStyle(
-                  fontSize: 25.sp,
+                  fontSize: 10.sp,
                 ),
               ),
               style: ButtonStyle(
