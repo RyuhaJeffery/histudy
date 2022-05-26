@@ -108,15 +108,14 @@ class HomeView extends GetView<HomeController> {
                         FirebaseAuth.instance.currentUser != null
                             ? ElevatedButton(
                                 onPressed: () {
-                                  AuthService.to.googleSignOut();
-                                  Get.rootDelegate.toNamed(Routes.LOGIN);
-                                },
-                                child: Text('LOGOUT'))
-                            : ElevatedButton(
-                                onPressed: () {
                                   Get.rootDelegate.toNamed(Routes.MY_PAGE);
                                 },
                                 child: Text('MY PAGE'))
+                            : ElevatedButton(
+                                onPressed: () {
+                                  Get.rootDelegate.toNamed(Routes.LOGIN);
+                                },
+                                child: Text('LOGIN'))
                       ],
                     ),
                   ]),
