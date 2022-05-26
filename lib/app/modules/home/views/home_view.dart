@@ -151,7 +151,7 @@ class HomeView extends GetView<HomeController> {
             // SizedBox(
             //   height: 25,
             // ),
-
+            
             // SizedBox(height: 30),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
