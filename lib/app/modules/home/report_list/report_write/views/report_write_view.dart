@@ -16,6 +16,8 @@ import 'package:histudy/app/repository/group_repository.dart';
 import 'package:histudy/app/repository/report_repository.dart';
 import 'package:histudy/app/repository/user_repository.dart';
 import 'package:histudy/app/services/auth_service.dart';
+import 'package:histudy/app/services/image_picker_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../../../../routes/app_pages.dart';
@@ -26,19 +28,16 @@ import '../controllers/report_write_controller.dart';
 // Report 추가 할 때, 총 시간 값을 Group field로 만들어 duration을 더해주기
 
 class ReportWriteView extends GetView<ReportWriteController> {
-  // var imagePickerService = ImagePickerService();
-  File? pickedImage;
+  var imagePickerService = ImagePickerService();
+  XFile? pickedImage;
   RxBool isImagePicked = false.obs;
-
-  html.File? imageFile ;
-  // PickedFile? pickedFile ;
-
   List<String> finalCheckedMembers = [];
   RxString startingTime = ''.obs;
   RxString code = ''.obs;
   String duration = '';
   String title = '';
   String contents = '';
+
 
   DateTime makingCodeTime = DateTime.now();
 
@@ -195,17 +194,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
-        // pickedFile = await ImagePicker().getImage(
-        //   source: ImageSource.gallery,
-        // );
-        // imageFile = await ImagePickerWeb.getImageAsFile();
-        // print(imageFile);
-        // pickedImage = await imagePickerService.pickImg();
-        // if (pickedImage != null) {
-        //   isImagePicked.value = true ;
-        //   print(pickedImage);
-        // }
-        // print(pickedImage);
+        pickedImage = await imagePickerService.pickImage();
       },
     );
   }
@@ -278,40 +267,41 @@ class ReportWriteView extends GetView<ReportWriteController> {
   Widget _participantsWidget(ProfileModel profileModel) {
 
     return FutureBuilder<GroupModel?>(
-      future: GroupRepository.getGroup(profileModel.group!.toString()),
+        future: GroupRepository.getGroup(profileModel.group!.toString()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             GroupModel groupModel = snapshot.data!;
+
             return Expanded(
               child: ListView.builder(
                 itemCount: groupModel.members!.length,
                 itemBuilder: (BuildContext context, int index) {
                   List<RxBool> _isCheckedList = List<RxBool>.filled(groupModel.members!.length, false.obs, growable: true);
                   return Obx(() {
-                      return Row(
-                        children: [
-                          Checkbox(
+                    return Row(
+                      children: [
+                        Checkbox(
                             value: _isCheckedList[index].value,
                             onChanged: (value) {
                               _isCheckedList[index].value == true ? _isCheckedList[index].value = false : _isCheckedList[index].value = true ;
                               value == true ? finalCheckedMembers.add(groupModel.members![index]) : finalCheckedMembers.removeAt(index);
                               print(finalCheckedMembers);
                             }
-                          ),
-                          FutureBuilder<ProfileModel?>(
-                            future: UserRepositroy.getUser(groupModel.members![index].toString()),
-                            builder: (context, profileSnapshot) {
-                              if (profileSnapshot.hasData) {
-                                ProfileModel profileModelInGroup = profileSnapshot.data!;
-                                return Text(profileModelInGroup.name.toString());
-                              } else {
-                                return CircularProgressIndicator();
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    }
+                        ),
+                        FutureBuilder<ProfileModel?>(
+                          future: UserRepositroy.getUser(groupModel.members![index].toString()),
+                          builder: (context, profileSnapshot) {
+                            if (profileSnapshot.hasData) {
+                              ProfileModel profileModelInGroup = profileSnapshot.data!;
+                              return Text(profileModelInGroup.name.toString());
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  }
                   );
                 },
               ),
@@ -325,46 +315,27 @@ class ReportWriteView extends GetView<ReportWriteController> {
 
   Widget _startTimeInputWidget() {
     return Obx(() {
-        return DateTimePicker(
-          type: DateTimePickerType.time,
-          initialValue: startingTime.value,
-          icon: Icon(Icons.access_time),
-          timeLabelText: 'Starting Time',
-          use24HourFormat: true,
-          locale: Locale('en', 'US'),
-          onChanged: (value) {
-            startingTime.value = value;
-          },
-        );
-      }
+      return DateTimePicker(
+        type: DateTimePickerType.time,
+        initialValue: startingTime.value,
+        icon: Icon(Icons.access_time),
+        timeLabelText: 'Starting Time',
+        use24HourFormat: true,
+        locale: Locale('en', 'US'),
+        onChanged: (value) {
+          startingTime.value = value;
+        },
+      );
+    }
     );
-    // return TextFormField(
-    //   maxLines: 1,
-    //   decoration: InputDecoration(
-    //       hintText: '시작시간을 입력하세요.',
-    //       border: OutlineInputBorder(
-    //           borderRadius: BorderRadius.all(
-    //             Radius.circular(8),
-    //           ),
-    //           borderSide: BorderSide(color: Colors.black)
-    //       ),
-    //       enabledBorder: OutlineInputBorder(
-    //           borderRadius: BorderRadius.all(
-    //             Radius.circular(8),
-    //           ),
-    //           borderSide: BorderSide(color: Colors.black)
-    //       )
-    //   ),
-    // );
   }
 
   Widget _durationInputWidget() {
     return TextFormField(
       maxLines: 1,
-      initialValue: duration,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-          hintText: '수행 시간을 입력하세요.',
+          hintText: '수행 시간을 입력하세요.(분 단위로 숫자만 입력하여 주세요.)',
           border: OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(8.r),
@@ -473,8 +444,9 @@ class ReportWriteView extends GetView<ReportWriteController> {
               if (finalCheckedMembers.isEmpty || startingTime.isEmpty || duration.isEmpty || title.isEmpty || contents.isEmpty) {
                 Get.snackbar('Retry', 'You have not entered anything');
               } else {
-                ReportRepository.uploadReport(profileModel.uid.toString(), code.toString(), makingCodeTime, DateTime.now(), duration, profileModel.group.toString(), "", finalCheckedMembers, startingTime.toString(), contents, title);
-                Get.rootDelegate.toNamed(Routes.HOME2);
+                ReportRepository.uploadReport(profileModel.name.toString(), code.toString(), makingCodeTime, DateTime.now(), duration, profileModel.group.toString(), "", finalCheckedMembers, startingTime.toString(), contents, title);
+                Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                // ImagePickerService().uploadImageToStorage(pickedFile);
               }
             }
           },
@@ -502,12 +474,10 @@ class ReportWriteView extends GetView<ReportWriteController> {
               ),
             ),
           ),
-          onTap: () {
-            // ImagePickerService().uploadFile(profileModel.uid.toString(), imageFile!);
-            // Get.rootDelegate.toNamed(Routes.HOME2);
-            // ImagePickerService().uploadFile(profileModel.uid.toString(), imageFile!);
-            // ImagePickerService().uploadImageFile(imageFile!, profileModel.uid.toString());
-            // ImagePickerService().uploadImageToStorage(pickedFile);
+          onTap: () async {
+            //print(pickedImage!);
+            pickedImage = await imagePickerService.pickImage();
+            await imagePickerService.uploadImage(pickedImage!,"ref");
           },
         ),
       ],

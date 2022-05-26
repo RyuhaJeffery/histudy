@@ -12,17 +12,19 @@ import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? currentUser;
-  var firebaseUser = FirebaseAuth.instance.currentUser;
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // User? currentUser;
+  // var firebaseUser = FirebaseAuth.instance.currentUser;
 
-  User? get userProfile => auth.currentUser;
+  // User? get userProfile => auth.currentUser;
   @override
   Widget build(BuildContext context) {
-    Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
-        .collection('Profile')
-        .doc(userProfile!.uid)
-        .snapshots();
+    // Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
+    //     .collection('Profile')
+    //     .doc(userProfile!.uid)
+    //     .snapshots();
+
+    bool test = true;
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
@@ -107,14 +109,14 @@ class HomeView extends GetView<HomeController> {
                             ? ElevatedButton(
                                 onPressed: () {
                                   AuthService.to.googleSignOut();
-                                  Get.rootDelegate.refresh();
+                                  Get.rootDelegate.toNamed(Routes.LOGIN);
                                 },
                                 child: Text('LOGOUT'))
                             : ElevatedButton(
                                 onPressed: () {
-                                  //
+                                  Get.rootDelegate.toNamed(Routes.MY_PAGE);
                                 },
-                                child: Text('PLEASE LOGIN'))
+                                child: Text('MY PAGE'))
                       ],
                     ),
                   ]),
@@ -127,29 +129,29 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 76,
             ),
-            ElevatedButton(
-              child: Text(
-                'SIGN IN WITH GOOGLE',
-                style: TextStyle(
-                  fontSize: 25,
-                ),
-              ),
-              style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32),
-                )),
-              ),
-              onPressed: () {
-                AuthService.to.signInWithGoogle();
-              },
-            ),
-            SizedBox(
-              height: 25,
-            ),
-
+            // ElevatedButton(
+            //   child: Text(
+            //     'SIGN IN WITH GOOGLE',
+            //     style: TextStyle(
+            //       fontSize: 25,
+            //     ),
+            //   ),
+            //   style: ButtonStyle(
+            //     minimumSize: MaterialStateProperty.all(Size(382, 56)),
+            //     backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //         RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.circular(32),
+            //     )),
+            //   ),
+            //   onPressed: () {
+            //     AuthService.to.signInWithGoogle();
+            //   },
+            // ),
+            // SizedBox(
+            //   height: 25,
+            // ),
+            
             // SizedBox(height: 30),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,

@@ -5,10 +5,10 @@ class ReportModel {
   String? code;
   Timestamp? codeDatetime;
   Timestamp? dateTime;
-  String? duration;
+  int? duration;
   String? group;
   String? image;
-  List<String>? participants;
+  List? participants;
   String? sem;
   String? studyStartTime;
   String? text;
