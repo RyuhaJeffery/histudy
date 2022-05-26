@@ -136,106 +136,136 @@ class _HomePageState extends State<GroupInfoView> {
             children:[
               topBar(),
               admin ? Flexible(
-                child: Column(
-                    children:[
-                      Divider(
-                        thickness: 0.11,
-                        color: Colors.black,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Divider(
-                        thickness: 0.1,
-                        color: Colors.black,
-                      ),
-                      Row(
-                          children: [
-                            SizedBox(
-                              width: 280.w,
-                            ),
-                            Expanded(child:Text('  이름')),
-                            Expanded(child: Text('  이메일')),
-                            Expanded(child: Text('  그룹')),
-                            Expanded(child: Text('  관리자')),
-                            Expanded(child: Text(' ')),
-                          ]
-                      ) ,
-                      Divider(
-                        thickness: 0.1,
-                        color: Colors.black,
-                        height: 10,
-                      ),
-                      Flexible(
-                        child: StreamBuilder(
-                          //stream: _profile.snapshots(),
-                          stream: _profile.orderBy('group',descending: true).snapshots(),
-                          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                            if (streamSnapshot.hasData) {
-                              return ListView.builder(
-                                itemCount: streamSnapshot.data!.docs.length,
-                                itemBuilder: (context, index) {
-                                  final DocumentSnapshot documentSnapshot =
-                                  streamSnapshot.data!.docs[index];
-                                  return Container(
-                                    margin: const EdgeInsets.all(10),
-                                    child: Column(
-                                        children:[
-                                          ListTile(
-                                            // title: Text(documentSnapshot['name']),
-                                            title: Row(
-                                                children: <Widget>[
-                                                  Expanded(child: Text('${index+1}')),
-                                                  Expanded(child: Text(documentSnapshot['name'])),
-                                                  Expanded(child: Text(documentSnapshot['email'].toString())),
-                                                  Expanded(child: Text('Group ${documentSnapshot['group'].toString()}')),
-                                                  Expanded(child: Text(documentSnapshot['isAdmin'].toString())),
-                                                ]
-                                            ),
-                                            // documentSnapshot['isAdmin'].toString() ?
-
-                                            trailing:  SizedBox(
-                                              width: 100,
-                                              child: Row(
-                                                children: [
-
-                                                  IconButton(
-                                                      icon: const Icon(Icons.edit),
-                                                      onPressed: () =>
-                                                          _createOrUpdate(documentSnapshot)),
-                                                  IconButton(
-                                                      icon: const Icon(Icons.delete),
-                                                      onPressed: () =>
-                                                          _deleteProduct(documentSnapshot.id)),
-                                                ],
-                                              ),
-                                            ),
-
-                                          ),
-                                        ]
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          },
+                child: Padding(
+                  padding:const EdgeInsets.fromLTRB(80, 20, 80,0),
+                  child: Column(
+                      children:[
+                        Divider(
+                          thickness: 0.1,
+                          color: Colors.black,
                         ),
-                      ),
-                    ]),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: 230.w,
+                              ),
+                              Expanded(child:Text('  이름',
+                                style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),)),
+                              Expanded(child: Text('  이메일',
+                                style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),)),
+                              Expanded(child: Text('  그룹',
+                                style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),)),
+                              Expanded(child: Text('  관리자',
+                                style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),)),
+                              SizedBox(
+                                width: 180.w,
+                              ),
+                            ]
+                        ) ,
+                        Divider(
+                          thickness: 0.1,
+                          color: Colors.black,
+                          height: 10,
+                        ),
+                        Flexible(
+                          child: StreamBuilder(
+                            //stream: _profile.snapshots(),
+                            stream: _profile.orderBy('group',descending: true).snapshots(),
+                            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                              if (streamSnapshot.hasData) {
+                                return ListView.builder(
+                                  itemCount: streamSnapshot.data!.docs.length,
+                                  itemBuilder: (context, index) {
+                                    final DocumentSnapshot documentSnapshot =
+                                    streamSnapshot.data!.docs[index];
+                                    return Container(
+                                      margin: const EdgeInsets.all(10),
+                                      child: Column(
+                                          children:[
+                                            ListTile(
+                                              // title: Text(documentSnapshot['name']),
+                                              title: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: <Widget>[
+                                                    Expanded(child: Text('${index+1}')),
+                                                    Expanded(child: Text(documentSnapshot['name'])),
+                                                    Expanded(child: Text(documentSnapshot['email'].toString())),
+
+                                                    Expanded(child: Text('   Group ${documentSnapshot['group'].toString()}')),
+                                                    Expanded(child: Text(documentSnapshot['isAdmin'].toString())),
+                                                  ]
+                                              ),
+                                              // documentSnapshot['isAdmin'].toString() ?
+
+                                              trailing:  SizedBox(
+                                                width: 100,
+                                                child: Row(
+                                                  children: [
+
+                                                    IconButton(
+                                                        icon: const Icon(Icons.edit),
+                                                        onPressed: () =>
+                                                            _createOrUpdate(documentSnapshot)),
+                                                    IconButton(
+                                                        icon: const Icon(Icons.delete),
+                                                        onPressed: () =>
+                                                            _deleteProduct(documentSnapshot.id)),
+                                                  ],
+                                                ),
+                                              ),
+
+                                            ),
+                                          ]
+                                      ),
+                                    );
+                                  },
+                                );
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            },
+                          ),
+                        ),
+                      ]),
+                ),
               ) :Flexible(
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(80, 20, 80,0),
                     child: Column(
                         children:[
+                          Divider(
+                            thickness: 0.1,
+                            color: Colors.black,
+                          ),
                           Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Expanded(child:Text('      no.')),
-                                Expanded(child:Text('  이름')),
-                                Expanded(child: Text('  이메일')),
-                                Expanded(child: Text('  그룹 번호')),
+                                Expanded(child:Text('      NO',
+                                  style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),)),
+                                Expanded(child:Text('  이름',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),)),
+                                Expanded(child: Text('  이메일',
+                                  style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),)),
+                                Expanded(child: Text('  그룹 번호',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),)),
 
                               ]
                           ) ,
@@ -263,6 +293,7 @@ class _HomePageState extends State<GroupInfoView> {
                                                         Expanded(child: Text('${index+1}')),
                                                         Expanded(child: Text(documentSnapshot['name'])),
                                                         Expanded(child: Text(documentSnapshot['email'].toString())),
+                                                        SizedBox(width: 100.w),
                                                         Expanded(child: Text('Group ${documentSnapshot['group'].toString()}')),
                                                       ]
                                                   )

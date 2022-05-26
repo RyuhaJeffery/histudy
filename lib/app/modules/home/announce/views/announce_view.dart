@@ -28,14 +28,19 @@ class AnnounceView extends GetView<AnnounceController> {
                 ]
             ),
             Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(80, 20, 80,0),
               child: Column(
                   children:[
+                    Divider(
+                      thickness: 0.1,
+                      color: Colors.black,
+                    ),
                     Row(
                         children: [
-                          Expanded(child:Text('      no.')),
+                          Expanded(child:Text('      NO')),
                           Expanded(child:Text('  작성자')),
                           Expanded(child:Text('  제목')),
-                          Expanded(child: Text('  조회수')),
 
                         ]
                     ) ,
@@ -61,20 +66,13 @@ class AnnounceView extends GetView<AnnounceController> {
                                         ListTile(
                                           // title: Text(documentSnapshot['name']),
                                           title: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                                               children: <Widget>[
                                                 Expanded(child: Text('${index+1}')),
                                                 Expanded(child: Text(documentSnapshot['author'])),
-                                                Expanded(child: TextButton(child: Text(documentSnapshot['title'].toString()),
-                                                    style:TextButton.styleFrom(
-                                                      textStyle:TextStyle(
-                                                        color: Colors.black,
-
-                                                      ),
-                                                    ),
-                                                    onPressed: () {
-
-                                                    })),
-                                                Expanded(child: Text(documentSnapshot['sem'].toString())),
+                                                Expanded(child: Text(documentSnapshot['title'])),
+                                               // Expanded(child: Text(documentSnapshot['sem'].toString())),
                                               ]
                                           ),
                                           // documentSnapshot['isAdmin'].toString() ?
@@ -91,7 +89,7 @@ class AnnounceView extends GetView<AnnounceController> {
                         },
                       ),
                     ),
-                  ]),
+                  ]),)
             )
 
 
