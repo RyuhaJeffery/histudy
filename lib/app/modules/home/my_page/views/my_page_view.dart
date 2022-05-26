@@ -372,7 +372,37 @@ class MyPageView extends GetView<MyPageController> {
                                         createGroup();
                                       },
                                     )
-                                  : Container();
+                                  : getdata?['classRegister']
+                                      ? Container(
+                                          child:
+                                              Text("You already applied study"),
+                                        )
+                                      : ElevatedButton(
+                                          child: Text(
+                                            'Register Histudy',
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            minimumSize:
+                                                MaterialStateProperty.all(
+                                                    Size(382, 56)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.black),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32),
+                                            )),
+                                          ),
+                                          onPressed: () {
+                                            Get.rootDelegate
+                                                .toNamed(Routes.REGISTER);
+                                          },
+                                        );
                             } else {
                               return Container();
                             }

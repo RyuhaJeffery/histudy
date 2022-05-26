@@ -12,17 +12,19 @@ import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  FirebaseAuth auth = FirebaseAuth.instance;
-  User? currentUser;
-  var firebaseUser = FirebaseAuth.instance.currentUser;
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // User? currentUser;
+  // var firebaseUser = FirebaseAuth.instance.currentUser;
 
-  User? get userProfile => auth.currentUser;
+  // User? get userProfile => auth.currentUser;
   @override
   Widget build(BuildContext context) {
-    Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
-        .collection('Profile')
-        .doc(userProfile!.uid)
-        .snapshots();
+    // Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
+    //     .collection('Profile')
+    //     .doc(userProfile!.uid)
+    //     .snapshots();
+
+    bool test = true;
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
@@ -148,41 +150,6 @@ class HomeView extends GetView<HomeController> {
             ),
             SizedBox(
               height: 25,
-            ),
-            StreamBuilder<DocumentSnapshot>(
-              stream: _userStream,
-              builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-                final getdata = snapshot.data;
-                if (snapshot.hasData) {
-                  return getdata?['classRegister']
-                      ? Container(
-                          child: Text("You already applied study"),
-                        )
-                      : ElevatedButton(
-                          child: Text(
-                            'Register Histudy',
-                            style: TextStyle(
-                              fontSize: 25,
-                            ),
-                          ),
-                          style: ButtonStyle(
-                            minimumSize:
-                                MaterialStateProperty.all(Size(382, 56)),
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.black),
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(32),
-                            )),
-                          ),
-                          onPressed: () {
-                            Get.rootDelegate.toNamed(Routes.REGISTER);
-                          },
-                        );
-                } else {
-                  return Container();
-                }
-              },
             ),
 
             // SizedBox(height: 30),
