@@ -20,7 +20,8 @@ class EnsureAuthMiddleware extends GetMiddleware {
     User? loggedInUser = await AuthService.to.authCheck();
     // User? loggedInUser = AuthService.to.auth.value.currentUser;
     if (loggedInUser == null) {
-      return Get.rootDelegate.toNamed(Routes.LOGIN);
+      Get.rootDelegate.toNamed(Routes.LOGIN);
+      return GetNavConfig.fromRoute(Routes.LOGIN);
     } else {
       return await super.redirectDelegate(route);
     }
@@ -39,7 +40,6 @@ class EnsureNotAuthedMiddleware extends GetMiddleware {
 
 class EnsureSignUpMiddleware extends GetMiddleware {
   @override
-  //TODO: implement EnsureSignUpMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
     await user.get().then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists == false) {
@@ -53,14 +53,27 @@ class EnsureSignUpMiddleware extends GetMiddleware {
 
 class EnsureAdminMiddleware extends GetMiddleware {
   @override
-  //TODO: implement EnsureAdminMiddleware
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
     await user.get().then((DocumentSnapshot documentSnapshot) {
       Map<String, dynamic> data =
           documentSnapshot.data() as Map<String, dynamic>;
       print(data['isAdmin']);
-      if(data['isAdmin'] == false){
+      if (data['isAdmin'] == false) {
         return Get.rootDelegate.toNamed(Routes.HOME);
+      }
+    });
+    return await super.redirectDelegate(route);
+  }
+}
+
+class EnsureRegisterMiddleware extends GetMiddleware {
+  @override
+  Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
+    await user.get().then((DocumentSnapshot documentSnapshot) {
+      Map<String, dynamic> data =
+          documentSnapshot.data() as Map<String, dynamic>;
+      if (data['classRegister'] == false) {
+        return Get.rootDelegate.toNamed(Routes.REGISTER);
       }
     });
     return await super.redirectDelegate(route);
