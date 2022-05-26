@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileModel {
+  bool? classRegister;
   String? email;
   String? uid;
   int? group;
@@ -11,6 +12,7 @@ class ProfileModel {
   List? myClasses;
 
   ProfileModel({
+     this.classRegister,
      this.email,
      this.uid,
      this.group,
@@ -22,7 +24,8 @@ class ProfileModel {
   });
 
   ProfileModel.fromSnapshot(DocumentSnapshot snapshot)
-      : email = snapshot['email'],
+      : classRegister = snapshot['classRegister'],
+        email = snapshot['email'],
         uid = snapshot['uid'],
         group = snapshot['group'],
         isAdmin = snapshot['isAdmin'],

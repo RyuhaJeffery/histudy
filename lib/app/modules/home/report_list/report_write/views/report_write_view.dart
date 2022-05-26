@@ -16,6 +16,8 @@ import 'package:histudy/app/repository/group_repository.dart';
 import 'package:histudy/app/repository/report_repository.dart';
 import 'package:histudy/app/repository/user_repository.dart';
 import 'package:histudy/app/services/auth_service.dart';
+import 'package:histudy/app/services/image_picker_service.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 import '../../../../../routes/app_pages.dart';
@@ -26,19 +28,16 @@ import '../controllers/report_write_controller.dart';
 // Report 추가 할 때, 총 시간 값을 Group field로 만들어 duration을 더해주기
 
 class ReportWriteView extends GetView<ReportWriteController> {
-  // var imagePickerService = ImagePickerService();
-  File? pickedImage;
+  var imagePickerService = ImagePickerService();
+  XFile? pickedImage;
   RxBool isImagePicked = false.obs;
-
-  html.File? imageFile ;
-  // PickedFile? pickedFile ;
-
   List<String> finalCheckedMembers = [];
   RxString startingTime = ''.obs;
   RxString code = ''.obs;
   String duration = '';
   String title = '';
   String contents = '';
+
 
   DateTime makingCodeTime = DateTime.now();
 
@@ -195,17 +194,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
-        // pickedFile = await ImagePicker().getImage(
-        //   source: ImageSource.gallery,
-        // );
-        // imageFile = await ImagePickerWeb.getImageAsFile();
-        // print(imageFile);
-        // pickedImage = await imagePickerService.pickImg();
-        // if (pickedImage != null) {
-        //   isImagePicked.value = true ;
-        //   print(pickedImage);
-        // }
-        // print(pickedImage);
+        pickedImage = await imagePickerService.pickImage();
       },
     );
   }
@@ -282,6 +271,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             GroupModel groupModel = snapshot.data!;
+
             return Expanded(
               child: ListView.builder(
                 itemCount: groupModel.members!.length,
@@ -456,6 +446,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
               } else {
                 ReportRepository.uploadReport(profileModel.name.toString(), code.toString(), makingCodeTime, DateTime.now(), duration, profileModel.group.toString(), "", finalCheckedMembers, startingTime.toString(), contents, title);
                 Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                // ImagePickerService().uploadImageToStorage(pickedFile);
               }
             }
           },
@@ -483,12 +474,10 @@ class ReportWriteView extends GetView<ReportWriteController> {
               ),
             ),
           ),
-          onTap: () {
-            // ImagePickerService().uploadFile(profileModel.uid.toString(), imageFile!);
-            // Get.rootDelegate.toNamed(Routes.HOME2);
-            // ImagePickerService().uploadFile(profileModel.uid.toString(), imageFile!);
-            // ImagePickerService().uploadImageFile(imageFile!, profileModel.uid.toString());
-            // ImagePickerService().uploadImageToStorage(pickedFile);
+          onTap: () async {
+            //print(pickedImage!);
+            pickedImage = await imagePickerService.pickImage();
+            await imagePickerService.uploadImage(pickedImage!,"ref");
           },
         ),
       ],

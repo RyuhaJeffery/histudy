@@ -44,7 +44,8 @@ class ReportRepository {
 
     groupCollection
       .doc(group).update({
-        'time' : FieldValue.increment(int.parse(duration))
+        'time' : FieldValue.increment(int.parse(duration)),
+        'count' : FieldValue.increment(1)
     });
   }
 }
