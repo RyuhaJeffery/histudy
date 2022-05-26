@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 import 'package:histudy/app/services/auth_service.dart';
 
 import '../controllers/sign_up_controller.dart';
-
 
 class SignUpView extends GetView<SignUpController> {
   final nameController = TextEditingController();
@@ -18,11 +18,12 @@ class SignUpView extends GetView<SignUpController> {
           Column(
             children: [
               SizedBox(
-                height: 200,
+                height: 200.h,
               ),
               Center(
                   child: Container(
-                width: 480,
+                height: 450.h,
+                width: 480.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
@@ -36,8 +37,8 @@ class SignUpView extends GetView<SignUpController> {
                   ],
                 ),
                 child: Container(
-                  width: 350,
-                  height: 350,
+                  width: 350.w,
+                  height: 350.h,
                   padding: EdgeInsets.all(30),
                   child: SingleChildScrollView(
                     child: Column(
@@ -50,7 +51,7 @@ class SignUpView extends GetView<SignUpController> {
                           ),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 30.h,
                         ),
                         TextFormField(
                           controller: nameController,
@@ -70,7 +71,7 @@ class SignUpView extends GetView<SignUpController> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         TextFormField(
                           controller: studentIDController,
                           decoration: InputDecoration(
@@ -89,7 +90,7 @@ class SignUpView extends GetView<SignUpController> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 30.h),
                         TextFormField(
                           controller: phoneNumberController,
                           decoration: InputDecoration(
@@ -108,8 +109,7 @@ class SignUpView extends GetView<SignUpController> {
                             ),
                           ),
                         ),
-                        
-                        SizedBox(height: 60),
+                        SizedBox(height: 60.h),
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -124,23 +124,29 @@ class SignUpView extends GetView<SignUpController> {
                           ),
                           child: ElevatedButton(
                             child: Container(
-                                width: 100,
-                                height: 50,
+                                width: 100.w,
+                                height: 50.h,
                                 child: Center(child: Text("제출"))),
                             onPressed: () async {
-                              if(nameController.isBlank == false && studentIDController.isBlank == false && phoneNumberController.isBlank == false){
-                                await AuthService.to.firestore.value.collection('Profile')
-                                .doc(AuthService.to.auth.value.currentUser!.uid)
-                                .set({
+                              if (nameController.isBlank == false &&
+                                  studentIDController.isBlank == false &&
+                                  phoneNumberController.isBlank == false) {
+                                await AuthService.to.firestore.value
+                                    .collection('Profile')
+                                    .doc(AuthService
+                                        .to.auth.value.currentUser!.uid)
+                                    .set({
                                   'classRegister': false,
-                                  'email': AuthService.to.auth.value.currentUser!.email,
+                                  'email': AuthService
+                                      .to.auth.value.currentUser!.email,
                                   'group': 0,
                                   'isAdmin': false,
-                                  'myClasses':[],
+                                  'myClasses': [],
                                   'name': nameController.text,
                                   'phone': phoneNumberController.text,
                                   'studentNumber': studentIDController.text,
-                                  'uid': AuthService.to.auth.value.currentUser!.uid
+                                  'uid':
+                                      AuthService.to.auth.value.currentUser!.uid
                                 });
                                 Get.rootDelegate.toNamed(Routes.HOME);
                               }

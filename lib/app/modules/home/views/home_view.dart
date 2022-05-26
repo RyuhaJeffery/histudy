@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:get/get.dart';
 import 'package:histudy/app/routes/app_pages.dart';
@@ -104,8 +105,8 @@ class HomeView extends GetView<HomeController> {
                             },
                             child: Text("RANK")),
                         TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.GUIDELINE);
+                            onPressed: () async{
+                              await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
                             },
                             child: Text("GUIDELINE")),
                         FirebaseAuth.instance.currentUser != null
