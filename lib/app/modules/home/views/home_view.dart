@@ -12,22 +12,19 @@ import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  User? currentUser;
-  var firebaseUser = FirebaseAuth.instance.currentUser;
-  //  final QuerySnapshot profileResult =
+  // FirebaseAuth auth = FirebaseAuth.instance;
+  // User? currentUser;
+  // var firebaseUser = FirebaseAuth.instance.currentUser;
 
-  Rx<bool> classRegister = false.obs;
+  // User? get userProfile => auth.currentUser;
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore.instance
-        .collection("Profile")
-        .doc(firebaseUser!.uid)
-        .get()
-        .then(
-      (DocumentSnapshot ds) {
-        classRegister.value = ds['classRegister'];
-      },
-    );
+    // Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
+    //     .collection('Profile')
+    //     .doc(userProfile!.uid)
+    //     .snapshots();
+
+    bool test = true;
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
@@ -155,30 +152,6 @@ class HomeView extends GetView<HomeController> {
               height: 25,
             ),
 
-            classRegister.value
-                ? Container(
-                    child: Text("You already applied"),
-                  )
-                : ElevatedButton(
-                    child: Text(
-                      'Register Histudy',
-                      style: TextStyle(
-                        fontSize: 25,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      minimumSize: MaterialStateProperty.all(Size(382, 56)),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32),
-                      )),
-                    ),
-                    onPressed: () {
-                      Get.rootDelegate.toNamed(Routes.REGISTER);
-                    },
-                  ),
             // SizedBox(height: 30),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
