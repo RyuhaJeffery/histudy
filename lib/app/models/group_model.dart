@@ -7,17 +7,9 @@ class GroupModel {
   int? sem;
   int? time;
   int? year;
-  int? count;
 
-  GroupModel({
-    this.meeting,
-    this.members,
-    this.no,
-    this.sem,
-    this.time,
-    this.year,
-    this.count
-  });
+  GroupModel(
+      {this.meeting, this.members, this.no, this.sem, this.time, this.year});
 
   GroupModel.fromSnapshot(DocumentSnapshot snapshot)
       : meeting = snapshot['meeting'],
@@ -25,6 +17,5 @@ class GroupModel {
         no = snapshot['no'],
         sem = snapshot['sem'],
         time = snapshot['time'],
-        year = snapshot['year'],
-        count = snapshot['count'];
+        year = snapshot['year'];
 }
