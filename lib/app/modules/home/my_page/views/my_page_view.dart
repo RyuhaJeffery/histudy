@@ -62,7 +62,7 @@ class MyPageView extends GetView<MyPageController> {
                           ),
                           TextButton(
                               onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.HOME2);
+                                Get.rootDelegate.toNamed(Routes.HOME);
                               },
                               child: Text("HOME")),
                           TextButton(
