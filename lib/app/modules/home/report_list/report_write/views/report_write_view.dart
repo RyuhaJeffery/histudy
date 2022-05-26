@@ -195,6 +195,11 @@ class ReportWriteView extends GetView<ReportWriteController> {
       ),
       onTap: () async {
         pickedImage = await imagePickerService.pickImage();
+        if (pickedImage.isNull) {
+          isImagePicked.value = false ;
+        } else {
+          isImagePicked.value = true ;
+        }
       },
     );
   }
@@ -437,16 +442,20 @@ class ReportWriteView extends GetView<ReportWriteController> {
               ),
             ),
           ),
-          onTap: () {
+          onTap: () async {
             if (DateTime.now().difference(makingCodeTime).inMinutes > 10) {
               Get.snackbar('Regenerate code', 'It has been more than 10 minutes since code generation. Please recreate the code.');
             } else {
-              if (finalCheckedMembers.isEmpty || startingTime.isEmpty || duration.isEmpty || title.isEmpty || contents.isEmpty) {
-                Get.snackbar('Retry', 'You have not entered anything');
+              if (finalCheckedMembers.isEmpty || startingTime.isEmpty || duration.isEmpty || title.isEmpty || contents.isEmpty || pickedImage.isNull) {
+                Get.snackbar('Retry', 'You have not entered anything. There must be an image.');
               } else {
-                ReportRepository.uploadReport(profileModel.name.toString(), code.toString(), makingCodeTime, DateTime.now(), duration, profileModel.group.toString(), "", finalCheckedMembers, startingTime.toString(), contents, title);
+                DateTime dateTime = DateTime.now();
+                // print("[RW]" + dateTime.toString());
+                await imagePickerService.uploadImage(pickedImage!, profileModel.group.toString(), dateTime.toString());
+                String imageUrl = await imagePickerService.downloadURL(profileModel.group.toString(), dateTime.toString());
+                // print("[RW]" + imageUrl);
+                ReportRepository.uploadReport(profileModel.name.toString(), code.toString(), makingCodeTime, dateTime, duration, profileModel.group.toString(), imageUrl, finalCheckedMembers, startingTime.toString(), contents, title);
                 Get.rootDelegate.toNamed(Routes.REPORT_LIST);
-                // ImagePickerService().uploadImageToStorage(pickedFile);
               }
             }
           },
@@ -475,9 +484,9 @@ class ReportWriteView extends GetView<ReportWriteController> {
             ),
           ),
           onTap: () async {
+            Get.back();
             //print(pickedImage!);
-            pickedImage = await imagePickerService.pickImage();
-            await imagePickerService.uploadImage(pickedImage!,"ref");
+            // pickedImage = await imagePickerService.pickImage();
           },
         ),
       ],

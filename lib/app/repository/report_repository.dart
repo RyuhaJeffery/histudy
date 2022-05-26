@@ -8,16 +8,6 @@ class ReportRepository {
       FirebaseFirestore.instance.collection('Report');
   static final groupCollection = FirebaseFirestore.instance.collection('Group');
 
-  // static Future<List<ReportModel>> getReportList(String group) async {
-  //   var k = await groupCollection
-  //       .doc(group)
-  //       .collection('reports')
-  //       .get();
-  //   return k.docs.map((item) {
-  //     return ReportModel.fromSnapshot(item);
-  //   }).toList();
-  // }
-
   static Stream<QuerySnapshot> getReportList(String group) {
     return groupCollection.doc(group).collection('reports').snapshots();
   }
@@ -45,7 +35,7 @@ class ReportRepository {
       'dateTime': dateTime,
       'duration': int.parse(duration),
       'group': group,
-      'image': "",
+      'image': image,
       'participants': participants,
       'studyStartTime': studyStartTime,
       'text': text,
