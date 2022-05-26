@@ -588,11 +588,6 @@ void createGroup() async {
         'time': 0,
         'year': 2022,
       });
-      FirebaseFirestore.instance
-          .collection("Group")
-          .doc((-1 * groupNumber).toString())
-          .collection("reports")
-          .add({});
     }
 
     groupNumber--;
@@ -659,11 +654,6 @@ void createGroup() async {
       'time': 0,
       'year': 2022,
     });
-    FirebaseFirestore.instance
-        .collection("Group")
-        .doc((-1 * groupNumber).toString())
-        .collection("reports")
-        .add({});
   }
   Get.snackbar("그룹 배정 완료", "DB를 확인하세요");
 }
