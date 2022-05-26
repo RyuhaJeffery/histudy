@@ -32,7 +32,7 @@ class Home2View extends GetView<Home2Controller> {
                 //SizedBox(width: 180,),
                 Text(
                   '등록된 스터디모임 보고서',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
               ]),
               SizedBox(
                 height: 30,

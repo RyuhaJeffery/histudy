@@ -147,15 +147,19 @@ class HomeView extends GetView<HomeController> {
                 'SIGN IN WITH GOOGLE',
                 style: TextStyle(
                   fontSize: 20,
+                  color: Colors.black
                 ),
               ),
+
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(350, 56)),
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
+      side: BorderSide(width: 2, color: Colors.black26)
                 )),
+
               ),
               onPressed: () {
                 AuthService.to.signInWithGoogle();
@@ -171,15 +175,16 @@ class HomeView extends GetView<HomeController> {
                   )
                 : ElevatedButton(
                     child: Text(
-                      'Register Histudy',
+                      'REGISTER HISTUDY',
                       style: TextStyle(
                         fontSize: 20,
+
                       ),
                     ),
                     style: ButtonStyle(
                       minimumSize: MaterialStateProperty.all(Size(350, 56)),
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
+                          MaterialStateProperty.all<Color>(Colors.black87),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(32),
