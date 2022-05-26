@@ -19,8 +19,6 @@ import '../modules/home/guideline/views/guideline_view.dart';
 import '../modules/home/home2/bindings/home2_binding.dart';
 import '../modules/home/home2/views/home2_view.dart';
 import '../modules/home/my_page/bindings/my_page_binding.dart';
-import '../modules/home/my_page/my_page_setting/bindings/my_page_setting_binding.dart';
-import '../modules/home/my_page/my_page_setting/views/my_page_setting_view.dart';
 import '../modules/home/my_page/views/my_page_view.dart';
 import '../modules/home/question/bindings/question_binding.dart';
 import '../modules/home/question/question_detail/bindings/question_detail_binding.dart';
@@ -41,11 +39,8 @@ import '../modules/home/report_list/views/report_list_view.dart';
 import '../modules/home/sign_up/bindings/sign_up_binding.dart';
 import '../modules/home/sign_up/views/sign_up_view.dart';
 import '../modules/home/views/home_view.dart';
-<<<<<<< HEAD
-=======
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
 
 part 'app_routes.dart';
 
@@ -89,47 +84,31 @@ class AppPages {
           ],
           children: [
             GetPage(
-                name: _Paths.REPORT_DETAIL,
-                page: () => ReportDetailView(),
-                binding: ReportDetailBinding(),
-                participatesInRootNavigator: true,
-<<<<<<< HEAD
-                middlewares: [EnsureAuthMiddleware()]),
-=======
+              name: _Paths.REPORT_DETAIL,
+              page: () => ReportDetailView(),
+              binding: ReportDetailBinding(),
+              participatesInRootNavigator: true,
             ),
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
             GetPage(
-                name: _Paths.REPORT_WRITE,
-                page: () => ReportWriteView(),
-                binding: ReportWriteBinding(),
-                participatesInRootNavigator: true,
-<<<<<<< HEAD
-                middlewares: [EnsureAuthMiddleware()]),
-=======
+              name: _Paths.REPORT_WRITE,
+              page: () => ReportWriteView(),
+              binding: ReportWriteBinding(),
+              participatesInRootNavigator: true,
             )
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
           ],
         ),
         GetPage(
-            name: _Paths.ANNOUNCE,
-            page: () => AnnounceView(),
-            binding: AnnounceBinding(),
-            participatesInRootNavigator: true,
-<<<<<<< HEAD
-            middlewares: [EnsureAuthMiddleware()]),
-=======
-            middlewares: [EnsureAuthMiddleware(),],),
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
+          name: _Paths.ANNOUNCE,
+          page: () => AnnounceView(),
+          binding: AnnounceBinding(),
+          participatesInRootNavigator: true,
+          middlewares: [EnsureAuthMiddleware(),],),
         GetPage(
-            name: _Paths.GROUP_INFO,
-            page: () => GroupInfoView(),
-            binding: GroupInfoBinding(),
-            participatesInRootNavigator: true,
-<<<<<<< HEAD
-            middlewares: [EnsureAuthMiddleware()]),
-=======
-            middlewares: [EnsureAuthMiddleware(),],),
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
+          name: _Paths.GROUP_INFO,
+          page: () => GroupInfoView(),
+          binding: GroupInfoBinding(),
+          participatesInRootNavigator: true,
+          middlewares: [EnsureAuthMiddleware(),],),
         GetPage(
           name: _Paths.REGISTER,
           page: () => RegisterView(),
@@ -144,55 +123,26 @@ class AppPages {
           page: () => QuestionView(),
           binding: QuestionBinding(),
           participatesInRootNavigator: true,
-<<<<<<< HEAD
-          middlewares: [EnsureAuthMiddleware()],
-=======
           middlewares: [EnsureAuthMiddleware(),],
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
           children: [
             GetPage(
-                name: _Paths.QUESTION_WRITE,
-                page: () => QuestionWriteView(),
-                binding: QuestionWriteBinding(),
-<<<<<<< HEAD
-                participatesInRootNavigator: true,
-                middlewares: [EnsureAuthMiddleware()]),
-=======
-                participatesInRootNavigator: true,),
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
+              name: _Paths.QUESTION_WRITE,
+              page: () => QuestionWriteView(),
+              binding: QuestionWriteBinding(),
+              participatesInRootNavigator: true,),
             GetPage(
-                name: _Paths.QUESTION_DETAIL,
-                page: () => QuestionDetailView(),
-                binding: QuestionDetailBinding(),
-<<<<<<< HEAD
-                participatesInRootNavigator: true,
-                middlewares: [EnsureAuthMiddleware()]),
-=======
-                participatesInRootNavigator: true,),
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
+              name: _Paths.QUESTION_DETAIL,
+              page: () => QuestionDetailView(),
+              binding: QuestionDetailBinding(),
+              participatesInRootNavigator: true,),
           ],
         ),
         GetPage(
-            name: _Paths.MY_PAGE,
-            page: () => MyPageView(),
-            binding: MyPageBinding(),
-            participatesInRootNavigator: true,
-<<<<<<< HEAD
-            middlewares: [
-              EnsureAuthMiddleware(),
-            ],
-          children: [
-            GetPage(
-              name: _Paths.MY_PAGE_SETTING,
-              page: () => MyPageSettingView(),
-              binding: MyPageSettingBinding(),
-              participatesInRootNavigator: true,
-            )
-          ]
-        ),
-=======
-            middlewares: [EnsureAuthMiddleware(),],),
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
+          name: _Paths.MY_PAGE,
+          page: () => MyPageView(),
+          binding: MyPageBinding(),
+          participatesInRootNavigator: true,
+          middlewares: [EnsureAuthMiddleware(),],),
         GetPage(
           name: _Paths.ADMIN,
           page: () => AdminView(),

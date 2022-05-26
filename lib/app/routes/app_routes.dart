@@ -26,18 +26,7 @@ abstract class Routes {
   static const GROUP_DEL = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_DEL;
   static const HOME2 = _Paths.HOME + _Paths.HOME2;
   static const SIGN_UP = _Paths.HOME + _Paths.SIGN_UP;
-<<<<<<< HEAD
-
-  static String LOGIN_THEN(String afterSuccessfulLogin) =>
-      '$LOGIN?then=${Uri.encodeQueryComponent(afterSuccessfulLogin)}';
-
-  static String SIGNUP_THEN(String afterSuccessfulSignUp) =>
-      '$SIGN_UP?then=${Uri.encodeQueryComponent(afterSuccessfulSignUp)}';
-  static const MY_PAGE_SETTING =
-      _Paths.HOME + _Paths.MY_PAGE + _Paths.MY_PAGE_SETTING;
-=======
   static const LOGIN = _Paths.LOGIN;
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
 }
 
 abstract class _Paths {
@@ -61,9 +50,5 @@ abstract class _Paths {
   static const GROUP_DEL = '/group-del';
   static const HOME2 = '/home2';
   static const SIGN_UP = '/sign-up';
-<<<<<<< HEAD
-  static const MY_PAGE_SETTING = '/my-page-setting';
-=======
   static const LOGIN = '/login';
->>>>>>> 2f6c60287c0953a9bb312d68990122067332044e
 }

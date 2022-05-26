@@ -28,17 +28,8 @@ import '../controllers/report_write_controller.dart';
 // Report 추가 할 때, 총 시간 값을 Group field로 만들어 duration을 더해주기
 
 class ReportWriteView extends GetView<ReportWriteController> {
-<<<<<<< HEAD
   var imagePickerService = ImagePickerService();
   XFile? pickedImage;
-=======
-<<<<<<< HEAD
-  // var imagePickerService = ImagePickerService();
-=======
-  //var imagePickerService = ImagePickerService();
->>>>>>> e325832e6d0cc6bd27ebf27d3ea84298102a4ea8
-  File? pickedImage;
->>>>>>> subin
   RxBool isImagePicked = false.obs;
   List<String> finalCheckedMembers = [];
   RxString startingTime = ''.obs;
@@ -203,28 +194,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
       }
       ),
       onTap: () async {
-<<<<<<< HEAD
         pickedImage = await imagePickerService.pickImage();
-=======
-<<<<<<< HEAD
-        // pickedFile = await ImagePicker().getImage(
-        //   source: ImageSource.gallery,
-        // );
-        // imageFile = await ImagePickerWeb.getImageAsFile();
-        // print(imageFile);
-        // pickedImage = await imagePickerService.pickImg();
-        // if (pickedImage != null) {
-        //   isImagePicked.value = true ;
-        //   print(pickedImage);
-        // }
-        // print(pickedImage);
-=======
-        //pickedImage = await imagePickerService.pickImg();
-        if (pickedImage != null) {
-          isImagePicked.value = true ;
-        }
->>>>>>> e325832e6d0cc6bd27ebf27d3ea84298102a4ea8
->>>>>>> subin
       },
     );
   }
@@ -297,7 +267,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
   Widget _participantsWidget(ProfileModel profileModel) {
 
     return FutureBuilder<GroupModel?>(
-      future: GroupRepository.getGroup(profileModel.group!.toString()),
+        future: GroupRepository.getGroup(profileModel.group!.toString()),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             GroupModel groupModel = snapshot.data!;
@@ -308,30 +278,30 @@ class ReportWriteView extends GetView<ReportWriteController> {
                 itemBuilder: (BuildContext context, int index) {
                   List<RxBool> _isCheckedList = List<RxBool>.filled(groupModel.members!.length, false.obs, growable: true);
                   return Obx(() {
-                      return Row(
-                        children: [
-                          Checkbox(
+                    return Row(
+                      children: [
+                        Checkbox(
                             value: _isCheckedList[index].value,
                             onChanged: (value) {
                               _isCheckedList[index].value == true ? _isCheckedList[index].value = false : _isCheckedList[index].value = true ;
                               value == true ? finalCheckedMembers.add(groupModel.members![index]) : finalCheckedMembers.removeAt(index);
                               print(finalCheckedMembers);
                             }
-                          ),
-                          FutureBuilder<ProfileModel?>(
-                            future: UserRepositroy.getUser(groupModel.members![index].toString()),
-                            builder: (context, profileSnapshot) {
-                              if (profileSnapshot.hasData) {
-                                ProfileModel profileModelInGroup = profileSnapshot.data!;
-                                return Text(profileModelInGroup.name.toString());
-                              } else {
-                                return CircularProgressIndicator();
-                              }
-                            },
-                          ),
-                        ],
-                      );
-                    }
+                        ),
+                        FutureBuilder<ProfileModel?>(
+                          future: UserRepositroy.getUser(groupModel.members![index].toString()),
+                          builder: (context, profileSnapshot) {
+                            if (profileSnapshot.hasData) {
+                              ProfileModel profileModelInGroup = profileSnapshot.data!;
+                              return Text(profileModelInGroup.name.toString());
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
+                        ),
+                      ],
+                    );
+                  }
                   );
                 },
               ),
@@ -345,18 +315,18 @@ class ReportWriteView extends GetView<ReportWriteController> {
 
   Widget _startTimeInputWidget() {
     return Obx(() {
-        return DateTimePicker(
-          type: DateTimePickerType.time,
-          initialValue: startingTime.value,
-          icon: Icon(Icons.access_time),
-          timeLabelText: 'Starting Time',
-          use24HourFormat: true,
-          locale: Locale('en', 'US'),
-          onChanged: (value) {
-            startingTime.value = value;
-          },
-        );
-      }
+      return DateTimePicker(
+        type: DateTimePickerType.time,
+        initialValue: startingTime.value,
+        icon: Icon(Icons.access_time),
+        timeLabelText: 'Starting Time',
+        use24HourFormat: true,
+        locale: Locale('en', 'US'),
+        onChanged: (value) {
+          startingTime.value = value;
+        },
+      );
+    }
     );
   }
 
