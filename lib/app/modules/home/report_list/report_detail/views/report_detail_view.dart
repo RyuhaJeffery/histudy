@@ -25,13 +25,24 @@ class ReportDetailView extends GetView<ReportDetailController> {
               SizedBox(
                 height: 22.h,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
-                height: 700.h,
-                width: 774.w,
-                decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.black),
-                    borderRadius: BorderRadius.all(Radius.circular(20.r))),
+          Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: 30, vertical: 30),
+            height: 1040,
+            width: 700,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.2),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset:
+                  Offset(0, 3), // changes position of shadow
+                ),
+              ],
+            ),
                 child: ListView(
                   children: [
                     Column(
@@ -64,7 +75,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           ],
                         ),
                         SizedBox(
-                          height: 16.h,
+                          height: 10.h,
                         ),
                         Row(
                           children: [
@@ -104,7 +115,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           ],
                         ),
                         SizedBox(
-                          height: 16.h,
+                          height: 10.h,
                         ),
                         Row(
                           children: [
@@ -143,7 +154,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           ],
                         ),
                         SizedBox(
-                          height: 16.h,
+                          height: 20.h,
                         ),
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,7 +187,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
   Widget _titleWidget(String title) {
     return Text(
       title,
-      style: TextStyle(fontSize: 20, color: Colors.black),
+      style: TextStyle(fontSize: 14, color: Colors.black87),
     );
   }
 
@@ -184,14 +195,14 @@ class ReportDetailView extends GetView<ReportDetailController> {
     return Column(
       children: [
         SizedBox(
-          height: 16,
+          height: 30.h,
         ),
         Container(
           height: 1,
-          color: Colors.black,
+          color: Colors.black54,
         ),
         SizedBox(
-          height: 16,
+          height: 30.h,
         ),
       ],
     );

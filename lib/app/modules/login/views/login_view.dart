@@ -36,7 +36,7 @@ class LoginView extends GetView<LoginController> {
               style: ButtonStyle(
                 minimumSize: MaterialStateProperty.all(Size(382.h, 56.w)),
                 backgroundColor: MaterialStateProperty.all<Color>(
-                    Colors.blue
+                    Color(0xff04589C)
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
