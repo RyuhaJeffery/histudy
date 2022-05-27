@@ -20,6 +20,7 @@ abstract class Routes {
   static const QUESTION_DETAIL =
       _Paths.HOME + _Paths.QUESTION + _Paths.QUESTION_DETAIL;
   static const MY_PAGE = _Paths.HOME + _Paths.MY_PAGE;
+  static const MY_PAGE_SETTING = _Paths.HOME + _Paths.MY_PAGE + _Paths.MY_PAGE_SETTING;
   static const ADMIN = _Paths.HOME + _Paths.ADMIN;
   static const STUDENT_LIST = _Paths.HOME + _Paths.ADMIN + _Paths.STUDENT_LIST;
   static const GROUP_ADD = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_ADD;
@@ -44,6 +45,7 @@ abstract class _Paths {
   static const QUESTION_WRITE = '/question-write';
   static const QUESTION_DETAIL = '/question-detail';
   static const MY_PAGE = '/my-page';
+  static const MY_PAGE_SETTING = '/my-page-setting';
   static const ADMIN = '/admin';
   static const STUDENT_LIST = '/student-list';
   static const GROUP_ADD = '/group-add';

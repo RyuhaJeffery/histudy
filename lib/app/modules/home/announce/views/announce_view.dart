@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
+import 'package:histudy/app/widgets/top_bar_widget.dart';
 
 import '../../../../routes/app_pages.dart';
 import '../controllers/announce_controller.dart';
@@ -17,92 +19,56 @@ class AnnounceView extends GetView<AnnounceController> {
         child:
         Container(
           child:Column(children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Row(
-                  children: [
-                    SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('assets/handong_logo.png')),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Get.rootDelegate.toNamed(Routes.HOME);
-                      },
-                      child: Text(
-                        'HISTUDY',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 8,
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.HOME);
-                        },
-                        child: Text("HOME")),
-                    TextButton(
-                        onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                        },
-                        child: Text("TEAM")),
-                    TextButton(
-                        onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.QUESTION);
-                        },
-                        child: Text("Q&A")),
-                    TextButton(
-                        onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                        },
-                        child: Text("ANNOUNCEMENT")),
-                  ],
-                ),
-                Row(
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.RANK);
-                        },
-                        child: Text("RANK")),
-                    TextButton(
-                        onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.GUIDELINE);
-                        },
-                        child: Text("GUIDELINE")),
-                    ElevatedButton(onPressed: () {
-                      Get.rootDelegate.toNamed(Routes.MY_PAGE);
-                    }, child: Text('MY PAGE'))
-                  ],
-                ),
-              ]),
-            ),
+            topBar(),
 
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:[
-                  SizedBox(width: 150,),
-                  //Text('공지사항'),
-          ]
+            SizedBox(
+              height: 30.h,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                '공지사항',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
+
+
+            ]),
+            SizedBox(
+              height: 30,
             ),
             Flexible(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(80, 20, 80,0),
               child: Column(
                   children:[
-                    Row(
-                        children: [
-                          Expanded(child:Text('      no.')),
-                          Expanded(child:Text('  작성자')),
-                          Expanded(child:Text('  제목')),
-                          Expanded(child: Text('  조회수')),
+                    Divider(
+                      thickness: 0.1,
+                      color: Colors.black,
+                      height: 10,
+                    ),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
-                        ]
-                    ) ,
+                      Expanded(
+                          child: Text(
+                            '  NO',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Expanded(
+                          child: Text(
+                            '  작성자',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Expanded(
+                          child: Text(
+                            '  제목',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+
+                    ]),
                     Divider(
                       thickness: 0.1,
                       color: Colors.black,
@@ -125,20 +91,13 @@ class AnnounceView extends GetView<AnnounceController> {
                                         ListTile(
                                           // title: Text(documentSnapshot['name']),
                                           title: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                                               children: <Widget>[
                                                 Expanded(child: Text('${index+1}')),
                                                 Expanded(child: Text(documentSnapshot['author'])),
-                                                Expanded(child: TextButton(child: Text(documentSnapshot['title'].toString()),
-                                                    style:TextButton.styleFrom(
-                                                      textStyle:TextStyle(
-                                                          color: Colors.black,
-
-                                                      ),
-                                                      ),
-                                                    onPressed: () {
-
-                                                })),
-                                                Expanded(child: Text(documentSnapshot['sem'].toString())),
+                                                Expanded(child: Text(documentSnapshot['title'])),
+                                               // Expanded(child: Text(documentSnapshot['sem'].toString())),
                                               ]
                                           ),
                                           // documentSnapshot['isAdmin'].toString() ?
@@ -155,7 +114,7 @@ class AnnounceView extends GetView<AnnounceController> {
                         },
                       ),
                     ),
-                  ]),
+                  ]),)
             )
 
 

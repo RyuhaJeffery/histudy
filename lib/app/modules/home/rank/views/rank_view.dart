@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:histudy/app/widgets/top_bar_widget.dart';
 import '../../../../routes/app_pages.dart';
 import '../controllers/rank_controller.dart';
 
@@ -13,145 +15,103 @@ class RankView extends GetView<RankController> {
       body: Center(
           child: Container (
               child : Column(children: [
-                Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                            height: 100,
-                            width: 100,
-                            child: Image.asset('assets/handong_logo.png')),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.rootDelegate.toNamed(Routes.HOME);
-                          },
-                          child: Text(
-                            'HISTUDY',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                topBar(),
+                SizedBox(
+                  height: 30.h,
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text(
+                    '랭킹',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
+
+
+                ]),
+                SizedBox(
+                  height: 30,
+                ),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(80, 20, 80,0),
+                    child: Column(
+                        children:[
+                          Divider(
+                            thickness: 0.1,
+                            color: Colors.black,
                           ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.HOME);
-                            },
-                            child: Text("HOME")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                            },
-                            child: Text("TEAM")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.QUESTION);
-                            },
-                            child: Text("Q&A")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                            },
-                            child: Text("ANNOUNCEMENT")),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.RANK);
-                            },
-                            child: Text("RANK")),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.GUIDELINE);
-                            },
-                            child: Text("GUIDELINE")),
-                        ElevatedButton(onPressed: () {
-                          Get.rootDelegate.toNamed(Routes.MY_PAGE);
-                        }, child: Text('MY PAGE'))
-                      ],
-                    ),
-                  ]),
-                ),
-                DataTable(
-                  columns: const <DataColumn>[
-                    DataColumn(
-                      label: Text(
-                        ' ',
+                          Row(
+                              children: [
+                                Expanded(child: Text('    NO',   style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                )),
+                                Expanded(child:Text('  그룹 번호',   style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                )),
+                                Expanded(child: Text('  보고서 수',   style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                )),
+                                Expanded(child: Text('  최신 보고서 날짜',   style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                )),
+                                SizedBox(width: 50.w,),
+                                Expanded(child: Text('   누적 공부 시간',
+                                  style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                    ),
+                                )),
+                                Expanded(child: Text(' ')),
+                              ]
+                          ) ,
+                          Divider(
+                            thickness: 0.1,
+                            color: Colors.black,
+                            height: 10,
+                          ),
+                          Flexible(
+                            child: StreamBuilder(
+                              stream: FirebaseFirestore.instance.collection('Group').orderBy('time',descending: true).snapshots(),
+                              builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+                                if (streamSnapshot.hasData) {
+                                  return ListView.builder(
+                                    itemCount: streamSnapshot.data!.docs.length,
+                                    itemBuilder: (context, index) {
+                                      final DocumentSnapshot documentSnapshot =
+                                      streamSnapshot.data!.docs[index];
+                                      return Container(
+                                        margin: const EdgeInsets.all(10),
+                                        child: Column(
+                                            children:[
+                                              ListTile(
+                                                title: Row(
+                                                    children: <Widget>[
+                                                      Expanded(child: Text('${index+1}')),
+                                                      Expanded(child: Text('Group ${documentSnapshot.id}')),
+                                                      Expanded(child: Text(documentSnapshot['meeting'].toString())),
+                                                      // Expanded(child: Text(documentSnapshot['recRegDate'].toString())),
+                                                      Expanded(child: Text(documentSnapshot['time'].toString())),
+                                                    ]
+                                                ),
 
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        '그룹 번호',
+                                              ),
+                                            ]
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              },
+                            ),
+                          ),
+                        ]),
+                  ),
+                )
 
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        '보고서 수',
-
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        '최신 보고서 날짜',
-
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        '누적 공부 시간(분)',
-
-                      ),
-                    ),
-                  ],
-                  rows: const <DataRow>[
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text('1')),
-                        DataCell(Text('Group 1')),
-                        DataCell(Text('19')),
-                        DataCell(Text('2022-10-23')),
-                        DataCell(Text('123')),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text('2')),
-                        DataCell(Text('Group 2')),
-                        DataCell(Text('15')),
-                        DataCell(Text('2022-10-23')),
-                        DataCell(Text('122')),
-                      ],
-                    ),
-                    DataRow(
-                      cells: <DataCell>[
-                        DataCell(Text('3')),
-                        DataCell(Text('Group 3')),
-                        DataCell(Text('10')),
-                        DataCell(Text('2022-10-23')),
-                        DataCell(Text('120')),
-                      ],
-                    ),
-
-                  ],
-                ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     SizedBox(width: 300,height: 10,),
-                //   ElevatedButton(onPressed: (){}, child: const Text('그룹 추가')),
-                //   const SizedBox(width: 10,height: 10,),
-                //   ElevatedButton(onPressed: (){}, child: const Text('그룹 삭제'))
-
-                // ])
               ])
 
           )
