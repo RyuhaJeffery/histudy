@@ -365,6 +365,12 @@ class MyPageView extends GetView<MyPageController> {
 }
 
 void createGroup() async {
+  Get.snackbar(
+    "그룹 배정 시작",
+    "약 20초간 걸릴 예정입니다. 끝나면 스낵바로 알람이 갑니다. ",
+    backgroundColor: Color(0xff04589C),
+    colorText: Color(0xffF0F0F0),
+  );
   List<String> profileList = new List.generate(0, (index) => "");
   final QuerySnapshot profileResult = await FirebaseFirestore.instance
       .collection('Profile')
@@ -375,7 +381,7 @@ void createGroup() async {
   profileDocs.forEach((profile) {
     profileList.add(profile.id);
   });
-  await Future.delayed(Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 4));
   print(profileList);
 
   //class id list
@@ -387,7 +393,7 @@ void createGroup() async {
   classDocs.forEach((classele) {
     classList.add(classele.id);
   });
-  await Future.delayed(Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 4));
 
   print(classList);
 
@@ -412,7 +418,7 @@ void createGroup() async {
     );
   }
   //load되는 시간 기다리기
-  await Future.delayed(Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 4));
 
   print(studentScore);
 
@@ -442,7 +448,7 @@ void createGroup() async {
   print(allCount);
   print("groupMember");
   print(groupMember - 1);
-  await Future.delayed(Duration(seconds: 2));
+
   //4개씩 끊어서 올리기
 
   while (allCount > groupMember) {
@@ -584,5 +590,10 @@ void createGroup() async {
       'year': 2022,
     });
   }
-  Get.snackbar("그룹 배정 완료", "DB를 확인하세요");
+  Get.snackbar(
+    "그룹 배정 완료",
+    "DB를 확인하거나 혹은 Team tab을 클릭하세요",
+    backgroundColor: Color(0xff04589C),
+    colorText: Color(0xffF0F0F0),
+  );
 }
