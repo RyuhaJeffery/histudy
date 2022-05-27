@@ -39,6 +39,7 @@ class RankView extends GetView<RankController> {
                             color: Colors.black,
                           ),
                           Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Expanded(child: Text('    NO',   style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -48,21 +49,18 @@ class RankView extends GetView<RankController> {
                                   fontWeight: FontWeight.bold,
                                 ),
                                 )),
-                                Expanded(child: Text('  보고서 수',   style: TextStyle(
+                                Expanded(child: Text('보고서 수',   style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                 ),
                                 )),
-                                Expanded(child: Text('  최신 보고서 날짜',   style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                )),
-                                SizedBox(width: 50.w,),
-                                Expanded(child: Text('   누적 공부 시간',
+
+
+                                Expanded(child: Text('누적 공부 시간',
                                   style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                     ),
                                 )),
-                                Expanded(child: Text(' ')),
+
                               ]
                           ) ,
                           Divider(

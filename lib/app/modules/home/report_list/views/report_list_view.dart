@@ -26,37 +26,40 @@ class ReportListView extends GetView<ReportListController> {
         child: Column(children: [
           topBar(),
           SizedBox(height: 30.h,),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            //SizedBox(width: 180,),
             Text(
               '등록된 스터디모임 보고서',
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold
-              ),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
-                },
-                child: const Text('보고서 작성')),
           ]),
           SizedBox(
-            height: 16,
+            height: 30,
           ),
-          Divider(
-            height: 1,
-            color: Colors.black,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 500,
+              ),
+              SizedBox(
+                width: 100,
+                child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xff04589C),
+                      side: BorderSide(width: 1),
+                      shape: RoundedRectangleBorder(
+                        //to set border radius to button
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                    onPressed: () {
+                      Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
+                    },
+                    child: Text('보고서 작성')),
+              ),
+            ],
           ),
-          SizedBox(
-            height: 16,
-          ),
-          Divider(
-            height: 1,
-            color: Colors.black,
-          ),
-          SizedBox(
-            height: 16,
-          ),
+
           _reportList(),
         ]),
       ),
@@ -64,98 +67,87 @@ class ReportListView extends GetView<ReportListController> {
   }
 
   _reportList() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: 50.h,
-              width: 100.w,
-              child: Center(
-                child: Text(
-                  'NO',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50.h,
-              width: 100.w,
-              child: Center(
-                child: Text(
-                  'TITLE',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50.h,
-              width: 100.w,
-              child: Center(
-                child: Text(
-                  'AUTHOR',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50.h,
-              width: 130.w,
-              child: Center(
-                child: Text(
-                  'DATE',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-          ],
-        ),
-        FutureBuilder<ProfileModel?>(
-          future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              ProfileModel profile = snapshot.data!;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
+      child: Column(
+        children: [
+          Divider(
+            thickness: 0.1,
+            color: Colors.black,
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
 
-              return StreamBuilder<QuerySnapshot>(
-                stream: ReportRepository.getReportList(profile.group!.toString()),
-                builder: (contextTwo, reportListSnapshot) {
-                  if (reportListSnapshot.hasData) {
-                    List<ReportModel> reportList = reportListSnapshot.data!.docs.map((item) => ReportModel.fromSnapshot(item)).toList();
+                Expanded(
+                    child: Text(
+                      '  No',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                Expanded(
+                    child: Text(
+                      '  제목',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                Expanded(
+                    child: Text(
+                      '  글쓴이',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+                Expanded(
+                    child: Text(
+                      '  날짜',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )),
+
+              ]),
+          Divider(
+            thickness: 0.1,
+            color: Colors.black,
+            height: 10,
+          ),
+          FutureBuilder<ProfileModel?>(
+            future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ProfileModel profile = snapshot.data!;
+
+                return StreamBuilder<QuerySnapshot>(
+                  stream: ReportRepository.getReportList(profile.group!.toString()),
+                  builder: (contextTwo, reportListSnapshot) {
+                    if (reportListSnapshot.hasData) {
+                      List<ReportModel> reportList = reportListSnapshot.data!.docs.map((item) => ReportModel.fromSnapshot(item)).toList();
 //                    List<ReportModel> reportList = reportListSnapshot.data!;
 
-                    return SizedBox(
-                      height: 400.h,
-                      child: ListView.builder(
-                        itemCount: reportList.length,
-                        itemBuilder: (BuildContext contextThree, int index) {
-                          return _reportBlock(reportList[index], index);
-                        },
-                      ),
-                    );
-                  } else {
-                    return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
-                  }
-                },
-              );
-            } else {
-              return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
-            }
-          },
-        ),
-      ],
+                      return SizedBox(
+                        height: 400.h,
+                        child: ListView.builder(
+                          itemCount: reportList.length,
+                          itemBuilder: (BuildContext contextThree, int index) {
+                            return _reportBlock(reportList[index], index);
+                          },
+                        ),
+                      );
+                    } else {
+                      return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
+                    }
+                  },
+                );
+              } else {
+                return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
 
@@ -173,7 +165,7 @@ class ReportListView extends GetView<ReportListController> {
           children: [
             SizedBox(
               height: 50.h,
-              width: 100.w,
+              width: 40.w,
               child: Center(
                 child: Text(
                   '${index+1}'.toString(),
@@ -183,7 +175,7 @@ class ReportListView extends GetView<ReportListController> {
             ),
             SizedBox(
               height: 50.h,
-              width: 100.w,
+              width: 80.w,
               child: Center(
                 child: Text(
                   reportModel.title.toString(),
