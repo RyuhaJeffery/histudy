@@ -135,6 +135,20 @@ class _HomePageState extends State<GroupInfoView> {
         Column(
             children:[
               topBar(),
+
+              SizedBox(
+                height: 30.h,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Text(
+                  '팀 멤버',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
+
+
+              ]),
+              SizedBox(
+                height: 30,
+              ),
               admin ? Flexible(
                 child: Padding(
                   padding:const EdgeInsets.fromLTRB(80, 20, 80,0),

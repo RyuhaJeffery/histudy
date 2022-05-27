@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/modules/home/my_page/views/my_page_view.dart';
+import 'package:histudy/app/widgets/top_bar_widget2.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../routes/app_pages.dart';
 import '../controllers/my_page_controller.dart';
@@ -50,74 +51,7 @@ class MyPageSettingView extends GetView<MyPageController> {
         children: [
           Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                              height: 100,
-                              width: 100,
-                              child: Image.asset('assets/handong_logo.png')),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.rootDelegate.toNamed(Routes.HOME);
-                            },
-                            child: Text(
-                              'HISTUDY',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.HOME);
-                              },
-                              child: Text("HOME")),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                              },
-                              child: Text("TEAM")),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.QUESTION);
-                              },
-                              child: Text("Q&A")),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                              },
-                              child: Text("ANNOUNCEMENT")),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.RANK);
-                              },
-                              child: Text("RANK")),
-                          TextButton(
-                              onPressed: () async{
-                              await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
-                            },
-                              child: Text("GUIDELINE")),
-                          ElevatedButton(
-                              onPressed: () {}, child: Text('LOGOUT'))
-                        ],
-                      ),
-                    ]),
-              ),
+              topBar2(),
               Center(
                   child: Container(
                 width: 600,
