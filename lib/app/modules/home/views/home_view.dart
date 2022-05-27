@@ -76,7 +76,7 @@ class HomeView extends GetView<HomeController> {
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.REPORT_LIST);
                             },
-                            child: Text("HOME")),
+                            child: Text("REPORT")),
                         TextButton(
                             onPressed: () {
                               Get.rootDelegate.toNamed(Routes.GROUP_INFO);
