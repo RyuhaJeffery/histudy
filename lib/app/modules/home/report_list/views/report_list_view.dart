@@ -21,142 +21,141 @@ class ReportListView extends GetView<ReportListController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFDFFFE),
-      body: Column(children: [
-        topBar(),
-        SizedBox(
-          height: 30.h,
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(
-            '등록된 스터디모임 보고서',
-          style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
-
-
+      body: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: Column(children: [
+          topBar(),
+          SizedBox(height: 30.h,),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text(
+              '등록된 스터디모임 보고서',
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontWeight: FontWeight.bold
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
+                },
+                child: const Text('보고서 작성')),
+          ]),
+          SizedBox(
+            height: 16,
+          ),
+          Divider(
+            height: 1,
+            color: Colors.black,
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          Divider(
+            height: 1,
+            color: Colors.black,
+          ),
+          SizedBox(
+            height: 16,
+          ),
+          _reportList(),
         ]),
-        SizedBox(
-          height: 30,
-        ),
-
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 500,
-            ),
-            SizedBox(
-              width: 110,
-              child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xff04589C),
-                    side: BorderSide(width: 1),
-                    shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
-                  },
-                  child: const Text('보고서 작성')),
-            ),
-          ],
-        ),
-        _reportList(),
-      ]),
+      ),
     );
   }
 
   _reportList() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
-      child: Column(
-        children: [
-          Divider(
-            thickness: 0.1,
-            color: Colors.black,
-            height: 10,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              height: 50.h,
+              width: 100.w,
+              child: Center(
+                child: Text(
+                  'NO',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50.h,
+              width: 100.w,
+              child: Center(
+                child: Text(
+                  'TITLE',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50.h,
+              width: 100.w,
+              child: Center(
+                child: Text(
+                  'AUTHOR',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 50.h,
+              width: 130.w,
+              child: Center(
+                child: Text(
+                  'DATE',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ],
+        ),
+        FutureBuilder<ProfileModel?>(
+          future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              ProfileModel profile = snapshot.data!;
 
-            Expanded(
-                child: Text(
-              '  NO',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-            Expanded(
-                child: Text(
-              '  제목',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-            Expanded(
-                child: Text(
-              '  글쓴이',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-            Expanded(
-                child: Text(
-              '  날짜',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            )),
-
-          ]),
-          Divider(
-            thickness: 0.1,
-            color: Colors.black,
-            height: 10,
-          ),
-          FutureBuilder<ProfileModel?>(
-            future: UserRepositroy.getUser(
-                AuthService.to.auth.value.currentUser!.uid),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                ProfileModel profile = snapshot.data!;
-
-                return StreamBuilder<QuerySnapshot>(
-                  stream:
-                      ReportRepository.getReportList(profile.group!.toString()),
-                  builder: (contextTwo, reportListSnapshot) {
-                    if (reportListSnapshot.hasData) {
-                      List<ReportModel> reportList = reportListSnapshot
-                          .data!.docs
-                          .map((item) => ReportModel.fromSnapshot(item))
-                          .toList();
+              return StreamBuilder<QuerySnapshot>(
+                stream: ReportRepository.getReportList(profile.group!.toString()),
+                builder: (contextTwo, reportListSnapshot) {
+                  if (reportListSnapshot.hasData) {
+                    List<ReportModel> reportList = reportListSnapshot.data!.docs.map((item) => ReportModel.fromSnapshot(item)).toList();
 //                    List<ReportModel> reportList = reportListSnapshot.data!;
 
-                      return SizedBox(
-                        height: 400.h,
-                        child: ListView.builder(
-                          itemCount: reportList.length,
-                          itemBuilder: (BuildContext contextThree, int index) {
-                            return _reportBlock(reportList[index], index);
-                          },
-                        ),
-                      );
-                    } else {
-                      return Container(
-                          height: 400.h,
-                          width: 400.w,
-                          child: Center(child: CircularProgressIndicator()));
-                    }
-                  },
-                );
-              } else {
-                return Container(
-                    height: 400.h,
-                    width: 400.w,
-                    child: Center(child: CircularProgressIndicator()));
-              }
-            },
-          ),
-        ],
-      ),
+                    return SizedBox(
+                      height: 400.h,
+                      child: ListView.builder(
+                        itemCount: reportList.length,
+                        itemBuilder: (BuildContext contextThree, int index) {
+                          return _reportBlock(reportList[index], index);
+                        },
+                      ),
+                    );
+                  } else {
+                    return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
+                  }
+                },
+              );
+            } else {
+              return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
+            }
+          },
+        ),
+      ],
     );
   }
 
@@ -177,7 +176,7 @@ class ReportListView extends GetView<ReportListController> {
               width: 100.w,
               child: Center(
                 child: Text(
-                  '${index + 1}'.toString(),
+                  '${index+1}'.toString(),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -207,8 +206,7 @@ class ReportListView extends GetView<ReportListController> {
               width: 130.w,
               child: Center(
                 child: Text(
-                  DateFormat('yyyy-MM-dd')
-                      .format(reportModel.dateTime!.toDate()),
+                  DateFormat('yyyy-MM-dd').format(reportModel.dateTime!.toDate()),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

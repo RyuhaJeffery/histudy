@@ -15,21 +15,20 @@ class ReportModel {
   String? title;
   String? year;
 
-  ReportModel({
-    this.author,
-    this.code,
-    this.codeDatetime,
-    this.dateTime,
-    this.duration,
-    this.group,
-    this.image,
-    this.participants,
-    this.sem,
-    this.studyStartTime,
-    this.text,
-    this.title,
-    this.year
-  });
+  ReportModel(
+      {this.author,
+      this.code,
+      this.codeDatetime,
+      this.dateTime,
+      this.duration,
+      this.group,
+      this.image,
+      this.participants,
+      this.sem,
+      this.studyStartTime,
+      this.text,
+      this.title,
+      this.year});
 
   ReportModel.fromSnapshot(DocumentSnapshot snapshot)
       : author = snapshot['author'],
@@ -48,23 +47,23 @@ class ReportModel {
 
   List<ReportModel> reportListFromSnapshot(QuerySnapshot querySnapshot) {
     return querySnapshot.docs.map((snapshot) {
-      final Map<String, dynamic> ReportMap = snapshot.data() as Map<String, dynamic>;
+      final Map<String, dynamic> ReportMap =
+          snapshot.data() as Map<String, dynamic>;
 
       return ReportModel(
-        author : ReportMap['author'],
-        code : ReportMap['code'],
-        codeDatetime : ReportMap['codeDatetime'],
-        dateTime : ReportMap['dateTime'],
-        duration : ReportMap['duration'],
-        group : ReportMap['group'],
-        image : ReportMap['image'],
-        participants : ReportMap['participants'],
-        sem : ReportMap['sem'],
-        studyStartTime : ReportMap['studyStartTime'],
-        text : ReportMap['text'],
-        title : ReportMap['title'],
-        year : ReportMap['year']
-      );
+          author: ReportMap['author'],
+          code: ReportMap['code'],
+          codeDatetime: ReportMap['codeDatetime'],
+          dateTime: ReportMap['dateTime'],
+          duration: ReportMap['duration'],
+          group: ReportMap['group'],
+          image: ReportMap['image'],
+          participants: ReportMap['participants'],
+          sem: ReportMap['sem'],
+          studyStartTime: ReportMap['studyStartTime'],
+          text: ReportMap['text'],
+          title: ReportMap['title'],
+          year: ReportMap['year']);
     }).toList();
   }
 }

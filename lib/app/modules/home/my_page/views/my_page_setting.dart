@@ -24,7 +24,8 @@ class MyPageSettingView extends GetView<MyPageController> {
   User? get userProfile => auth.currentUser;
 
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _studentNumberController = TextEditingController();
+  final TextEditingController _studentNumberController =
+      TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   String name = "";
@@ -42,8 +43,6 @@ class MyPageSettingView extends GetView<MyPageController> {
       phone = ds["phone"];
       studentNumber = ds["studentNumber"];
       email = ds["email"];
-
-
     });
 
     return Scaffold(
@@ -77,7 +76,11 @@ class MyPageSettingView extends GetView<MyPageController> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("마이 페이지 수정",style: TextStyle(fontSize: 15,fontWeight:FontWeight.w300),),
+                            Text(
+                              "마이 페이지 수정",
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w300),
+                            ),
                           ],
                         ),
                         SizedBox(
@@ -96,12 +99,15 @@ class MyPageSettingView extends GetView<MyPageController> {
                                       color: Colors.grey[300],
                                     ),
                                   ),
-                                 // hintText: name,
-                                  hintText:"이 름" ,
-                                  hintStyle: TextStyle(fontSize: 13,color: Colors.black54),
+                                  // hintText: name,
+                                  hintText: "이 름",
+                                  hintStyle: TextStyle(
+                                      fontSize: 13, color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white,
-                                  labelStyle: TextStyle(fontSize: 10, ),
+                                  labelStyle: TextStyle(
+                                    fontSize: 10,
+                                  ),
                                   contentPadding: EdgeInsets.only(left: 15),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide:
@@ -128,9 +134,10 @@ class MyPageSettingView extends GetView<MyPageController> {
                                       color: Colors.grey[300],
                                     ),
                                   ),
-                               //   hintText: studentNumber,
+                                  //   hintText: studentNumber,
                                   hintText: "학 번",
-                                  hintStyle: TextStyle(fontSize: 13,color: Colors.black54),
+                                  hintStyle: TextStyle(
+                                      fontSize: 13, color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white,
                                   labelStyle: TextStyle(fontSize: 12),
@@ -164,9 +171,10 @@ class MyPageSettingView extends GetView<MyPageController> {
                                       color: Colors.grey[300],
                                     ),
                                   ),
-                                 // hintText:email,
+                                  // hintText:email,
                                   hintText: "이메일",
-                                  hintStyle: TextStyle(fontSize: 13,color: Colors.black54),
+                                  hintStyle: TextStyle(
+                                      fontSize: 13, color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white,
                                   labelStyle: TextStyle(fontSize: 12),
@@ -196,9 +204,10 @@ class MyPageSettingView extends GetView<MyPageController> {
                                       color: Colors.grey[300],
                                     ),
                                   ),
-                               //   hintText: phone,
+                                  //   hintText: phone,
                                   hintText: "전화 번호 (ex: 010-0000-0000)",
-                                  hintStyle: TextStyle(fontSize: 13,color: Colors.black54),
+                                  hintStyle: TextStyle(
+                                      fontSize: 13, color: Colors.black54),
                                   filled: true,
                                   fillColor: Colors.white,
                                   labelStyle: TextStyle(fontSize: 12),
@@ -218,305 +227,305 @@ class MyPageSettingView extends GetView<MyPageController> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 30),
-                        DropdownButtonFormField2(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              //      borderSide: BorderSide(color: Colors.yellowAccent),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          isExpanded: true,
-                          hint: const Text(
-                            '수강중인 과목 1을 선택해주세요.',
-                            style: TextStyle(fontSize: 13,color: Colors.black54),
-                          ),
-                          iconSize: 30,
-                          buttonHeight: 60,
-                          buttonPadding:
-                              const EdgeInsets.only(left: 15, right: 10),
-                          dropdownDecoration: BoxDecoration(
-                            //    border: Border.all(width: 1, color:  Color(0xFFECEFF1)),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          items: subjectItems
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select gender.';
-                            }
-                          },
-                          onChanged: (value) {
-                            subject1 = value.toString();
-                            //Do something when changing the item if you want.
-                          },
-                          onSaved: (value) {
-                            subject1 = value.toString();
-                          },
-                        ),
-                        SizedBox(height: 30),
-                        DropdownButtonFormField2(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                            fillColor: Colors.blueGrey[50],
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          isExpanded: true,
-                          hint: const Text(
-                            '수강중인 과목 2을 선택해주세요.',
-                            style: TextStyle(fontSize: 13,color: Colors.black54),
-                          ),
-                          iconSize: 30,
-                          buttonHeight: 60,
-                          buttonPadding:
-                              const EdgeInsets.only(left:15, right: 10),
-                          dropdownDecoration: BoxDecoration(
-                              //      border: Border.all(width: 1, color: Colors.black),
-                              ),
-                          items: subjectItems
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select gender.';
-                            }
-                          },
-                          onChanged: (value) {
-                            subject2 = value.toString();
-                            //Do something when changing the item if you want.
-                          },
-                          onSaved: (value) {
-                            subject2 = value.toString();
-                          },
-                        ),
-                        SizedBox(height: 30),
-                        DropdownButtonFormField2(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                            fillColor: Colors.blueGrey[50],
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          isExpanded: true,
-                          hint: const Text(
-                            '수강중인 과목 3을 선택해주세요.',
-                            style: TextStyle(fontSize: 13,color: Colors.black54),
-                          ),
-                          iconSize: 30,
-                          buttonHeight: 60,
-                          buttonPadding:
-                              const EdgeInsets.only(left: 15, right: 10),
-                          dropdownDecoration: BoxDecoration(
-                              //      border: Border.all(width: 1, color: Colors.black),
-                              ),
-                          items: subjectItems
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select gender.';
-                            }
-                          },
-                          onChanged: (value) {
-                            subject3 = value.toString();
-                            //Do something when changing the item if you want.
-                          },
-                          onSaved: (value) {
-                            subject3 = value.toString();
-                          },
-                        ),
-                        SizedBox(height: 30),
-                        DropdownButtonFormField2(
-                          decoration: InputDecoration(
-                            isDense: true,
-                            contentPadding: EdgeInsets.zero,
-                            fillColor: Colors.blueGrey[50],
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Color(0xFFECEFF1)),
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          isExpanded: true,
-                          hint: const Text(
-                            '수강중인 과목 4을 선택해주세요.',
-                            style: TextStyle(fontSize: 13,color: Colors.black54),
-                          ),
-                          iconSize: 30,
-                          buttonHeight: 60,
-                          buttonPadding:
-                              const EdgeInsets.only(left: 15, right: 10),
-                          dropdownDecoration: BoxDecoration(
-                              //      border: Border.all(width: 1, color: Colors.black),
-                              ),
-                          items: subjectItems
-                              .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ))
-                              .toList(),
-                          validator: (value) {
-                            if (value == null) {
-                              return 'Please select gender.';
-                            }
-                          },
-                          onChanged: (value) {
-                            //Do something when changing the item if you want.
-                            subject4 = value.toString();
-                          },
-                          onSaved: (value) {
-                            subject4 = value.toString();
-                          },
-                        ),
-                        SizedBox(height: 40),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 120,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(15),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    spreadRadius: 2,
-                                    blurRadius: 20,
-                                  ),
-                                ],
-                              ),
-                              child: ElevatedButton(
-                                child: Container(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: Center(
-                                        child: Text(
-                                      "취 소",
-                                      style: TextStyle(color: Colors.white),
-                                    ))),
-                                onPressed: () {
-                                  Get.to(MyPageView());
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.black26,
-                                  //   onPrimary: Colors.black38,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(
-                              width: 30,
-                            ),
-                            Container(
-                              width: 120,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(0xFFD1C4E9),
-                                    spreadRadius: 10,
-                                    blurRadius: 20,
-                                  ),
-                                ],
-                              ),
-                              child: ElevatedButton(
-                                child: Container(
-                                    width: double.infinity,
-                                    height: 50,
-                                    child: Center(child: Text("제 출"))),
-                                onPressed: () async {
-                                  print(subject1);
-                                  FirebaseFirestore.instance
-                                      .collection('Profile')
-                                      .doc(userProfile!.uid)
-                                      .update({
-                                    'name': _nameController.text,
-                                    'studentNumber':
-                                        _studentNumberController.text,
-                                    'email': _emailController.text,
-                                    'phone': _phoneController.text,
-                                    'myClasses': FieldValue.arrayUnion([
-                                      subject1,
-                                      subject2,
-                                      subject3,
-                                      subject4
-                                    ])
-                                  });
+                        // SizedBox(height: 30),
+                        // DropdownButtonFormField2(
+                        //   decoration: InputDecoration(
+                        //     isDense: true,
+                        //     contentPadding: EdgeInsets.zero,
+                        //     fillColor: Colors.white,
+                        //     border: OutlineInputBorder(
+                        //       //      borderSide: BorderSide(color: Colors.yellowAccent),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //   ),
+                        //   isExpanded: true,
+                        //   hint: const Text(
+                        //     '수강중인 과목 1을 선택해주세요.',
+                        //     style: TextStyle(fontSize: 13,color: Colors.black54),
+                        //   ),
+                        //   iconSize: 30,
+                        //   buttonHeight: 60,
+                        //   buttonPadding:
+                        //       const EdgeInsets.only(left: 15, right: 10),
+                        //   dropdownDecoration: BoxDecoration(
+                        //     //    border: Border.all(width: 1, color:  Color(0xFFECEFF1)),
+                        //     borderRadius: BorderRadius.circular(15),
+                        //   ),
+                        //   items: subjectItems
+                        //       .map((item) => DropdownMenuItem<String>(
+                        //             value: item,
+                        //             child: Text(
+                        //               item,
+                        //               style: const TextStyle(
+                        //                 fontSize: 14,
+                        //               ),
+                        //             ),
+                        //           ))
+                        //       .toList(),
+                        //   validator: (value) {
+                        //     if (value == null) {
+                        //       return 'Please select gender.';
+                        //     }
+                        //   },
+                        //   onChanged: (value) {
+                        //     subject1 = value.toString();
+                        //     //Do something when changing the item if you want.
+                        //   },
+                        //   onSaved: (value) {
+                        //     subject1 = value.toString();
+                        //   },
+                        // ),
+                        // SizedBox(height: 30),
+                        // DropdownButtonFormField2(
+                        //   decoration: InputDecoration(
+                        //     isDense: true,
+                        //     contentPadding: EdgeInsets.zero,
+                        //     fillColor: Colors.blueGrey[50],
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //   ),
+                        //   isExpanded: true,
+                        //   hint: const Text(
+                        //     '수강중인 과목 2을 선택해주세요.',
+                        //     style: TextStyle(fontSize: 13,color: Colors.black54),
+                        //   ),
+                        //   iconSize: 30,
+                        //   buttonHeight: 60,
+                        //   buttonPadding:
+                        //       const EdgeInsets.only(left:15, right: 10),
+                        //   dropdownDecoration: BoxDecoration(
+                        //       //      border: Border.all(width: 1, color: Colors.black),
+                        //       ),
+                        //   items: subjectItems
+                        //       .map((item) => DropdownMenuItem<String>(
+                        //             value: item,
+                        //             child: Text(
+                        //               item,
+                        //               style: const TextStyle(
+                        //                 fontSize: 14,
+                        //               ),
+                        //             ),
+                        //           ))
+                        //       .toList(),
+                        //   validator: (value) {
+                        //     if (value == null) {
+                        //       return 'Please select gender.';
+                        //     }
+                        //   },
+                        //   onChanged: (value) {
+                        //     subject2 = value.toString();
+                        //     //Do something when changing the item if you want.
+                        //   },
+                        //   onSaved: (value) {
+                        //     subject2 = value.toString();
+                        //   },
+                        // ),
+                        // SizedBox(height: 30),
+                        // DropdownButtonFormField2(
+                        //   decoration: InputDecoration(
+                        //     isDense: true,
+                        //     contentPadding: EdgeInsets.zero,
+                        //     fillColor: Colors.blueGrey[50],
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //   ),
+                        //   isExpanded: true,
+                        //   hint: const Text(
+                        //     '수강중인 과목 3을 선택해주세요.',
+                        //     style: TextStyle(fontSize: 13,color: Colors.black54),
+                        //   ),
+                        //   iconSize: 30,
+                        //   buttonHeight: 60,
+                        //   buttonPadding:
+                        //       const EdgeInsets.only(left: 15, right: 10),
+                        //   dropdownDecoration: BoxDecoration(
+                        //       //      border: Border.all(width: 1, color: Colors.black),
+                        //       ),
+                        //   items: subjectItems
+                        //       .map((item) => DropdownMenuItem<String>(
+                        //             value: item,
+                        //             child: Text(
+                        //               item,
+                        //               style: const TextStyle(
+                        //                 fontSize: 14,
+                        //               ),
+                        //             ),
+                        //           ))
+                        //       .toList(),
+                        //   validator: (value) {
+                        //     if (value == null) {
+                        //       return 'Please select gender.';
+                        //     }
+                        //   },
+                        //   onChanged: (value) {
+                        //     subject3 = value.toString();
+                        //     //Do something when changing the item if you want.
+                        //   },
+                        //   onSaved: (value) {
+                        //     subject3 = value.toString();
+                        //   },
+                        // ),
+                        // SizedBox(height: 30),
+                        // DropdownButtonFormField2(
+                        //   decoration: InputDecoration(
+                        //     isDense: true,
+                        //     contentPadding: EdgeInsets.zero,
+                        //     fillColor: Colors.blueGrey[50],
+                        //     border: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //     focusedBorder: OutlineInputBorder(
+                        //       borderSide: BorderSide(color: Color(0xFFECEFF1)),
+                        //       borderRadius: BorderRadius.circular(15),
+                        //     ),
+                        //   ),
+                        //   isExpanded: true,
+                        //   hint: const Text(
+                        //     '수강중인 과목 4을 선택해주세요.',
+                        //     style: TextStyle(fontSize: 13,color: Colors.black54),
+                        //   ),
+                        //   iconSize: 30,
+                        //   buttonHeight: 60,
+                        //   buttonPadding:
+                        //       const EdgeInsets.only(left: 15, right: 10),
+                        //   dropdownDecoration: BoxDecoration(
+                        //       //      border: Border.all(width: 1, color: Colors.black),
+                        //       ),
+                        //   items: subjectItems
+                        //       .map((item) => DropdownMenuItem<String>(
+                        //             value: item,
+                        //             child: Text(
+                        //               item,
+                        //               style: const TextStyle(
+                        //                 fontSize: 14,
+                        //               ),
+                        //             ),
+                        //           ))
+                        //       .toList(),
+                        //   validator: (value) {
+                        //     if (value == null) {
+                        //       return 'Please select gender.';
+                        //     }
+                        //   },
+                        //   onChanged: (value) {
+                        //     //Do something when changing the item if you want.
+                        //     subject4 = value.toString();
+                        //   },
+                        //   onSaved: (value) {
+                        //     subject4 = value.toString();
+                        //   },
+                        // ),
+                        // SizedBox(height: 40),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.center,
+                        //   children: [
+                        //     Container(
+                        //       width: 120,
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.white,
+                        //         borderRadius: BorderRadius.circular(15),
+                        //         boxShadow: [
+                        //           BoxShadow(
+                        //             color: Colors.black26,
+                        //             spreadRadius: 2,
+                        //             blurRadius: 20,
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       child: ElevatedButton(
+                        //         child: Container(
+                        //             width: double.infinity,
+                        //             height: 50,
+                        //             child: Center(
+                        //                 child: Text(
+                        //               "취 소",
+                        //               style: TextStyle(color: Colors.white),
+                        //             ))),
+                        //         onPressed: () {
+                        //           Get.to(MyPageView());
+                        //         },
+                        //         style: ElevatedButton.styleFrom(
+                        //           primary: Colors.black26,
+                        //           //   onPrimary: Colors.black38,
+                        //           shape: RoundedRectangleBorder(
+                        //             borderRadius: BorderRadius.circular(15),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //     SizedBox(
+                        //       width: 30,
+                        //     ),
+                        //     Container(
+                        //       width: 120,
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.white,
+                        //         borderRadius: BorderRadius.circular(30),
+                        //         boxShadow: [
+                        //           BoxShadow(
+                        //             color: Color(0xFFD1C4E9),
+                        //             spreadRadius: 10,
+                        //             blurRadius: 20,
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       child: ElevatedButton(
+                        //         child: Container(
+                        //             width: double.infinity,
+                        //             height: 50,
+                        //             child: Center(child: Text("제 출"))),
+                        //         onPressed: () async {
+                        //           print(subject1);
+                        //           FirebaseFirestore.instance
+                        //               .collection('Profile')
+                        //               .doc(userProfile!.uid)
+                        //               .update({
+                        //             'name': _nameController.text,
+                        //             'studentNumber':
+                        //                 _studentNumberController.text,
+                        //             'email': _emailController.text,
+                        //             'phone': _phoneController.text,
+                        //             'myClasses': FieldValue.arrayUnion([
+                        //               subject1,
+                        //               subject2,
+                        //               subject3,
+                        //               subject4
+                        //             ])
+                        //           });
 
-                                  Get.to(MyPageView());
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  primary: Colors.deepPurple,
-                                  onPrimary: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        //           Get.to(MyPageView());
+                        //         },
+                        //         style: ElevatedButton.styleFrom(
+                        //           primary: Colors.deepPurple,
+                        //           onPrimary: Colors.white,
+                        //           shape: RoundedRectangleBorder(
+                        //             borderRadius: BorderRadius.circular(15),
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
                       ],
                     ),
                   ),

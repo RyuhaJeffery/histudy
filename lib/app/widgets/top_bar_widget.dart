@@ -34,22 +34,34 @@ Widget topBar() {
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.REPORT_LIST);
               },
-              child: Text("HOME",style: TextStyle(color: Color(0xff04589C)),)),
+              child: Text(
+                "REPORT",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.GROUP_INFO);
               },
-              child: Text("TEAM",style: TextStyle(color: Color(0xff04589C)),)),
+              child: Text(
+                "TEAM",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.QUESTION);
               },
-              child: Text("Q&A",style: TextStyle(color: Color(0xff04589C)),)),
+              child: Text(
+                "Q&A",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.ANNOUNCE);
               },
-              child: Text("ANNOUNCEMENT",style: TextStyle(color: Color(0xff04589C)),)),
+              child: Text(
+                "ANNOUNCEMENT",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
         ],
       ),
       Row(
@@ -58,18 +70,27 @@ Widget topBar() {
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.RANK);
               },
-              child: Text("RANK",style: TextStyle(color: Color(0xff04589C)),)),
+              child: Text(
+                "RANK",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
           TextButton(
-              onPressed: () async{
-                await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
+              onPressed: () async {
+                await launchUrl(Uri.parse(
+                    "https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
               },
-              child: Text("GUIDELINE",style: TextStyle(color: Color(0xff04589C)),)),
+              child: Text(
+                "GUIDELINE",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
           TextButton(
               onPressed: () {
                 Get.rootDelegate.toNamed(Routes.MY_PAGE);
               },
-              child: Text("MY PAGE",style: TextStyle(color: Color(0xff04589C)),)),
-
+              child: Text(
+                "MY PAGE",
+                style: TextStyle(color: Color(0xff04589C)),
+              )),
         ],
       ),
     ]),

@@ -12,18 +12,29 @@ import 'package:path/path.dart' as Path;
 class ImagePickerService extends GetxService {
   static ImagePickerService imagePickerService = ImagePickerService();
   final firestorage = FirebaseStorage.instance;
-  //1. 이미지 피커 -> 이미지 선택
-  //2. 선택된 이미지 path
-  //3.
+
   final ImagePicker _imagePicker = ImagePicker();
 
-  Future<XFile?>pickImage()async{
+  Future<XFile?> pickImage() async {
     return await _imagePicker.pickImage(source: ImageSource.gallery);
   }
-  uploadImage(XFile xFile,String ref)async{
-    Uint8List bytes = await xFile.readAsBytes();
-    Reference ref = firestorage.ref().child('${DateTime.now()}.jpeg');
-    await ref.putData(bytes,SettableMetadata(contentType: 'image/jpeg'));
 
+  uploadImage(XFile xFile, String groupNum, String dateTime) async {
+    Uint8List bytes = await xFile.readAsBytes();
+    Reference ref =
+        firestorage.ref().child('Group' + groupNum).child(dateTime + '.png');
+    print(xFile.path.toString());
+    await ref.putData(bytes, SettableMetadata(contentType: 'image/png'));
+  }
+
+  Future<String> downloadURL(String groupNum, String dateTime) async {
+    // print("[SERIVCE]" + dateTime.toString());
+    String downloadURL = await firestorage
+        .ref()
+        .child('Group' + groupNum)
+        .child('$dateTime.png')
+        .getDownloadURL();
+    // print("[SERIVCE]" + downloadURL);
+    return downloadURL;
   }
 }

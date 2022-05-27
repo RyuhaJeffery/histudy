@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -26,7 +27,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 30.h),
-                height: 840.h,
+                height: 700.h,
                 width: 774.w,
                 decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Colors.black),
@@ -86,7 +87,9 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                         builder: (context, userSnapshot) {
                                           if (userSnapshot.hasData) {
                                             ProfileModel profileModelInGroup = userSnapshot.data!;
-                                            return index == reportModel.participants!.length-1 ? Text(profileModelInGroup.name.toString()) :  Text(profileModelInGroup.name.toString()+", ");;
+                                            return index == reportModel.participants!.length-1 ?
+                                              Text(profileModelInGroup.name.toString()) :
+                                              Text(profileModelInGroup.name.toString()+", ");
                                           } else {
                                             return CircularProgressIndicator();
                                           }
@@ -124,15 +127,18 @@ class ReportDetailView extends GetView<ReportDetailController> {
                             SizedBox(
                               width: 16.w,
                             ),
-                            Flexible(
-                              child: RichText(
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 50,
-                                  text: TextSpan(
-                                text: reportModel.text.toString(),
-                                style: TextStyle(
-                                    fontSize: 15.sp, color: Colors.black),
-                              )),
+                            Padding(
+                              padding: EdgeInsets.only(top: 8.0.h),
+                              child: Flexible(
+                                child: RichText(
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 50,
+                                    text: TextSpan(
+                                  text: reportModel.text.toString(),
+                                  style: TextStyle(
+                                      fontSize: 15.sp, color: Colors.black),
+                                )),
+                              ),
                             )
                           ],
                         ),
@@ -143,12 +149,13 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _titleWidget('이미지'),
-                            SizedBox(width: 100.w,),
-                            Container(
-                              height: 300,
-                              width: 300,
-                              color: Colors.teal,
-                            )
+                            SizedBox(width: 54.w,),
+                            Image.network(
+                              reportModel.image.toString(),
+                              height: 350.h,
+                              width: 350.w,
+                              fit: BoxFit.cover
+                            ),
                           ],
                         ), // 이미지 추
                       ],

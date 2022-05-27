@@ -35,12 +35,13 @@ class MyPageView extends GetView<MyPageController> {
           Column(
             children: [
               topBar2(),
-              Text("마이 페이지",
-                style:  TextStyle(
+              Text(
+                "마이 페이지",
+                style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,
-                    color: Colors.black87),),
-
+                    color: Colors.black87),
+              ),
               SizedBox(
                 height: 22,
               ),
@@ -66,11 +67,9 @@ class MyPageView extends GetView<MyPageController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-
                             IconButton(
                               onPressed: () {
                                 //controller.changed_enabled();
@@ -293,20 +292,20 @@ class MyPageView extends GetView<MyPageController> {
                                       child: Text(
                                         'Create Group',
                                         style: TextStyle(
-                                          fontSize: 25,
+                                          fontSize: 18,
                                         ),
                                       ),
                                       style: ButtonStyle(
                                         minimumSize: MaterialStateProperty.all(
-                                            Size(382, 56)),
+                                            Size(280, 40)),
                                         backgroundColor:
                                             MaterialStateProperty.all<Color>(
-                                                Colors.black),
+                                                Colors.black54),
                                         shape: MaterialStateProperty.all<
                                                 RoundedRectangleBorder>(
                                             RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(32),
+                                              BorderRadius.circular(27),
                                         )),
                                       ),
                                       onPressed: () async {
@@ -337,7 +336,6 @@ class MyPageView extends GetView<MyPageController> {
                                                 RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(27),
-
                                             )),
                                           ),
                                           onPressed: () {

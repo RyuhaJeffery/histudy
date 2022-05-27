@@ -31,89 +31,112 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: Color(0xffFDFFFE),
         body: Column(
           children: [
-        Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Row(
-            children: [
-              SizedBox(
-                  height: 70,
-                  width: 70,
-                  child: Image.asset('assets/handong_logo.png')),
-              SizedBox(
-                width: 8,
-              ),
-              GestureDetector(
-                onTap: () {
-                  Get.rootDelegate.toNamed(Routes.HOME);
-                },
-                child: Text(
-                  'HISTUDY',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
-                ),
-              ),
-              SizedBox(
-                width: 8,
-              ),
-              TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.REPORT_LIST);
-                  },
-                  child: Text("HOME",style: TextStyle(color: Color(0xff04589C)),)),
-              TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                  },
-                  child: Text("TEAM",style: TextStyle(color: Color(0xff04589C)),)),
-              TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.QUESTION);
-                  },
-                  child: Text("Q&A",style: TextStyle(color: Color(0xff04589C)),)),
-              TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                  },
-                  child: Text("ANNOUNCEMENT",style: TextStyle(color: Color(0xff04589C)),)),
-            ],
-          ),
-          Row(
-            children: [
-              TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.RANK);
-                  },
-                  child: Text("RANK",style: TextStyle(color: Color(0xff04589C)),)),
-              TextButton(
-                  onPressed: () async{
-                    await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
-                  },
-                  child: Text("GUIDELINE",style: TextStyle(color: Color(0xff04589C)),)),
-              FirebaseAuth.instance.currentUser != null
-                  ? TextButton(
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.MY_PAGE);
-                  },
-                  child: Text("MY PAGE",style: TextStyle(color: Color(0xff04589C)),))
-                  : ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xff04589C),
-                    side: BorderSide(width: 1),
-                    shape: RoundedRectangleBorder(
-                      //to set border radius to button
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
-                  onPressed: () {
-                    Get.rootDelegate.toNamed(Routes.LOGIN);
-                  },
-                  child: Text('LOGIN'))
-
-
-            ],
-          ),
-        ]),
-      ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                            height: 70,
+                            width: 70,
+                            child: Image.asset('assets/handong_logo.png')),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.rootDelegate.toNamed(Routes.HOME);
+                          },
+                          child: Text(
+                            'HISTUDY',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 26),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        TextButton(
+                            onPressed: () {
+                              Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                            },
+                            child: Text(
+                              "REPORT",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                        TextButton(
+                            onPressed: () {
+                              Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                            },
+                            child: Text(
+                              "TEAM",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                        TextButton(
+                            onPressed: () {
+                              Get.rootDelegate.toNamed(Routes.QUESTION);
+                            },
+                            child: Text(
+                              "Q&A",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                        TextButton(
+                            onPressed: () {
+                              Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                            },
+                            child: Text(
+                              "ANNOUNCEMENT",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              Get.rootDelegate.toNamed(Routes.RANK);
+                            },
+                            child: Text(
+                              "RANK",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                        TextButton(
+                            onPressed: () async {
+                              await launchUrl(Uri.parse(
+                                  "https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
+                            },
+                            child: Text(
+                              "GUIDELINE",
+                              style: TextStyle(color: Color(0xff04589C)),
+                            )),
+                        FirebaseAuth.instance.currentUser != null
+                            ? TextButton(
+                                onPressed: () {
+                                  Get.rootDelegate.toNamed(Routes.MY_PAGE);
+                                },
+                                child: Text(
+                                  "MY PAGE",
+                                  style: TextStyle(color: Color(0xff04589C)),
+                                ))
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xff04589C),
+                                  side: BorderSide(width: 1),
+                                  shape: RoundedRectangleBorder(
+                                      //to set border radius to button
+                                      borderRadius: BorderRadius.circular(5)),
+                                ),
+                                onPressed: () {
+                                  Get.rootDelegate.toNamed(Routes.LOGIN);
+                                },
+                                child: Text('LOGIN'))
+                      ],
+                    ),
+                  ]),
+            ),
             SizedBox(
               height: 281,
               width: 367,
@@ -144,7 +167,7 @@ class HomeView extends GetView<HomeController> {
             // SizedBox(
             //   height: 25,
             // ),
-            
+
             // SizedBox(height: 30),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
