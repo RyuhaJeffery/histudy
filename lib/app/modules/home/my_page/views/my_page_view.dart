@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutterfire_ui/auth.dart';
 
 import 'package:get/get.dart';
-import 'package:histudy/app/modules/home/my_page/views/my_page_setting.dart';
+import 'package:histudy/app/modules/home/my_page/my_page_setting/views/my_page_setting_view.dart';
 import 'package:histudy/app/services/auth_service.dart';
+import 'package:histudy/app/widgets/top_bar_widget2.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../routes/app_pages.dart';
@@ -33,77 +34,15 @@ class MyPageView extends GetView<MyPageController> {
         children: [
           Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          SizedBox(
-                              height: 100,
-                              width: 100,
-                              child: Image.asset('assets/handong_logo.png')),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Get.rootDelegate.toNamed(Routes.HOME);
-                            },
-                            child: Text(
-                              'HISTUDY',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                          ),
-                          SizedBox(
-                            width: 8,
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.HOME);
-                              },
-                              child: Text("HOME")),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                              },
-                              child: Text("TEAM")),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.QUESTION);
-                              },
-                              child: Text("Q&A")),
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                              },
-                              child: Text("ANNOUNCEMENT")),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                Get.rootDelegate.toNamed(Routes.RANK);
-                              },
-                              child: Text("RANK")),
-                          TextButton(
-                              onPressed: () async{
-                              await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
-                            },
-                              child: Text("GUIDELINE")),
-                          ElevatedButton(
-                              onPressed: () {
-                                AuthService.to.googleSignOut();
-                                Get.rootDelegate.toNamed(Routes.LOGIN);
-                              },
-                              child: Text('LOGOUT'))
-                        ],
-                      ),
-                    ]),
+              topBar2(),
+              Text("마이 페이지",
+                style:  TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                    color: Colors.black87),),
+
+              SizedBox(
+                height: 22,
               ),
               Center(
                   child: Container(
@@ -127,15 +66,11 @@ class MyPageView extends GetView<MyPageController> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text("마이 페이지",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.w300)),
-                            SizedBox(
-                              width: 180,
-                            ),
+
                             IconButton(
                               onPressed: () {
                                 //controller.changed_enabled();
@@ -346,7 +281,7 @@ class MyPageView extends GetView<MyPageController> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 60),
                         StreamBuilder<DocumentSnapshot>(
                           stream: _userStream,
                           builder: (context,
@@ -387,21 +322,22 @@ class MyPageView extends GetView<MyPageController> {
                                           child: Text(
                                             'Register Histudy',
                                             style: TextStyle(
-                                              fontSize: 25,
+                                              fontSize: 18,
                                             ),
                                           ),
                                           style: ButtonStyle(
                                             minimumSize:
                                                 MaterialStateProperty.all(
-                                                    Size(382, 56)),
+                                                    Size(280, 40)),
                                             backgroundColor:
                                                 MaterialStateProperty.all<
-                                                    Color>(Colors.black),
+                                                    Color>(Colors.black54),
                                             shape: MaterialStateProperty.all<
                                                     RoundedRectangleBorder>(
                                                 RoundedRectangleBorder(
                                               borderRadius:
-                                                  BorderRadius.circular(32),
+                                                  BorderRadius.circular(27),
+
                                             )),
                                           ),
                                           onPressed: () {

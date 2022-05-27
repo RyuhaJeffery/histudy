@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:histudy/app/widgets/top_bar_widget.dart';
@@ -20,12 +21,18 @@ class AnnounceView extends GetView<AnnounceController> {
           child:Column(children: [
             topBar(),
 
-            Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children:[
-                  SizedBox(width: 150,),
-                  //Text('공지사항'),
-                ]
+            SizedBox(
+              height: 30.h,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              Text(
+                '공지사항',
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15,color: Colors.black87),),
+
+
+            ]),
+            SizedBox(
+              height: 30,
             ),
             Flexible(
               child: Padding(
@@ -35,15 +42,33 @@ class AnnounceView extends GetView<AnnounceController> {
                     Divider(
                       thickness: 0.1,
                       color: Colors.black,
+                      height: 10,
                     ),
-                    Row(
-                        children: [
-                          Expanded(child:Text('      NO')),
-                          Expanded(child:Text('  작성자')),
-                          Expanded(child:Text('  제목')),
+                    Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
 
-                        ]
-                    ) ,
+                      Expanded(
+                          child: Text(
+                            '  NO',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Expanded(
+                          child: Text(
+                            '  작성자',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Expanded(
+                          child: Text(
+                            '  제목',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+
+                    ]),
                     Divider(
                       thickness: 0.1,
                       color: Colors.black,
