@@ -19,6 +19,12 @@ import '../modules/home/guideline/views/guideline_view.dart';
 import '../modules/home/home2/bindings/home2_binding.dart';
 import '../modules/home/home2/views/home2_view.dart';
 import '../modules/home/my_page/bindings/my_page_binding.dart';
+import '../modules/home/my_page/edit_class/bindings/edit_class_binding.dart';
+import '../modules/home/my_page/edit_class/views/edit_class_view.dart';
+import '../modules/home/my_page/edit_myInfo/bindings/edit_my_info_binding.dart';
+import '../modules/home/my_page/edit_myInfo/views/edit_my_info_view.dart';
+import '../modules/home/my_page/edit_sem/bindings/edit_sem_binding.dart';
+import '../modules/home/my_page/edit_sem/views/edit_sem_view.dart';
 import '../modules/home/my_page/views/my_page_view.dart';
 import '../modules/home/question/bindings/question_binding.dart';
 import '../modules/home/question/question_detail/bindings/question_detail_binding.dart';
@@ -155,6 +161,35 @@ class AppPages {
           middlewares: [
             EnsureAuthMiddleware(),
           ],
+          children: [
+            GetPage(
+              name: _Paths.EDIT_SEM,
+              page: () => EditSemView(),
+              binding: EditSemBinding(),
+              participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware(),
+              ],
+            ),
+            GetPage(
+              name: _Paths.EDIT_CLASS,
+              page: () => EditClassView(),
+              binding: EditClassBinding(),
+              participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware(),
+              ],
+            ),
+            GetPage(
+              name: _Paths.EDIT_MY_INFO,
+              page: () => EditMyInfoView(),
+              binding: EditMyInfoBinding(),
+              participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware(),
+              ],
+            ),
+          ],
         ),
         GetPage(
           name: _Paths.ADMIN,
@@ -206,13 +241,12 @@ class AppPages {
       ],
     ),
     GetPage(
-      name: _Paths.LOGIN,
-      page: () => LoginView(),
-      binding: LoginBinding(),
-      participatesInRootNavigator: true,
-      middlewares:  [
-        EnsureNotAuthedMiddleware(),
-      ]
-    ),
+        name: _Paths.LOGIN,
+        page: () => LoginView(),
+        binding: LoginBinding(),
+        participatesInRootNavigator: true,
+        middlewares: [
+          EnsureNotAuthedMiddleware(),
+        ]),
   ];
 }

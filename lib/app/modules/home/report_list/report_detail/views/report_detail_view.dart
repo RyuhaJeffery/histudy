@@ -21,28 +21,26 @@ class ReportDetailView extends GetView<ReportDetailController> {
         children: [
           Column(
             children: [
-              topBar(),
+              topBar(Get.rootDelegate.parameters["semId"]),
               SizedBox(
                 height: 22.h,
               ),
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: 30, vertical: 30),
-            height: 1040,
-            width: 700,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                  offset:
-                  Offset(0, 3), // changes position of shadow
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                height: 1040,
+                width: 700,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
                 ),
-              ],
-            ),
                 child: ListView(
                   children: [
                     Column(
@@ -59,19 +57,16 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                 ),
                                 Text(
                                   reportModel.title.toString(),
-                                  style:
-                                      TextStyle(fontSize: 15.sp, color: Colors.black),
+                                  style: TextStyle(
+                                      fontSize: 15.sp, color: Colors.black),
                                 ),
                               ],
                             ),
                             IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: Icon(
-                                  Icons.clear
-                              )
-                            )
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(Icons.clear))
                           ],
                         ),
                         SizedBox(
@@ -87,30 +82,44 @@ class ReportDetailView extends GetView<ReportDetailController> {
                               height: 50.h,
                               width: 550.w,
                               child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: reportModel.participants!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      FutureBuilder<ProfileModel?>(
-                                        future: UserRepositroy.getUser(reportModel.participants![index].toString()),
-                                        builder: (context, userSnapshot) {
-                                          if (userSnapshot.hasData) {
-                                            ProfileModel profileModelInGroup = userSnapshot.data!;
-                                            return index == reportModel.participants!.length-1 ?
-                                              Text(profileModelInGroup.name.toString()) :
-                                              Text(profileModelInGroup.name.toString()+", ");
-                                          } else {
-                                            return CircularProgressIndicator();
-                                          }
-                                        },
-                                      ),
-                                      SizedBox(width: 10.w,)
-                                    ],
-                                  );
-                                }
-                              ),
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: reportModel.participants!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        FutureBuilder<ProfileModel?>(
+                                          future: UserRepositroy.getUser(
+                                              reportModel.participants![index]
+                                                  .toString()),
+                                          builder: (context, userSnapshot) {
+                                            if (userSnapshot.hasData) {
+                                              ProfileModel profileModelInGroup =
+                                                  userSnapshot.data!;
+                                              return index ==
+                                                      reportModel.participants!
+                                                              .length -
+                                                          1
+                                                  ? Text(profileModelInGroup
+                                                      .name
+                                                      .toString())
+                                                  : Text(profileModelInGroup
+                                                          .name
+                                                          .toString() +
+                                                      ", ");
+                                            } else {
+                                              return CircularProgressIndicator();
+                                            }
+                                          },
+                                        ),
+                                        SizedBox(
+                                          width: 10.w,
+                                        )
+                                      ],
+                                    );
+                                  }),
                             )
                           ],
                         ),
@@ -126,7 +135,8 @@ class ReportDetailView extends GetView<ReportDetailController> {
                             Text(
                               '${reportModel.studyStartTime} ' +
                                   '(${reportModel.duration}분간 진행)',
-                              style: TextStyle(fontSize: 15, color: Colors.black),
+                              style:
+                                  TextStyle(fontSize: 15, color: Colors.black),
                             ),
                           ],
                         ),
@@ -142,13 +152,13 @@ class ReportDetailView extends GetView<ReportDetailController> {
                               padding: EdgeInsets.only(top: 8.0.h),
                               child: Flexible(
                                 child: RichText(
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 50,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 50,
                                     text: TextSpan(
-                                  text: reportModel.text.toString(),
-                                  style: TextStyle(
-                                      fontSize: 15.sp, color: Colors.black),
-                                )),
+                                      text: reportModel.text.toString(),
+                                      style: TextStyle(
+                                          fontSize: 15.sp, color: Colors.black),
+                                    )),
                               ),
                             )
                           ],
@@ -160,13 +170,11 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _titleWidget('이미지'),
-                            SizedBox(width: 54.w,),
-                            Image.network(
-                              reportModel.image.toString(),
-                              height: 350.h,
-                              width: 350.w,
-                              fit: BoxFit.cover
+                            SizedBox(
+                              width: 54.w,
                             ),
+                            Image.network(reportModel.image.toString(),
+                                height: 350.h, width: 350.w, fit: BoxFit.cover),
                           ],
                         ), // 이미지 추
                       ],

@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../routes/app_pages.dart';
 
-Widget topBar() {
+Widget topBar(String? semId) {
   return Padding(
     padding: const EdgeInsets.all(20.0),
     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -32,7 +32,13 @@ Widget topBar() {
           ),
           TextButton(
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                if (semId != null) {
+                  Get.rootDelegate.toNamed(
+                    Routes.REPORT_LIST,
+                    arguments: true,
+                    parameters: {'semId': semId},
+                  );
+                }
               },
               child: Text(
                 "REPORT",
@@ -40,7 +46,13 @@ Widget topBar() {
               )),
           TextButton(
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                if (semId != null) {
+                  Get.rootDelegate.toNamed(
+                    Routes.GROUP_INFO,
+                    arguments: true,
+                    parameters: {'semId': semId},
+                  );
+                }
               },
               child: Text(
                 "TEAM",
@@ -48,7 +60,13 @@ Widget topBar() {
               )),
           TextButton(
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.QUESTION);
+                if (semId != null) {
+                  Get.rootDelegate.toNamed(
+                    Routes.QUESTION,
+                    arguments: true,
+                    parameters: {'semId': semId},
+                  );
+                }
               },
               child: Text(
                 "Q&A",
@@ -56,7 +74,13 @@ Widget topBar() {
               )),
           TextButton(
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                if (semId != null) {
+                  Get.rootDelegate.toNamed(
+                    Routes.ANNOUNCE,
+                    arguments: true,
+                    parameters: {'semId': semId},
+                  );
+                }
               },
               child: Text(
                 "ANNOUNCEMENT",
@@ -68,7 +92,13 @@ Widget topBar() {
         children: [
           TextButton(
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.RANK);
+                if (semId != null) {
+                  Get.rootDelegate.toNamed(
+                    Routes.RANK,
+                    arguments: true,
+                    parameters: {'semId': semId},
+                  );
+                }
               },
               child: Text(
                 "RANK",
@@ -85,7 +115,13 @@ Widget topBar() {
               )),
           TextButton(
               onPressed: () {
-                Get.rootDelegate.toNamed(Routes.MY_PAGE);
+                if (semId != null) {
+                  Get.rootDelegate.toNamed(
+                    Routes.MY_PAGE,
+                    arguments: true,
+                    parameters: {'semId': semId},
+                  );
+                }
               },
               child: Text(
                 "MY PAGE",

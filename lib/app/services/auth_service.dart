@@ -69,7 +69,7 @@ class AuthService extends GetxService {
         .collection('Profile')
         .doc(AuthService.to.auth.value.currentUser!.uid)
         .collection("classScore")
-        .doc('classScore')
+        .doc('dummydata')
         .set({});
 
     //없으면 간단한 정보 추가 후 is 어쩌구

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 class ReportListController extends GetxController {
   //TODO: Implement ReportListController
 
+
   final count = 0.obs;
   @override
   void onInit() {

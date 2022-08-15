@@ -19,17 +19,20 @@ import '../report_detail/controllers/report_detail_controller.dart';
 class ReportListView extends GetView<ReportListController> {
   @override
   Widget build(BuildContext context) {
+  
     return Scaffold(
       backgroundColor: Color(0xffFDFFFE),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(children: [
-          topBar(),
-          SizedBox(height: 30.h,),
+          topBar(Get.rootDelegate.parameters["semId"]),
+          SizedBox(
+            height: 30.h,
+          ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             //SizedBox(width: 180,),
             Text(
-              '등록된 스터디모임 보고서',
+              "등록된 스터디모임 보고서",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
             ),
           ]),
@@ -49,7 +52,7 @@ class ReportListView extends GetView<ReportListController> {
                       primary: Color(0xff04589C),
                       side: BorderSide(width: 1),
                       shape: RoundedRectangleBorder(
-                        //to set border radius to button
+                          //to set border radius to button
                           borderRadius: BorderRadius.circular(5)),
                     ),
                     onPressed: () {
@@ -59,7 +62,6 @@ class ReportListView extends GetView<ReportListController> {
               ),
             ],
           ),
-
           _reportList(),
         ]),
       ),
@@ -75,56 +77,57 @@ class ReportListView extends GetView<ReportListController> {
             thickness: 0.1,
             color: Colors.black,
           ),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-
-                Expanded(
-                    child: Text(
-                      '  No',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                Expanded(
-                    child: Text(
-                      '  제목',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                Expanded(
-                    child: Text(
-                      '  글쓴이',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-                Expanded(
-                    child: Text(
-                      '  날짜',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )),
-
-              ]),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Expanded(
+                child: Text(
+              '  No',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+            Expanded(
+                child: Text(
+              '  제목',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+            Expanded(
+                child: Text(
+              '  글쓴이',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+            Expanded(
+                child: Text(
+              '  날짜',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+          ]),
           Divider(
             thickness: 0.1,
             color: Colors.black,
             height: 10,
           ),
           FutureBuilder<ProfileModel?>(
-            future: UserRepositroy.getUser(AuthService.to.auth.value.currentUser!.uid),
+            future: UserRepositroy.getUser(
+                AuthService.to.auth.value.currentUser!.uid),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 ProfileModel profile = snapshot.data!;
 
                 return StreamBuilder<QuerySnapshot>(
-                  stream: ReportRepository.getReportList(profile.group!.toString()),
+                  stream:
+                      ReportRepository.getReportList(profile.group!.toString()),
                   builder: (contextTwo, reportListSnapshot) {
                     if (reportListSnapshot.hasData) {
-                      List<ReportModel> reportList = reportListSnapshot.data!.docs.map((item) => ReportModel.fromSnapshot(item)).toList();
+                      List<ReportModel> reportList = reportListSnapshot
+                          .data!.docs
+                          .map((item) => ReportModel.fromSnapshot(item))
+                          .toList();
 //                    List<ReportModel> reportList = reportListSnapshot.data!;
 
                       return SizedBox(
@@ -137,12 +140,18 @@ class ReportListView extends GetView<ReportListController> {
                         ),
                       );
                     } else {
-                      return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
+                      return Container(
+                          height: 400.h,
+                          width: 400.w,
+                          child: Center(child: CircularProgressIndicator()));
                     }
                   },
                 );
               } else {
-                return Container(height : 400.h, width: 400.w ,child: Center(child: CircularProgressIndicator()));
+                return Container(
+                    height: 400.h,
+                    width: 400.w,
+                    child: Center(child: CircularProgressIndicator()));
               }
             },
           ),
@@ -168,7 +177,7 @@ class ReportListView extends GetView<ReportListController> {
               width: 40.w,
               child: Center(
                 child: Text(
-                  '${index+1}'.toString(),
+                  '${index + 1}'.toString(),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -198,7 +207,8 @@ class ReportListView extends GetView<ReportListController> {
               width: 130.w,
               child: Center(
                 child: Text(
-                  DateFormat('yyyy-MM-dd').format(reportModel.dateTime!.toDate()),
+                  DateFormat('yyyy-MM-dd')
+                      .format(reportModel.dateTime!.toDate()),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

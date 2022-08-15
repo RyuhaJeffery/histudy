@@ -42,17 +42,18 @@ class _HomePageState extends State<GroupInfoView> {
 
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _groupController = TextEditingController();
-  final CollectionReference _profile =
-      FirebaseFirestore.instance.collection('Profile');
 
   bool isSwitched = false;
   User? currentUser;
 
-  final CollectionReference _group =
-      FirebaseFirestore.instance.collection('Group');
+  final CollectionReference _profile =
+      FirebaseFirestore.instance.collection('Profile');
 
-  Future<void> _createOrUpdate(
-      [DocumentSnapshot? documentSnapshot, int? preGroup]) async {
+  Future<void> _createOrUpdate([
+    DocumentSnapshot? documentSnapshot,
+    int? preGroup,
+    String? semId,
+  ]) async {
     String action = 'create';
     if (documentSnapshot != null) {
       action = 'update';
@@ -104,16 +105,26 @@ class _HomePageState extends State<GroupInfoView> {
                     //final String? name = _nameController.text;
                     final double? group =
                         double.tryParse(_groupController.text);
-                    if (group != null) {
+                    if (group != null && semId != null) {
                       if (action == 'update') {
                         //이전 그룹에서 유저 데이터를 삭제
-                        await _group.doc(preGroup.toString()).update({
+                        await FirebaseFirestore.instance
+                            .collection(semId)
+                            .doc(semId)
+                            .collection('Group')
+                            .doc(preGroup.toString())
+                            .update({
                           "members":
                               FieldValue.arrayRemove([documentSnapshot!.id]),
                         });
 
                         //이동할 그룹에 유저 데이터를 추가
-                        await _group.doc(group.toString()).update({
+                        await FirebaseFirestore.instance
+                            .collection(semId)
+                            .doc(semId)
+                            .collection('Group')
+                            .doc(group.toString())
+                            .update({
                           "members":
                               FieldValue.arrayUnion([documentSnapshot.id]),
                         });
@@ -152,10 +163,12 @@ class _HomePageState extends State<GroupInfoView> {
 
   @override
   Widget build(BuildContext context) {
+    String? semId = Get.rootDelegate.parameters['semId'];
+
     return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
         body: Column(children: [
-          topBar(),
+          topBar(Get.rootDelegate.parameters["semId"]),
           SizedBox(
             height: 30.h,
           ),
@@ -227,7 +240,6 @@ class _HomePageState extends State<GroupInfoView> {
                           ),
                           Flexible(
                             child: StreamBuilder(
-                              //stream: _profile.snapshots(),
                               stream: _profile
                                   .orderBy('group', descending: true)
                                   .snapshots(),
@@ -277,13 +289,17 @@ class _HomePageState extends State<GroupInfoView> {
                                               child: Row(
                                                 children: [
                                                   IconButton(
-                                                      icon: const Icon(
-                                                          Icons.edit),
-                                                      onPressed: () =>
-                                                          _createOrUpdate(
-                                                              documentSnapshot,
-                                                              documentSnapshot[
-                                                                  'group'])),
+                                                    icon:
+                                                        const Icon(Icons.edit),
+                                                    onPressed: () {
+                                                      _createOrUpdate(
+                                                        documentSnapshot,
+                                                        documentSnapshot[
+                                                            'group'],
+                                                        semId,
+                                                      );
+                                                    },
+                                                  ),
                                                   IconButton(
                                                       icon: const Icon(
                                                           Icons.delete),

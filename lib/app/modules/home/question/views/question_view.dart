@@ -15,7 +15,7 @@ class QuestionView extends GetView<QuestionController> {
       backgroundColor: Color(0xffFDFFFE),
       body: Column(
         children: [
-          topBar(),
+          topBar(Get.rootDelegate.parameters["semId"]),
 
           SizedBox(
             height: 30.h,

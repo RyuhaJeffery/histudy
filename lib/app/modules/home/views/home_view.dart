@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
+import 'package:histudy/app/repository/user_repository.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'package:get/get.dart';
@@ -20,10 +21,16 @@ class HomeView extends GetView<HomeController> {
   // User? get userProfile => auth.currentUser;
   @override
   Widget build(BuildContext context) {
-    // Stream<DocumentSnapshot> _userStream = FirebaseFirestore.instance
-    //     .collection('Profile')
-    //     .doc(userProfile!.uid)
-    //     .snapshots();
+    late String semId;
+    FirebaseFirestore.instance
+        .collection("year")
+        .where("thisSem", isEqualTo: true)
+        .get()
+        .then((QuerySnapshot qs) {
+      qs.docs.forEach((doc) {
+        semId = doc.id;
+      });
+    });
 
     bool test = true;
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
@@ -61,7 +68,11 @@ class HomeView extends GetView<HomeController> {
                         ),
                         TextButton(
                             onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                              Get.rootDelegate.toNamed(
+                                Routes.REPORT_LIST,
+                                arguments: true,
+                                parameters: {'semId': semId},
+                              );
                             },
                             child: Text(
                               "REPORT",
@@ -69,7 +80,11 @@ class HomeView extends GetView<HomeController> {
                             )),
                         TextButton(
                             onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                              Get.rootDelegate.toNamed(
+                                Routes.GROUP_INFO,
+                                arguments: true,
+                                parameters: {'semId': semId},
+                              );
                             },
                             child: Text(
                               "TEAM",
@@ -77,7 +92,11 @@ class HomeView extends GetView<HomeController> {
                             )),
                         TextButton(
                             onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.QUESTION);
+                              Get.rootDelegate.toNamed(
+                                Routes.QUESTION,
+                                arguments: true,
+                                parameters: {'semId': semId},
+                              );
                             },
                             child: Text(
                               "Q&A",
@@ -85,7 +104,11 @@ class HomeView extends GetView<HomeController> {
                             )),
                         TextButton(
                             onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                              Get.rootDelegate.toNamed(
+                                Routes.ANNOUNCE,
+                                arguments: true,
+                                parameters: {'semId': semId},
+                              );
                             },
                             child: Text(
                               "ANNOUNCEMENT",
@@ -97,7 +120,11 @@ class HomeView extends GetView<HomeController> {
                       children: [
                         TextButton(
                             onPressed: () {
-                              Get.rootDelegate.toNamed(Routes.RANK);
+                              Get.rootDelegate.toNamed(
+                                Routes.RANK,
+                                arguments: true,
+                                parameters: {'semId': semId},
+                              );
                             },
                             child: Text(
                               "RANK",
@@ -115,7 +142,11 @@ class HomeView extends GetView<HomeController> {
                         FirebaseAuth.instance.currentUser != null
                             ? TextButton(
                                 onPressed: () {
-                                  Get.rootDelegate.toNamed(Routes.MY_PAGE);
+                                  Get.rootDelegate.toNamed(
+                                    Routes.MY_PAGE,
+                                    arguments: true,
+                                    parameters: {'semId': semId},
+                                  );
                                 },
                                 child: Text(
                                   "MY PAGE",
@@ -145,110 +176,6 @@ class HomeView extends GetView<HomeController> {
             SizedBox(
               height: 76,
             ),
-            // ElevatedButton(
-            //   child: Text(
-            //     'SIGN IN WITH GOOGLE',
-            //     style: TextStyle(
-            //       fontSize: 25,
-            //     ),
-            //   ),
-            //   style: ButtonStyle(
-            //     minimumSize: MaterialStateProperty.all(Size(382, 56)),
-            //     backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //         RoundedRectangleBorder(
-            //       borderRadius: BorderRadius.circular(32),
-            //     )),
-            //   ),
-            //   onPressed: () {
-            //     AuthService.to.signInWithGoogle();
-            //   },
-            // ),
-            // SizedBox(
-            //   height: 25,
-            // ),
-
-            // SizedBox(height: 30),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.GROUP_ADD);
-            //       },
-            //       child: Text('GROUP ADD'),
-            //     ),
-            //     TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.GROUP_DEL);
-            //       },
-            //       child: Text('GROUP DEL'),
-            //     )
-            //   ],
-            // )
-            // ElevatedButton(
-            //   child: Text(
-            //     'SIGN IN WITH GOOGLE',
-            //     style: TextStyle(
-            //       fontSize: 25,
-            //     ),
-            //   ),
-            //   style: ButtonStyle(
-            //     minimumSize: MaterialStateProperty.all(Size(382, 56)),
-            //     backgroundColor: MaterialStateProperty.all<Color>(
-            //         Colors.blue
-            //     ),
-            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //         RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(32),
-            //         )),
-            //   ),
-            //   onPressed: () {
-            //     AuthService.to.signInWithGoogle();
-            //   },
-            // ),
-            // SizedBox(
-            //   height: 25,
-            // ),
-            // ElevatedButton(
-            //   child: Text(
-            //     'ADMIN LOGIN',
-            //     style: TextStyle(
-            //       fontSize: 25,
-            //     ),
-            //   ),
-            //   style: ButtonStyle(
-            //     minimumSize: MaterialStateProperty.all(Size(382, 56)),
-            //     backgroundColor: MaterialStateProperty.all<Color>(
-            //         Colors.black
-            //     ),
-            //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            //         RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.circular(32),
-            //         )),
-            //   ),
-            //   onPressed: () {
-            //     AuthService.to.googleSignOut();
-            //   },
-            // ),
-            // SizedBox(height: 30),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.GROUP_ADD);
-            //       },
-            //       child: Text('GROUP ADD'),
-            //     ),
-            //     TextButton(
-            //       onPressed: () {
-            //         Get.rootDelegate.toNamed(Routes.GROUP_DEL);
-            //       },
-            //       child: Text('GROUP DEL'),
-            //     )
-            //   ],
-            // )
           ],
         ),
       );

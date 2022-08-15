@@ -53,7 +53,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                   children: [
                     Column(
                       children: [
-                        topBar(),
+                        topBar(Get.rootDelegate.parameters["semId"]),
                         _sizedBoxWidget(22),
                         _mainTitleWidget(),
                         _sizedBoxWidget(22),
@@ -133,7 +133,8 @@ class ReportWriteView extends GetView<ReportWriteController> {
     return Text(
       '스터디모임 보고서 작성',
       style: TextStyle(
-          fontWeight: FontWeight.w600, fontSize: 15, color: Colors.black87),    );
+          fontWeight: FontWeight.w600, fontSize: 15, color: Colors.black87),
+    );
   }
 
   Widget _subTitleWidget(String text) {
@@ -148,12 +149,12 @@ class ReportWriteView extends GetView<ReportWriteController> {
       child: Obx(() {
         return isImagePicked.value == true
             ? Container(
-          height: 20.h,
-          width: 200.w,
-          decoration: BoxDecoration(
-              color: Color(0xff04589C),
-              border: Border.all(width: 1, color: Color(0xff04589C)),
-              borderRadius: BorderRadius.all(Radius.circular(3.r))),
+                height: 20.h,
+                width: 200.w,
+                decoration: BoxDecoration(
+                    color: Color(0xff04589C),
+                    border: Border.all(width: 1, color: Color(0xff04589C)),
+                    borderRadius: BorderRadius.all(Radius.circular(3.r))),
                 child: Center(
                   child: Text(
                     '사진 촬영/이미지 업로드',
@@ -165,11 +166,11 @@ class ReportWriteView extends GetView<ReportWriteController> {
                 ),
               )
             : Container(
-          height: 20.h,
-          width: 200.w,
-          decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Color(0xff04589C)),
-              borderRadius: BorderRadius.all(Radius.circular(3))),
+                height: 20.h,
+                width: 200.w,
+                decoration: BoxDecoration(
+                    border: Border.all(width: 1, color: Color(0xff04589C)),
+                    borderRadius: BorderRadius.all(Radius.circular(3))),
                 child: Center(
                   child: Text(
                     '사진 촬영/이미지 업로드',
@@ -327,15 +328,15 @@ class ReportWriteView extends GetView<ReportWriteController> {
       maxLines: 1,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
-          hintText: '수행 시간을 입력하세요.(분 단위로 숫자만 입력하여 주세요.)',
+        hintText: '수행 시간을 입력하세요.(분 단위로 숫자만 입력하여 주세요.)',
         enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.black38),
-    borderRadius: BorderRadius.circular(15),
-    ),
-    focusedBorder: OutlineInputBorder(
-    borderSide: BorderSide(color: Color(0xFFECEFF1)),
-    borderRadius: BorderRadius.circular(15),
-    ),
+          borderSide: BorderSide(color: Colors.black38),
+          borderRadius: BorderRadius.circular(15),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFFECEFF1)),
+          borderRadius: BorderRadius.circular(15),
+        ),
       ),
       onChanged: (value) {
         duration = value;
@@ -348,7 +349,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
       maxLines: 1,
       initialValue: title,
       decoration: InputDecoration(
-          hintText: '제목을 입력하세요.',
+        hintText: '제목을 입력하세요.',
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black38),
           borderRadius: BorderRadius.circular(15),
@@ -370,7 +371,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
         maxLines: 50,
         initialValue: contents,
         decoration: InputDecoration(
-            hintText: '내용을 입력하세요.',
+          hintText: '내용을 입력하세요.',
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.black38),
             borderRadius: BorderRadius.circular(15),
@@ -397,7 +398,6 @@ class ReportWriteView extends GetView<ReportWriteController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-
         Container(
           width: 100,
           decoration: BoxDecoration(
@@ -417,9 +417,9 @@ class ReportWriteView extends GetView<ReportWriteController> {
                 height: 35,
                 child: Center(
                     child: Text(
-                      "취 소",
-                      style: TextStyle(color: Colors.white),
-                    ))),
+                  "취 소",
+                  style: TextStyle(color: Colors.white),
+                ))),
             onPressed: () async {
               Get.back();
             },
@@ -499,7 +499,6 @@ class ReportWriteView extends GetView<ReportWriteController> {
             ),
           ),
         ),
-
       ],
     );
   }

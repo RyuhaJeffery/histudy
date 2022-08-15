@@ -20,7 +20,8 @@ abstract class Routes {
   static const QUESTION_DETAIL =
       _Paths.HOME + _Paths.QUESTION + _Paths.QUESTION_DETAIL;
   static const MY_PAGE = _Paths.HOME + _Paths.MY_PAGE;
-  static const MY_PAGE_SETTING = _Paths.HOME + _Paths.MY_PAGE + _Paths.MY_PAGE_SETTING;
+  static const MY_PAGE_SETTING =
+      _Paths.HOME + _Paths.MY_PAGE + _Paths.MY_PAGE_SETTING;
   static const ADMIN = _Paths.HOME + _Paths.ADMIN;
   static const STUDENT_LIST = _Paths.HOME + _Paths.ADMIN + _Paths.STUDENT_LIST;
   static const GROUP_ADD = _Paths.HOME + _Paths.ADMIN + _Paths.GROUP_ADD;
@@ -28,6 +29,10 @@ abstract class Routes {
   static const HOME2 = _Paths.HOME + _Paths.HOME2;
   static const SIGN_UP = _Paths.HOME + _Paths.SIGN_UP;
   static const LOGIN = _Paths.LOGIN;
+  static const EDIT_SEM = _Paths.HOME + _Paths.MY_PAGE + _Paths.EDIT_SEM;
+  static const EDIT_CLASS = _Paths.HOME + _Paths.MY_PAGE + _Paths.EDIT_CLASS;
+  static const EDIT_MY_INFO =
+      _Paths.HOME + _Paths.MY_PAGE + _Paths.EDIT_MY_INFO;
 }
 
 abstract class _Paths {
@@ -53,4 +58,7 @@ abstract class _Paths {
   static const HOME2 = '/home2';
   static const SIGN_UP = '/sign-up';
   static const LOGIN = '/login';
+  static const EDIT_SEM = '/edit-sem';
+  static const EDIT_CLASS = '/edit-class';
+  static const EDIT_MY_INFO = '/edit-my-info';
 }

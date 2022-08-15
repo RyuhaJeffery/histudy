@@ -10,8 +10,11 @@ import 'package:histudy/app/widgets/top_bar_widget.dart';
 import '../controllers/register_controller.dart';
 
 class RegisterView extends GetView<RegisterController> {
-  final classInfo =
-      FirebaseFirestore.instance.collection("Class").orderBy("class");
+  final classInfo = FirebaseFirestore.instance
+      .collection("Class")
+      .doc(Get.rootDelegate.parameters['semId'])
+      .collection("subClass")
+      .orderBy("class");
   User? currentUser;
   var firebaseUser = FirebaseAuth.instance.currentUser;
   @override
@@ -25,20 +28,12 @@ class RegisterView extends GetView<RegisterController> {
     final _formkey = GlobalKey<FormState>();
     int? length;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Register Form',style: TextStyle(color:Colors.black54),),
-      //   centerTitle: true,
-      //   backgroundColor: Colors.white,
-      //   leading: IconButton(icon: Icon(Icons.arrow_back), onPressed: () { Get.back(); },
-      //     color: Colors.black54,),
-      // ),
-
       body: SingleChildScrollView(
         child: Container(
           height: 1000.h,
           child: Column(
             children: [
-              topBar(),
+              topBar(Get.rootDelegate.parameters["semId"]),
               SizedBox(height: 30.h),
               Center(
                 child: Container(
@@ -191,7 +186,7 @@ class RegisterView extends GetView<RegisterController> {
                       child: Text("제 출"),
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     var classScore = List.generate(0, (index) => 0);
 
                     for (int i = 0; i < length!; i++) {
@@ -201,14 +196,19 @@ class RegisterView extends GetView<RegisterController> {
                     // for (int i = 0; i < length!; i++) {
                     //   print(classScore[i]);
                     // }
-                    print(firebaseUser!.uid);
 
+                    await FirebaseFirestore.instance
+                        .collection("Profile")
+                        .doc(firebaseUser!.uid)
+                        .collection("classScore")
+                        .doc(Get.rootDelegate.parameters['semId'])
+                        .set({});
                     for (int i = 0; i < length!; i++) {
-                      FirebaseFirestore.instance
+                      await FirebaseFirestore.instance
                           .collection("Profile")
                           .doc(firebaseUser!.uid)
                           .collection("classScore")
-                          .doc("classScore")
+                          .doc(Get.rootDelegate.parameters['semId'])
                           .update({
                         _classCodeList[i].toString(): classScore[i],
                       });
@@ -219,7 +219,14 @@ class RegisterView extends GetView<RegisterController> {
                         .update({
                       "classRegister": true,
                     });
-                    Get.rootDelegate.toNamed(Routes.HOME);
+                    String? semId = Get.rootDelegate.parameters['semId'];
+                    if (semId != null) {
+                      Get.rootDelegate.toNamed(
+                        Routes.MY_PAGE,
+                        arguments: true,
+                        parameters: {'semId': semId},
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     primary: Colors.deepPurple,
