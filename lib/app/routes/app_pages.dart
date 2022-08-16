@@ -2,8 +2,8 @@ import 'package:get/get.dart';
 
 import '../middleware/auth_middleware.dart';
 import '../modules/home/admin/bindings/admin_binding.dart';
-import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
-import '../modules/home/admin/group_add/views/group_add_view.dart';
+// import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
+// import '../modules/home/admin/group_add/views/group_add_view.dart';
 import '../modules/home/admin/group_del/bindings/group_del_binding.dart';
 import '../modules/home/admin/group_del/views/group_del_view.dart';
 import '../modules/home/admin/student_list/bindings/student_list_binding.dart';
@@ -206,12 +206,12 @@ class AppPages {
               binding: StudentListBinding(),
               participatesInRootNavigator: true,
             ),
-            GetPage(
-              name: _Paths.GROUP_ADD,
-              page: () => GroupAddView(),
-              binding: GroupAddBinding(),
-              participatesInRootNavigator: true,
-            ),
+            // GetPage(
+            //   name: _Paths.GROUP_ADD,
+            //   page: () => GroupAddView(),
+            //   binding: GroupAddBinding(),
+            //   participatesInRootNavigator: true,
+            // ),
             GetPage(
               name: _Paths.GROUP_DEL,
               page: () => GroupDelView(),

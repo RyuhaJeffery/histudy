@@ -1,18 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase/firebase.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/models/report_model.dart';
 
 class ReportRepository {
-  static final reportCollection =
-      FirebaseFirestore.instance.collection('Report');
-  static final groupCollection = FirebaseFirestore.instance.collection('Group');
+  // static final reportCollection =
+  //     FirebaseFirestore.instance.collection('Report');
+  // static final groupCollection = FirebaseFirestore.instance.collection('Group');
 
-  static Stream<QuerySnapshot> getReportList(String group) {
+  static Stream<QuerySnapshot> getReportList(String semId, String group) {
+    final groupCollection = FirebaseFirestore.instance
+        .collection(semId)
+        .doc(semId)
+        .collection('Group');
     return groupCollection.doc(group).collection('reports').snapshots();
   }
 
   static uploadReport(
+      String semId,
       String author,
       String code,
       DateTime codeDatetime,
@@ -24,6 +28,11 @@ class ReportRepository {
       String studyStartTime,
       String text,
       String title) {
+    final groupCollection = FirebaseFirestore.instance
+        .collection(semId)
+        .doc(semId)
+        .collection('Group');
+
     groupCollection
         .doc(group)
         .collection("reports")

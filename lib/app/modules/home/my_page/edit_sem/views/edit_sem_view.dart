@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../../routes/app_pages.dart';
 import '../../../../../services/auth_service.dart';
 import '../../../../../widgets/top_bar_widget.dart';
 import '../controllers/edit_sem_controller.dart';
@@ -262,7 +263,17 @@ class _EditSemViewState extends State<EditSemView> {
                                                             "group": 0
                                                           });
                                                         }
-                                                        Get.back();
+                                                        Get.snackbar(
+                                                          "시스템 연도 수정 완료",
+                                                          "새로 고침 후 다시 시작하세요",
+                                                          backgroundColor:
+                                                              Color(0xff04589C),
+                                                          colorText:
+                                                              Color(0xffF0F0F0),
+                                                        );
+                                                        Get.rootDelegate
+                                                            .toNamed(
+                                                                Routes.HOME);
                                                       },
                                                       child: Text("예"))
                                                 ],

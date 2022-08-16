@@ -19,7 +19,7 @@ import '../report_detail/controllers/report_detail_controller.dart';
 class ReportListView extends GetView<ReportListController> {
   @override
   Widget build(BuildContext context) {
-  
+    String? semId = Get.rootDelegate.parameters["semId"];
     return Scaffold(
       backgroundColor: Color(0xffFDFFFE),
       body: Padding(
@@ -56,7 +56,15 @@ class ReportListView extends GetView<ReportListController> {
                           borderRadius: BorderRadius.circular(5)),
                     ),
                     onPressed: () {
-                      Get.rootDelegate.toNamed(Routes.REPORT_WRITE);
+                      if (semId != null) {
+                        Get.rootDelegate.toNamed(
+                          Routes.REPORT_WRITE,
+                          arguments: true,
+                          parameters: {
+                            'semId': semId,
+                          },
+                        );
+                      }
                     },
                     child: Text('보고서 작성')),
               ),
@@ -69,6 +77,7 @@ class ReportListView extends GetView<ReportListController> {
   }
 
   _reportList() {
+    String? semId = Get.rootDelegate.parameters['semId'];
     return Padding(
       padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
       child: Column(
@@ -116,12 +125,14 @@ class ReportListView extends GetView<ReportListController> {
             future: UserRepositroy.getUser(
                 AuthService.to.auth.value.currentUser!.uid),
             builder: (context, snapshot) {
-              if (snapshot.hasData) {
+              if (snapshot.hasData && semId != null) {
                 ProfileModel profile = snapshot.data!;
 
                 return StreamBuilder<QuerySnapshot>(
-                  stream:
-                      ReportRepository.getReportList(profile.group!.toString()),
+                  stream: ReportRepository.getReportList(
+                    semId,
+                    profile.group!.toString(),
+                  ),
                   builder: (contextTwo, reportListSnapshot) {
                     if (reportListSnapshot.hasData) {
                       List<ReportModel> reportList = reportListSnapshot

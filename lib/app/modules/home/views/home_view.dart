@@ -19,9 +19,9 @@ class HomeView extends GetView<HomeController> {
   // var firebaseUser = FirebaseAuth.instance.currentUser;
 
   // User? get userProfile => auth.currentUser;
+  late String semId;
   @override
   Widget build(BuildContext context) {
-    late String semId;
     FirebaseFirestore.instance
         .collection("year")
         .where("thisSem", isEqualTo: true)

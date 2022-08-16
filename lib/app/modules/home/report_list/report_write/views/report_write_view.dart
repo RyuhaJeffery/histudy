@@ -47,6 +47,8 @@ class ReportWriteView extends GetView<ReportWriteController> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             ProfileModel profile = snapshot.data!;
+            profile.semId = Get.rootDelegate.parameters['semId'];
+
             return Scaffold(
                 backgroundColor: Color(0xffFDFFFE),
                 body: ListView(
@@ -254,57 +256,67 @@ class ReportWriteView extends GetView<ReportWriteController> {
   }
 
   Widget _participantsWidget(ProfileModel profileModel) {
-    return FutureBuilder<GroupModel?>(
-        future: GroupRepository.getGroup(profileModel.group!.toString()),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            GroupModel groupModel = snapshot.data!;
+    print("semID 안넘어오니??");
+    print(profileModel.semId);
+    if (profileModel.semId != null) {
+      print("semID 안넘어오니??");
+      print(profileModel.semId);
+      return FutureBuilder<GroupModel?>(
+          future: GroupRepository.getGroup(
+              profileModel.semId, profileModel.group!.toString()),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              GroupModel groupModel = snapshot.data!;
 
-            return Expanded(
-              child: ListView.builder(
-                itemCount: groupModel.members!.length,
-                itemBuilder: (BuildContext context, int index) {
-                  List<RxBool> _isCheckedList = List<RxBool>.filled(
-                      groupModel.members!.length, false.obs,
-                      growable: true);
-                  return Obx(() {
-                    return Row(
-                      children: [
-                        Checkbox(
-                            value: _isCheckedList[index].value,
-                            onChanged: (value) {
-                              _isCheckedList[index].value == true
-                                  ? _isCheckedList[index].value = false
-                                  : _isCheckedList[index].value = true;
-                              value == true
-                                  ? finalCheckedMembers
-                                      .add(groupModel.members![index])
-                                  : finalCheckedMembers.removeAt(index);
-                              print(finalCheckedMembers);
-                            }),
-                        FutureBuilder<ProfileModel?>(
-                          future: UserRepositroy.getUser(
-                              groupModel.members![index].toString()),
-                          builder: (context, profileSnapshot) {
-                            if (profileSnapshot.hasData) {
-                              ProfileModel profileModelInGroup =
-                                  profileSnapshot.data!;
-                              return Text(profileModelInGroup.name.toString());
-                            } else {
-                              return Container();
-                            }
-                          },
-                        ),
-                      ],
-                    );
-                  });
-                },
-              ),
-            );
-          } else {
-            return CircularProgressIndicator();
-          }
-        });
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: groupModel.members!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    List<RxBool> _isCheckedList = List<RxBool>.filled(
+                        groupModel.members!.length, false.obs,
+                        growable: true);
+                    return Obx(() {
+                      return Row(
+                        children: [
+                          Checkbox(
+                              value: _isCheckedList[index].value,
+                              onChanged: (value) {
+                                _isCheckedList[index].value == true
+                                    ? _isCheckedList[index].value = false
+                                    : _isCheckedList[index].value = true;
+                                value == true
+                                    ? finalCheckedMembers
+                                        .add(groupModel.members![index])
+                                    : finalCheckedMembers.removeAt(index);
+                                print(finalCheckedMembers);
+                              }),
+                          FutureBuilder<ProfileModel?>(
+                            future: UserRepositroy.getUser(
+                                groupModel.members![index].toString()),
+                            builder: (context, profileSnapshot) {
+                              if (profileSnapshot.hasData) {
+                                ProfileModel profileModelInGroup =
+                                    profileSnapshot.data!;
+                                return Text(
+                                    profileModelInGroup.name.toString());
+                              } else {
+                                return Container();
+                              }
+                            },
+                          ),
+                        ],
+                      );
+                    });
+                  },
+                ),
+              );
+            } else {
+              return CircularProgressIndicator();
+            }
+          });
+    } else {
+      return Text("학기 정보가 존재하지 않습니다. 홈에서 새로고침 후 다시 작성하십사오");
+    }
   }
 
   Widget _startTimeInputWidget() {
@@ -467,26 +479,30 @@ class ReportWriteView extends GetView<ReportWriteController> {
                   Get.snackbar('Retry',
                       'You have not entered anything. There must be an image.');
                 } else {
-                  DateTime dateTime = DateTime.now();
-                  // print("[RW]" + dateTime.toString());
-                  await imagePickerService.uploadImage(pickedImage!,
-                      profileModel.group.toString(), dateTime.toString());
-                  String imageUrl = await imagePickerService.downloadURL(
-                      profileModel.group.toString(), dateTime.toString());
-                  // print("[RW]" + imageUrl);
-                  ReportRepository.uploadReport(
-                      profileModel.name.toString(),
-                      code.toString(),
-                      makingCodeTime,
-                      dateTime,
-                      duration,
-                      profileModel.group.toString(),
-                      imageUrl,
-                      finalCheckedMembers,
-                      startingTime.toString(),
-                      contents,
-                      title);
-                  Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                  String? semId = Get.rootDelegate.parameters['semId'];
+                  if (semId != null) {
+                    DateTime dateTime = DateTime.now();
+                    // print("[RW]" + dateTime.toString());
+                    await imagePickerService.uploadImage(pickedImage!,
+                        profileModel.group.toString(), dateTime.toString());
+                    String imageUrl = await imagePickerService.downloadURL(
+                        profileModel.group.toString(), dateTime.toString());
+                    // print("[RW]" + imageUrl);
+                    ReportRepository.uploadReport(
+                        semId,
+                        profileModel.name.toString(),
+                        code.toString(),
+                        makingCodeTime,
+                        dateTime,
+                        duration,
+                        profileModel.group.toString(),
+                        imageUrl,
+                        finalCheckedMembers,
+                        startingTime.toString(),
+                        contents,
+                        title);
+                    Get.rootDelegate.toNamed(Routes.REPORT_LIST);
+                  }
                 }
               }
             },

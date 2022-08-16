@@ -10,17 +10,19 @@ class ProfileModel {
   String? phone;
   String? studentNumber;
   List? myClasses;
+  String? semId;
 
   ProfileModel({
-     this.classRegister,
-     this.email,
-     this.uid,
-     this.group,
-     this.isAdmin,
-     this.name,
-     this.phone,
-     this.studentNumber,
-     this.myClasses,
+    this.classRegister,
+    this.email,
+    this.uid,
+    this.group,
+    this.isAdmin,
+    this.name,
+    this.phone,
+    this.studentNumber,
+    this.myClasses,
+    this.semId,
   });
 
   ProfileModel.fromSnapshot(DocumentSnapshot snapshot)
