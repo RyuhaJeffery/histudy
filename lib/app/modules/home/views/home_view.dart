@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/foundation.dart';
 import 'package:histudy/app/repository/user_repository.dart';
@@ -175,6 +176,33 @@ class HomeView extends GetView<HomeController> {
             ),
             SizedBox(
               height: 76,
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.egg,
+                size: 15,
+                color: Color.fromARGB(255, 41, 41, 246).withOpacity(0.1),
+              ),
+              onPressed: () {
+                Get.dialog(
+                  AlertDialog(
+                    title: Text("22-1 Software Engineering 5조입니다."),
+                    content: Column(
+                      children: [
+                        SizedBox(
+                          height: 400.h,
+                          width: 600.w,
+                          child: Image(
+                            image: AssetImage('assets/seGroup.JPG'),
+                          ),
+                        ),
+                        Text(
+                            "안녕하세요. Histudy를 개발한 류운선, 김선욱, 이강민, 정예찬, 배수빈, 이산하입니다."),
+                      ],
+                    ),
+                  ),
+                );
+              },
             ),
           ],
         ),

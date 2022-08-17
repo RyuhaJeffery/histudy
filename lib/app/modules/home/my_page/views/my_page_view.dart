@@ -414,12 +414,11 @@ class MyPageView extends GetView<MyPageController> {
                                     )
                                   : getdata?['classRegister']
                                       ? Container(
-                                          child:
-                                              Text("You already applied study"),
+                                          child: Text("이미 신청하셨습니다."),
                                         )
                                       : ElevatedButton(
                                           child: Text(
-                                            'Register Histudy',
+                                            '이번학기 Histudy를 신청하세요!',
                                             style: TextStyle(
                                               fontSize: 18,
                                             ),
@@ -482,11 +481,12 @@ void createGroup() async {
     year = ds['year'];
     semester = ds['semester'];
   });
+  await Future.delayed(Duration(seconds: 2));
 
   if (semId != null) {
     Get.snackbar(
       "그룹 배정 시작",
-      "약 20초간 걸릴 예정입니다. 끝나면 스낵바로 알람이 갑니다. ",
+      "약 30초간 걸릴 예정입니다. 끝나면 스낵바로 알람이 갑니다. ",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
@@ -502,6 +502,9 @@ void createGroup() async {
     });
     await Future.delayed(Duration(seconds: 4));
     print(profileList);
+
+    //서로 연결을 원하는 친구는 맺어질 수 있도록 한다.
+    //등록시에 profile subcollection에 friend 항목을 넣고 매칭 원하는 user의 uid를 넣는다.
 
     //class id list
     List<String> classList = new List.generate(0, (index) => "");
@@ -558,6 +561,7 @@ void createGroup() async {
     print(graph);
 
     //group 계산해서 넣어둠.
+    //미리 매칭된 그룹은 빠지지 않도록 해야함.
     int allCount = profileLen;
     //현재는 4개에 맞추어져 있음.
     int groupMember = 4;
