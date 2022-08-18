@@ -565,7 +565,7 @@ void createGroup() async {
     var graph = List.generate(
         profileLen, (i) => new List.filled(profileLen, 0, growable: false));
 
-    int maxscore = 9223372036854775000;
+    int maxscore = 2147483640;
 
     for (int i = 0; i < profileLen; i++) {
       for (int j = i + 1; j < profileLen; j++) {
