@@ -194,20 +194,32 @@ class _FirestoreSearchScaffoldState extends State<FirestoreSearchScaffold> {
                   color: widget.searchBodyBackgroundColor,
                   child: searchQuery.isEmpty
                       ? SizedBox()
-                      : StreamBuilder<List>(
-                          stream: FirestoreService(
-                                  collectionName:
-                                      widget.firestoreCollectionName,
-                                  docsName: widget.firestoreDocsName,
-                                  subCollectionName:
-                                      widget.firestoreSubCollectionName,
-                                  searchBy: widget.searchBy ?? '',
-                                  dataListFromSnapshot:
-                                      widget.dataListFromSnapshot,
-                                  limitOfRetrievedData:
-                                      widget.limitOfRetrievedData)
-                              .searchData(searchQuery),
-                          builder: widget.builder!),
+                      : widget.firestoreDocsName != null
+                          ? StreamBuilder<List>(
+                              stream: FirestoreService(
+                                      collectionName:
+                                          widget.firestoreCollectionName,
+                                      docsName: widget.firestoreDocsName,
+                                      subCollectionName:
+                                          widget.firestoreSubCollectionName,
+                                      searchBy: widget.searchBy ?? '',
+                                      dataListFromSnapshot:
+                                          widget.dataListFromSnapshot,
+                                      limitOfRetrievedData:
+                                          widget.limitOfRetrievedData)
+                                  .searchSubData(searchQuery),
+                              builder: widget.builder!)
+                          : StreamBuilder<List>(
+                              stream: FirestoreService(
+                                      collectionName:
+                                          widget.firestoreCollectionName,
+                                      searchBy: widget.searchBy ?? '',
+                                      dataListFromSnapshot:
+                                          widget.dataListFromSnapshot,
+                                      limitOfRetrievedData:
+                                          widget.limitOfRetrievedData)
+                                  .searchData(searchQuery),
+                              builder: widget.builder!),
                 )
             ],
           )),

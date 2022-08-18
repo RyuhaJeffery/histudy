@@ -473,7 +473,7 @@ void createGroup() async {
   int? year;
   int? semester;
 
-  FirebaseFirestore.instance
+  await FirebaseFirestore.instance
       .collection("year")
       .doc(semId)
       .get()
@@ -525,7 +525,7 @@ void createGroup() async {
         List.generate(profileLen, (i) => new List.filled(classLen, 0));
     //값 가져오기
     for (int i = 0; i < profileLen; i++) {
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection("Profile")
           .doc(profileList[i])
           .collection("classScore")
@@ -539,8 +539,25 @@ void createGroup() async {
         },
       );
     }
+
     //load되는 시간 기다리기
-    await Future.delayed(Duration(seconds: 4));
+    await Future.delayed(Duration(seconds: 5));
+
+    for (int i = 0; i < profileLen; i++) {
+      await FirebaseFirestore.instance
+          .collection("Profile")
+          .doc(profileList[i])
+          .collection(semId)
+          .get()
+          .then(
+        (QuerySnapshot qs) {
+          // for (int j = 0; j < classLen; j++) {
+          //   studentScore[i][j] = ds[classList[j]];
+          // }
+        },
+      );
+    }
+    await Future.delayed(Duration(seconds: 3));
 
     print(studentScore);
 
@@ -548,18 +565,49 @@ void createGroup() async {
     var graph = List.generate(
         profileLen, (i) => new List.filled(profileLen, 0, growable: false));
 
+    int maxscore = 9223372036854775000;
+
     for (int i = 0; i < profileLen; i++) {
       for (int j = i + 1; j < profileLen; j++) {
         int allTemp = 0;
+
         for (int k = 0; k < classLen; k++) {
           allTemp += studentScore[i][k] * studentScore[j][k];
+        }
+        //만약 여기서 서로 등록을 했다면 가중치를 최대로 올려야 함.
+        //여기서 조회 해야함.
+        for (int z = 0; z < profileLen; z++) {
+          await FirebaseFirestore.instance
+              .collection("Profile")
+              .doc(profileList[z])
+              .collection(semId)
+              .get()
+              .then(
+            (QuerySnapshot qs) {
+              qs.docs.forEach((doc) {
+                if (doc['match'] == true) {
+                  //상대편것도 확인 해야함.
+                  FirebaseFirestore.instance
+                      .collection("Profile")
+                      .doc(doc.id)
+                      .collection(semId)
+                      .doc(profileList[z])
+                      .get()
+                      .then(
+                    (DocumentSnapshot ds) {
+                      if (ds['match'] == true) {
+                        allTemp = maxscore;
+                      }
+                    },
+                  );
+                }
+              });
+            },
+          );
         }
         graph[i][j] = allTemp;
       }
     }
-    print("graph");
-    print(graph);
-
     //group 계산해서 넣어둠.
     //미리 매칭된 그룹은 빠지지 않도록 해야함.
     int allCount = profileLen;
@@ -567,10 +615,10 @@ void createGroup() async {
     int groupMember = 4;
     //여기 필수로 수정해줘야함.
     int groupNumber = -1;
-    print("allcount");
-    print(allCount);
-    print("groupMember");
-    print(groupMember - 1);
+    // print("allcount");
+    // print(allCount);
+    // print("groupMember");
+    // print(groupMember - 1);
 
     //4개씩 끊어서 올리기
 

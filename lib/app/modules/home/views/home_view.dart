@@ -197,7 +197,8 @@ class HomeView extends GetView<HomeController> {
                           ),
                         ),
                         Text(
-                            "안녕하세요. Histudy를 개발한 류운선, 김선욱, 이강민, 정예찬, 배수빈, 이산하입니다."),
+                          "안녕하세요. Histudy를 개발한 류운선, 김선욱, 이강민, 정예찬, 배수빈, 이산하입니다.",
+                        ),
                       ],
                     ),
                   ),
