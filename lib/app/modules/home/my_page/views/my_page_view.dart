@@ -652,10 +652,9 @@ void createGroup() async {
       }
     }
 
-    print("graph");
     //group 계산해서 넣어둠.
     //미리 매칭된 그룹은 빠지지 않도록 해야함.
-    print(profileLen);
+
     int allCount = profileLen;
     //현재는 4개에 맞추어져 있음.
     int groupMember = 4;
@@ -685,7 +684,6 @@ void createGroup() async {
           }
         }
       }
-      print("debug");
       //두개의 노드가 설정 되었으면
       //그 두개의 node에서 max인거 또 찾음.
 
