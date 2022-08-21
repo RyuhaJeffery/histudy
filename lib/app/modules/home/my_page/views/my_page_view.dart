@@ -452,6 +452,46 @@ class MyPageView extends GetView<MyPageController> {
                             }
                           },
                         ),
+                        SizedBox(height: 10.h),
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Color.fromARGB(255, 7, 113, 200),
+                            side: BorderSide(width: 1),
+                            shape: RoundedRectangleBorder(
+                                //to set border radius to button
+                                borderRadius: BorderRadius.circular(5)),
+                          ),
+                          onPressed: () {
+                            Get.dialog(
+                              AlertDialog(
+                                title: Text("Firebase에 수업 정보가 업로드 됩니다"),
+                                content: Text("기존에 올라가 있는 수업 정보는 지워집니다."),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      AuthService.to.googleSignOut();
+                                      Get.snackbar(
+                                        "로그아웃 완료",
+                                        "다시 로그인 하세요",
+                                        backgroundColor: Color(0xff04589C),
+                                        colorText: Color(0xffF0F0F0),
+                                      );
+                                      Get.rootDelegate.toNamed(Routes.HOME);
+                                    },
+                                    child: Text("예"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    child: Text("아니요"),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: Text("로그아웃"),
+                        )
                       ],
                     ),
                   ),
@@ -481,7 +521,7 @@ void createGroup() async {
     year = ds['year'];
     semester = ds['semester'];
   });
-  await Future.delayed(Duration(seconds: 2));
+  await Future.delayed(Duration(seconds: 1));
 
   if (semId != null) {
     Get.snackbar(
@@ -502,14 +542,18 @@ void createGroup() async {
     });
     await Future.delayed(Duration(seconds: 4));
     print(profileList);
+    print("profile");
 
     //서로 연결을 원하는 친구는 맺어질 수 있도록 한다.
     //등록시에 profile subcollection에 friend 항목을 넣고 매칭 원하는 user의 uid를 넣는다.
 
     //class id list
     List<String> classList = new List.generate(0, (index) => "");
-    final QuerySnapshot classResult =
-        await FirebaseFirestore.instance.collection('Class').get();
+    final QuerySnapshot classResult = await FirebaseFirestore.instance
+        .collection('Class')
+        .doc(semId)
+        .collection("subClass")
+        .get();
     final classLen = classResult.docs.length;
     final List<DocumentSnapshot> classDocs = classResult.docs;
     classDocs.forEach((classele) {
@@ -518,6 +562,7 @@ void createGroup() async {
     await Future.delayed(Duration(seconds: 4));
 
     print(classList);
+    print("classList");
 
     //각각 학생들 마다 classScore의 점수를 가져와야함.
     //학생 x 숫자 배열 생성하기
@@ -529,7 +574,7 @@ void createGroup() async {
           .collection("Profile")
           .doc(profileList[i])
           .collection("classScore")
-          .doc("classScore")
+          .doc(semId)
           .get()
           .then(
         (DocumentSnapshot ds) {
@@ -557,15 +602,16 @@ void createGroup() async {
         },
       );
     }
-    await Future.delayed(Duration(seconds: 3));
 
     print(studentScore);
+    print("studentScore");
+    await Future.delayed(Duration(seconds: 3));
 
     //학생들간의 관계도 그리기
     var graph = List.generate(
         profileLen, (i) => new List.filled(profileLen, 0, growable: false));
 
-    int maxscore = 9223372036854775000;
+    int maxscore = 2147483640;
 
     for (int i = 0; i < profileLen; i++) {
       for (int j = i + 1; j < profileLen; j++) {
@@ -576,40 +622,40 @@ void createGroup() async {
         }
         //만약 여기서 서로 등록을 했다면 가중치를 최대로 올려야 함.
         //여기서 조회 해야함.
-        for (int z = 0; z < profileLen; z++) {
-          await FirebaseFirestore.instance
-              .collection("Profile")
-              .doc(profileList[z])
-              .collection(semId)
-              .get()
-              .then(
-            (QuerySnapshot qs) {
-              qs.docs.forEach((doc) {
-                if (doc['match'] == true) {
-                  //상대편것도 확인 해야함.
-                  FirebaseFirestore.instance
-                      .collection("Profile")
-                      .doc(doc.id)
-                      .collection(semId)
-                      .doc(profileList[z])
-                      .get()
-                      .then(
-                    (DocumentSnapshot ds) {
-                      if (ds['match'] == true) {
-                        allTemp = maxscore;
-                      }
-                    },
-                  );
-                }
-              });
-            },
-          );
-        }
+        await FirebaseFirestore.instance
+            .collection("Profile")
+            .doc(profileList[i])
+            .collection(semId)
+            .doc(profileList[j])
+            .get()
+            .then(
+          (DocumentSnapshot ds1) {
+            if (ds1.exists) {
+              //상대편것도 확인 해야함.
+              FirebaseFirestore.instance
+                  .collection("Profile")
+                  .doc(profileList[j])
+                  .collection(semId)
+                  .doc(profileList[i])
+                  .get()
+                  .then(
+                (DocumentSnapshot ds) {
+                  if (ds.exists) {
+                    allTemp = maxscore;
+                  }
+                },
+              );
+            }
+          },
+        );
         graph[i][j] = allTemp;
       }
     }
+
+    print("graph");
     //group 계산해서 넣어둠.
     //미리 매칭된 그룹은 빠지지 않도록 해야함.
+    print(profileLen);
     int allCount = profileLen;
     //현재는 4개에 맞추어져 있음.
     int groupMember = 4;
@@ -621,7 +667,7 @@ void createGroup() async {
     // print(groupMember - 1);
 
     //4개씩 끊어서 올리기
-
+    int k = 1;
     while (allCount > groupMember) {
       //가장 큰 값을 가지고 있는 노드 확인
       //최대값 찾기
@@ -629,9 +675,9 @@ void createGroup() async {
 
       var max = List.generate(groupMember - 1, (i) => -1);
       var maxNode = List.generate(groupMember, (i) => -1);
-
-      for (int i = 0; i < classLen; i++) {
-        for (int j = i; j < classLen; j++) {
+      print(k++);
+      for (int i = 0; i < profileLen; i++) {
+        for (int j = i; j < profileLen; j++) {
           if (graph[i][j] > max[0]) {
             max[0] = graph[i][j];
             maxNode[0] = i;
@@ -639,10 +685,11 @@ void createGroup() async {
           }
         }
       }
+      print("debug");
       //두개의 노드가 설정 되었으면
       //그 두개의 node에서 max인거 또 찾음.
 
-      for (int i = 0; i < classLen; i++) {
+      for (int i = 0; i < profileLen; i++) {
         if (i != maxNode[0] && i != maxNode[1]) {
           if (graph[maxNode[0]][i] > max[1]) {
             maxNode[2] = i;
@@ -654,7 +701,7 @@ void createGroup() async {
         }
       }
 
-      for (int i = 0; i < classLen; i++) {
+      for (int i = 0; i < profileLen; i++) {
         if (i != maxNode[0] && i != maxNode[1] && i != maxNode[2]) {
           if (graph[maxNode[0]][i] > max[2]) {
             maxNode[3] = i;
@@ -707,6 +754,8 @@ void createGroup() async {
       groupNumber--;
       allCount -= 4;
     }
+
+    print("dubug");
 
     //남은 학생들 그룹에 넣기
 

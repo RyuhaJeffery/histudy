@@ -175,7 +175,8 @@ class _EditClassViewState extends State<EditClassView> {
                       ),
                     );
                   },
-                  child: Text("upload to firebase"))
+                  child: Text("upload to firebase"),
+                )
               : Container(),
           SizedBox(
             height: 20.h,

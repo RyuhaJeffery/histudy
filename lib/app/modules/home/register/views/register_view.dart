@@ -225,6 +225,17 @@ class _RegisterViewState extends State<RegisterView> {
                                                                     data.phone,
                                                               });
 
+                                                              // FirebaseFirestore
+                                                              //     .instance
+                                                              //     .collection(
+                                                              //         "Profile")
+                                                              //     .doc(
+                                                              //         firebaseUser!
+                                                              //             .uid)
+                                                              //     .update({
+                                                              //   "match": true,
+                                                              // });
+
                                                               Get.back();
                                                             },
                                                             child: Text("예"))
