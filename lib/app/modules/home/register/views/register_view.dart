@@ -368,26 +368,26 @@ class _RegisterViewState extends State<RegisterView> {
                     SizedBox(
                       height: 8.h,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          setDataList;
-                        });
-                      },
-                      child: Text(
-                        "현재 신청한 과목 리스트 확인하기",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                            color: Colors.white),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color(0xff04589C),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     setState(() {
+                    //       setDataList;
+                    //     });
+                    //   },
+                    //   child: Text(
+                    //     "현재 신청한 과목 리스트 확인하기",
+                    //     style: TextStyle(
+                    //         fontWeight: FontWeight.w600,
+                    //         fontSize: 16,
+                    //         color: Colors.white),
+                    //   ),
+                    //   style: ElevatedButton.styleFrom(
+                    //     primary: Color(0xff04589C),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: 8.h,
+                    // ),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(50)),
