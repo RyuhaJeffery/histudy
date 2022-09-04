@@ -175,7 +175,23 @@ class HomeView extends GetView<HomeController> {
               child: Image(image: AssetImage('assets/people.png')),
             ),
             SizedBox(
-              height: 76,
+              height: 20.h,
+            ),
+            Text(
+              'Histudy Home page',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              '처음 로그인시에는 새로고침 후 시작해주세요!',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w300, fontSize: 16),
+            ),
+            SizedBox(
+              height: 20,
             ),
             IconButton(
               icon: Icon(

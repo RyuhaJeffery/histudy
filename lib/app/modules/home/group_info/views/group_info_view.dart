@@ -325,95 +325,109 @@ class _HomePageState extends State<GroupInfoView> {
                         ]),
                       ),
                     )
-                  : Flexible(
-                      child: Padding(
-                      padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
-                      child: Column(children: [
-                        Divider(
-                          thickness: 0.1,
-                          color: Colors.black,
-                        ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: Text(
-                                '      NO',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
-                              Expanded(
-                                  child: Text(
-                                '  이름',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
-                              Expanded(
-                                  child: Text(
-                                '  이메일',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
-                              Expanded(
-                                  child: Text(
-                                '  그룹 번호',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
-                            ]),
-                        Divider(
-                          thickness: 0.1,
-                          color: Colors.black,
-                          height: 10,
-                        ),
-                        Flexible(
-                          child: StreamBuilder(
-                            stream: _profile
-                                .where("group", isEqualTo: curuser)
-                                .snapshots(),
-                            builder: (context,
-                                AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-                              if (streamSnapshot.hasData) {
-                                return ListView.builder(
-                                  itemCount: streamSnapshot.data!.docs.length,
-                                  itemBuilder: (context, index) {
-                                    final DocumentSnapshot documentSnapshot =
-                                        streamSnapshot.data!.docs[index];
-                                    return Container(
-                                      margin: const EdgeInsets.all(10),
-                                      child: Column(children: [
-                                        ListTile(
-                                            title: Row(children: <Widget>[
-                                          Expanded(child: Text('${index + 1}')),
-                                          Expanded(
-                                              child: Text(
-                                                  documentSnapshot['name'])),
-                                          Expanded(
-                                              child: Text(
-                                                  documentSnapshot['email']
-                                                      .toString())),
-                                          SizedBox(width: 100.w),
-                                          Expanded(
-                                              child: Text(
-                                                  'Group ${documentSnapshot['group'].toString()}')),
-                                        ])),
-                                      ]),
-                                    );
-                                  },
-                                );
-                              }
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
+                  : curuser == 0
+                      ? Container(
+                          child: Text(
+                            '아직 그룹이 배정되지 않았습니다. 그룹이 배정되면 그룹 정보가 나타납니다.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                fontWeight: FontWeight.w500, fontSize: 20),
                           ),
-                        ),
-                      ]),
-                    ))
+                        )
+                      : Flexible(
+                          child: Padding(
+                          padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
+                          child: Column(children: [
+                            Divider(
+                              thickness: 0.1,
+                              color: Colors.black,
+                            ),
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                      child: Text(
+                                    '      NO',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                                  Expanded(
+                                      child: Text(
+                                    '  이름',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                                  Expanded(
+                                      child: Text(
+                                    '  이메일',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                                  Expanded(
+                                      child: Text(
+                                    '  그룹 번호',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
+                                ]),
+                            Divider(
+                              thickness: 0.1,
+                              color: Colors.black,
+                              height: 10,
+                            ),
+                            Flexible(
+                              child: StreamBuilder(
+                                stream: _profile
+                                    .where("group", isEqualTo: curuser)
+                                    .snapshots(),
+                                builder: (context,
+                                    AsyncSnapshot<QuerySnapshot>
+                                        streamSnapshot) {
+                                  if (streamSnapshot.hasData) {
+                                    return ListView.builder(
+                                      itemCount:
+                                          streamSnapshot.data!.docs.length,
+                                      itemBuilder: (context, index) {
+                                        final DocumentSnapshot
+                                            documentSnapshot =
+                                            streamSnapshot.data!.docs[index];
+                                        return Container(
+                                          margin: const EdgeInsets.all(10),
+                                          child: Column(children: [
+                                            ListTile(
+                                                title: Row(children: <Widget>[
+                                              Expanded(
+                                                  child: Text('${index + 1}')),
+                                              Expanded(
+                                                  child: Text(documentSnapshot[
+                                                      'name'])),
+                                              Expanded(
+                                                  child: Text(
+                                                      documentSnapshot['email']
+                                                          .toString())),
+                                              SizedBox(width: 100.w),
+                                              Expanded(
+                                                  child: Text(
+                                                      'Group ${documentSnapshot['group'].toString()}')),
+                                            ])),
+                                          ]),
+                                        );
+                                      },
+                                    );
+                                  }
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                },
+                              ),
+                            ),
+                          ]),
+                        ))
         ]));
   }
 }

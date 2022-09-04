@@ -1,10 +1,12 @@
 class ClassScore {
   String classId;
+  // String className;
   int score;
 
   ClassScore({
     required this.classId,
     required this.score,
+    // required this.className,
   });
 
   void setClassScore(String setClassId, int setScore) {
@@ -24,6 +26,7 @@ class ClassScore {
     return ClassScore(
       classId: classId,
       score: score,
+      // className: className,
     );
   }
 }

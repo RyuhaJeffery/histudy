@@ -9,6 +9,7 @@ import 'package:histudy/app/services/auth_service.dart';
 import 'package:histudy/app/widgets/top_bar_widget2.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../../models/classScore_model.dart';
 import '../../../../routes/app_pages.dart';
 import '../../../../widgets/top_bar_widget.dart';
 import '../controllers/my_page_controller.dart';
@@ -437,12 +438,28 @@ class MyPageView extends GetView<MyPageController> {
                                                   BorderRadius.circular(27),
                                             )),
                                           ),
-                                          onPressed: () {
+                                          onPressed: () async {
+                                            late int classlength;
+
+                                            await FirebaseFirestore.instance
+                                                .collection("Class")
+                                                .doc(Get.rootDelegate
+                                                    .parameters['semId'])
+                                                .collection("subClass")
+                                                .get()
+                                                .then((QuerySnapshot qs) {
+                                              // List<ClassScore>.generate(qs.docs.length, (index) {});
+                                              classlength = qs.docs.length;
+                                            });
                                             if (semId != null) {
                                               Get.rootDelegate.toNamed(
                                                 Routes.REGISTER,
                                                 arguments: true,
-                                                parameters: {'semId': semId},
+                                                parameters: {
+                                                  'semId': semId,
+                                                  'classlength':
+                                                      classlength.toString(),
+                                                },
                                               );
                                             }
                                           },

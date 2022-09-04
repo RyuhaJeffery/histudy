@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:histudy/app/models/classScore_model.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 import 'package:histudy/app/widgets/top_bar_widget.dart';
 import '../../../../../firestore_search/firestore_search.dart';
+import '../../../../models/classSave_model.dart';
 import '../../../../models/class_model.dart';
 import '../../../../models/profile_model.dart';
 import '../controllers/register_controller.dart';
@@ -24,16 +26,19 @@ class _RegisterViewState extends State<RegisterView> {
   User? currentUser;
   var firebaseUser = FirebaseAuth.instance.currentUser;
   bool friOrCla = true;
+  List<ClassSaveModel> setDataList = List<ClassSaveModel>.empty(growable: true);
+
   @override
   Widget build(BuildContext context) {
-    String? semId = Get.rootDelegate.parameters['semId'];
+    String? tempLength = Get.rootDelegate.parameters['classlength'];
 
-    // final classInfo =
     late int classlength;
+    if (tempLength != null) {
+      classlength = int.parse(tempLength);
+    }
     var classScoreList = List<ClassScore>.empty(growable: true);
     List<TextEditingController> _scoreController =
         new List.generate(0, (index) => TextEditingController());
-
     FirebaseFirestore.instance
         .collection("Class")
         .doc(Get.rootDelegate.parameters['semId'])
@@ -41,7 +46,6 @@ class _RegisterViewState extends State<RegisterView> {
         .get()
         .then((QuerySnapshot qs) {
       // List<ClassScore>.generate(qs.docs.length, (index) {});
-      classlength = qs.docs.length;
 
       qs.docs.forEach((docs) {
         ClassScore temp = new ClassScore(classId: docs.id, score: 0);
@@ -49,6 +53,20 @@ class _RegisterViewState extends State<RegisterView> {
         _scoreController.add(TextEditingController());
       });
     });
+    String? semId = Get.rootDelegate.parameters['semId'];
+
+    // final classInfo =
+
+    // ClassSaveModel tempModel = ClassSaveModel(
+    //   classId: "asdf",
+    //   className: "test",
+    //   professor: "테스트 교수님",
+    //   sem: 2,
+    //   year: 2022,
+    //   code: "dasf",
+    //   score: 0,
+    // );
+    // setDataList.add(tempModel);
 
     return Scaffold(
       body: Column(
@@ -81,7 +99,7 @@ class _RegisterViewState extends State<RegisterView> {
                       height: 8.h,
                     ),
                     Text(
-                      "같이 하고 싶은 친구의 '학번'을 검색하세요",
+                      "같이 하고 싶은 친구의 '이름'을 검색하세요",
                       style: TextStyle(
                           fontWeight: FontWeight.w400,
                           fontSize: 15,
@@ -225,17 +243,6 @@ class _RegisterViewState extends State<RegisterView> {
                                                                     data.phone,
                                                               });
 
-                                                              // FirebaseFirestore
-                                                              //     .instance
-                                                              //     .collection(
-                                                              //         "Profile")
-                                                              //     .doc(
-                                                              //         firebaseUser!
-                                                              //             .uid)
-                                                              //     .update({
-                                                              //   "match": true,
-                                                              // });
-
                                                               Get.back();
                                                             },
                                                             child: Text("예"))
@@ -253,7 +260,7 @@ class _RegisterViewState extends State<RegisterView> {
                                                   //  padding: EdgeInsets.all(10.sp),
                                                   elevation: 0,
                                                   primary: Color(0xffFFA300),
-                                                  fixedSize: Size(73.w, 27.h),
+                                                  fixedSize: Size(80.w, 27.h),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -347,71 +354,36 @@ class _RegisterViewState extends State<RegisterView> {
                     SizedBox(
                       height: 15.h,
                     ),
-                    Text(
-                      "<Histudy 신청방법>",
-                      style: TextStyle(
+                    TextButton(
+                      onPressed: () => howToUse(),
+                      child: Text(
+                        "Histudy 신청방법은 여기를 클릭해 확인해주세요!",
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 15,
-                          color: Colors.black87),
+                          fontSize: 16,
+                          color: Color(0xff04589C),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 8.h,
                     ),
-                    Text(
-                      "과목별로 0~10까지 가중치를 입력할 수 있습니다. 입력된 가중치는 Histudy 알고리즘에 의해서 다른 학우님과 자동 매칭됩니다.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Text(
-                      "히즈넷 상의 과목을 검색하시면 과목이 나타납니다. 과목과 교수님을 확인하여 왼쪽에 가중치를 입력하세요.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Text(
-                      "첫 띄어쓰기까지 입력해야지 과목이 나타납니다.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Text(
-                      "입력된 가중치가 높아질 수록 해당 과목에 가중치가 높은 학우님과 매칭될 가능성이 높아집니다.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 8.h,
-                    ),
-                    Text(
-                      "입력하지 않은 과목은 0의 가중치가 들어갑니다.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15,
-                          color: Colors.black87),
-                    ),
-                    SizedBox(
-                      height: 8.h,
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          setDataList;
+                        });
+                      },
+                      child: Text(
+                        "현재 신청한 과목 리스트 확인하기",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xff04589C),
+                      ),
                     ),
                     SizedBox(
                       height: 8.h,
@@ -424,7 +396,59 @@ class _RegisterViewState extends State<RegisterView> {
                       height: 350.h,
                       // padding: EdgeInsets.all(30),
                       child: FirestoreSearchScaffold(
-                        scaffoldBody: Center(),
+                        scaffoldBody: Center(
+                          child: ListView.builder(
+                            itemCount: setDataList.length,
+                            itemBuilder: (context, index) {
+                              ClassSaveModel firstData = setDataList[index];
+                              return Column(
+                                children: [
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  ListTile(
+                                    leading: Text(
+                                      "${index + 1}",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    title: Container(
+                                      width: 20,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "${firstData.className}",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                          Text(
+                                            "과목코드: ${firstData.code} / ${firstData.professor} 교수님",
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    trailing: Container(
+                                      width: 200,
+                                      child: Text(
+                                        "${firstData.score}",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Divider(
+                                    color: Colors.black26,
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
                         firestoreCollectionName: 'Class', //Class/${semId}/
                         firestoreDocsName: semId,
                         firestoreSubCollectionName: 'subClass',
@@ -442,7 +466,7 @@ class _RegisterViewState extends State<RegisterView> {
                             return ListView.builder(
                               itemCount: dataList.length,
                               itemBuilder: (context, index) {
-                                _scoreController[index].text = '0';
+                                // _scoreController[index].text = '0';
 
                                 for (int i = 0; i < classlength; i++) {
                                   if (dataList[index].classId ==
@@ -490,7 +514,12 @@ class _RegisterViewState extends State<RegisterView> {
                                       trailing: Container(
                                         width: 200,
                                         child: TextFormField(
-                                          //     initialValue: Get.arguments,
+                                          // initialValue: "0",
+                                          keyboardType: TextInputType.number,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(
+                                                RegExp('[0-9,10]'))
+                                          ],
                                           controller: _scoreController[index],
                                           decoration: InputDecoration(
                                             // hintText: name,
@@ -532,8 +561,10 @@ class _RegisterViewState extends State<RegisterView> {
                                               return '가중치는 10보다 작아야합니다. ';
                                             }
                                           },
-                                          onChanged: (String? value) {
+                                          onChanged: (String? value) async {
                                             if (int.parse(value!) < 0) {
+                                              _scoreController[index].text =
+                                                  '0';
                                               Get.dialog(
                                                 AlertDialog(
                                                   title:
@@ -541,15 +572,16 @@ class _RegisterViewState extends State<RegisterView> {
                                                 ),
                                               );
                                             } else if (int.parse(value) > 10) {
+                                              _scoreController[index].text =
+                                                  '0';
                                               Get.dialog(
                                                 AlertDialog(
                                                   title:
                                                       Text("가중치는 10보다 작아야합니다."),
                                                 ),
                                               );
-                                            }
-
-                                            if (int.tryParse(value) != null) {
+                                            } else if (int.tryParse(value) !=
+                                                null) {
                                               for (int i = 0;
                                                   i < classlength;
                                                   i++) {
@@ -564,6 +596,54 @@ class _RegisterViewState extends State<RegisterView> {
                                                               .text));
                                                 }
                                               }
+                                              int tempInt = setDataList.length;
+
+                                              for (int i = 0;
+                                                  i < tempInt;
+                                                  i++) {
+                                                if (dataList[index].classId ==
+                                                    setDataList[i].classId) {
+                                                  setDataList.removeAt(i);
+                                                  break;
+                                                }
+                                              }
+                                              if (int.parse(
+                                                      _scoreController[index]
+                                                          .text) !=
+                                                  0) {
+                                                ClassSaveModel tempDate =
+                                                    new ClassSaveModel(
+                                                  className:
+                                                      dataList[index].className,
+                                                  code: dataList[index].code,
+                                                  professor:
+                                                      dataList[index].professor,
+                                                  sem: dataList[index].sem,
+                                                  year: dataList[index].year,
+                                                  classId:
+                                                      dataList[index].classId,
+                                                  score: int.parse(
+                                                      _scoreController[index]
+                                                          .text),
+                                                );
+
+                                                setDataList.add(tempDate);
+
+                                                for (int i = 0;
+                                                    i < setDataList.length;
+                                                    i++) {
+                                                  print(
+                                                      setDataList[i].className);
+                                                }
+                                              }
+                                            } else {
+                                              _scoreController[index].text =
+                                                  '0';
+                                              Get.dialog(
+                                                AlertDialog(
+                                                  title: Text("숫자만 가능합니다."),
+                                                ),
+                                              );
                                             }
                                           },
                                         ),
@@ -736,241 +816,80 @@ class _RegisterViewState extends State<RegisterView> {
       ),
     );
   }
+
+  Future howToUse() {
+    return Get.dialog(
+      AlertDialog(
+          title: Text(
+            "<Histudy 신청방법>",
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 15,
+                color: Colors.black87),
+          ),
+          content: Column(
+            children: [
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                "과목별로 0~10까지 가중치를 입력할 수 있습니다. 입력된 가중치는 Histudy 알고리즘에 의해서 다른 학우님과 자동 매칭됩니다.",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black87),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                "히즈넷 상의 과목을 검색하시면 과목이 나타납니다. 과목과 교수님을 확인하여 왼쪽에 가중치를 입력하세요.",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black87),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                "첫 띄어쓰기까지 입력해야지 과목이 나타납니다.",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black87),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                "입력된 가중치가 높아질 수록 해당 과목에 가중치가 높은 학우님과 매칭될 가능성이 높아집니다.",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black87),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+              Text(
+                "입력하지 않은 과목은 0의 가중치가 들어갑니다.",
+                style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    fontSize: 15,
+                    color: Colors.black87),
+              ),
+              SizedBox(
+                height: 8.h,
+              ),
+            ],
+          )),
+    );
+  }
 }
-
-// class RegisterView extends GetView<RegisterController> {
-//   final classInfo = FirebaseFirestore.instance
-//       .collection("Class")
-//       .doc(Get.rootDelegate.parameters['semId'])
-//       .collection("subClass")
-//       .orderBy("class");
-//   User? currentUser;
-//   var firebaseUser = FirebaseAuth.instance.currentUser;
-//   @override
-//   Widget build(BuildContext context) {
-//     // late int classNum;
-//     // classInfo.snapshots().length.then((value) => classNum = value);
-
-//     List<TextEditingController> _scoreController =
-//         new List.generate(0, (index) => TextEditingController());
-
-//     List<String> _classCodeList = new List.generate(0, (index) => "");
-//     final _formkey = GlobalKey<FormState>();
-//     int? length;
-//     String? semId = Get.rootDelegate.parameters['semId'];
-//     print(semId);
-//     //Map을 하나 만들어서 하기
-
-//     return Scaffold(
-//       body: Container(
-//         height: 1000.h,
-//         child: Column(
-//           children: [
-//             topBar(Get.rootDelegate.parameters["semId"]),
-//             SizedBox(height: 30.h),
-//             Center(
-//               child: Container(
-//                 width: 800,
-//                 decoration: BoxDecoration(
-//                   color: Colors.white,
-//                   borderRadius: BorderRadius.circular(30),
-//                   boxShadow: [
-//                     BoxShadow(
-//                       color: Colors.grey.withOpacity(0.1),
-//                       spreadRadius: 5,
-//                       blurRadius: 7,
-//                       offset: Offset(0, 3), // changes position of shadow
-//                     ),
-//                   ],
-//                 ),
-//                 child: Container(
-//                   width: 450,
-//                   height: 700,
-//                   padding: EdgeInsets.all(30),
-//                   child: StreamBuilder(
-//                     stream: classInfo.snapshots(),
-//                     builder:
-//                         (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-//                       length = streamSnapshot.data!.docs.length;
-//                       if (streamSnapshot.hasData) {
-//                         return ListView.builder(
-//                             itemCount: length,
-//                             itemBuilder: (context, index) {
-//                               _scoreController.add(TextEditingController());
-//                               _scoreController[index].text = "0";
-//                               final DocumentSnapshot documentSnapshot =
-//                                   streamSnapshot.data!.docs[index];
-//                               _classCodeList.add(documentSnapshot.id);
-//                               // _scoreController[index].text = '0';
-//                               return Container(
-//                                 margin: EdgeInsets.all(10),
-//                                 child: Column(
-//                                   children: [
-//                                     ListTile(
-//                                       leading: Text(
-//                                         "${index + 1}",
-//                                         style: TextStyle(
-//                                             fontSize: 14,
-//                                             fontWeight: FontWeight.bold),
-//                                       ),
-//                                       title: Container(
-//                                         width: 20,
-//                                         child: Column(
-//                                           crossAxisAlignment:
-//                                               CrossAxisAlignment.start,
-//                                           children: [
-//                                             Text(
-//                                               documentSnapshot['class'],
-//                                               style: TextStyle(fontSize: 15),
-//                                             ),
-//                                             Text(
-//                                               "과목코드: ${documentSnapshot['code']} / ${documentSnapshot['professor']} 교수님",
-//                                               style: TextStyle(fontSize: 15),
-//                                             ),
-//                                           ],
-//                                         ),
-//                                       ),
-//                                       trailing: Container(
-//                                         width: 200,
-//                                         child: TextFormField(
-//                                           //     initialValue: Get.arguments,
-//                                           controller: _scoreController[index],
-//                                           decoration: InputDecoration(
-//                                             // hintText: name,
-
-//                                             labelText: '가중치 입력',
-//                                             labelStyle: TextStyle(fontSize: 12),
-//                                             hintText: "0~10",
-
-//                                             hintStyle: TextStyle(
-//                                                 fontSize: 13,
-//                                                 color: Colors.black54),
-//                                             filled: true,
-//                                             fillColor: Colors.white,
-
-//                                             contentPadding:
-//                                                 EdgeInsets.only(left: 15),
-//                                             enabledBorder: OutlineInputBorder(
-//                                               borderSide: BorderSide(
-//                                                   color: Colors.black38),
-//                                               borderRadius:
-//                                                   BorderRadius.circular(15),
-//                                             ),
-//                                             focusedBorder: OutlineInputBorder(
-//                                               borderSide: BorderSide(
-//                                                   color: Color(0xFFECEFF1)),
-//                                               borderRadius:
-//                                                   BorderRadius.circular(15),
-//                                             ),
-//                                           ),
-//                                           validator: (String? value) {
-//                                             if (value!.isEmpty) {
-//                                               return 'Please enter score';
-//                                             } else if (int.parse(value) < 0) {
-//                                               return '가중치는 0보다 커야합니다. ';
-//                                             } else if (int.parse(value) > 10) {
-//                                               return '가중치는 10보다 작아야합니다. ';
-//                                             }
-//                                           },
-//                                         ),
-//                                       ),
-//                                     ),
-//                                     SizedBox(
-//                                       height: 10,
-//                                     ),
-//                                     Divider(
-//                                       color: Colors.black26,
-//                                     )
-//                                   ],
-//                                 ),
-//                               );
-//                             });
-//                       }
-
-//                       return const Center(
-//                         child: CircularProgressIndicator(),
-//                       );
-//                     },
-//                   ),
-//                 ),
-//               ),
-//             ),
-//             SizedBox(height: 30.h),
-//             Container(
-//               width: 100,
-//               decoration: BoxDecoration(
-//                 color: Colors.white,
-//                 borderRadius: BorderRadius.circular(10),
-//                 boxShadow: [
-//                   BoxShadow(
-//                     color: Color(0xFFD1C4E9),
-//                     spreadRadius: 8,
-//                     blurRadius: 20,
-//                   ),
-//                 ],
-//               ),
-//               child: ElevatedButton(
-//                 child: Container(
-//                   width: 300,
-//                   height: 35,
-//                   child: Center(
-//                     child: Text("제 출"),
-//                   ),
-//                 ),
-//                 onPressed: () async {
-//                   var classScore = List.generate(0, (index) => 0);
-
-//                   for (int i = 0; i < length!; i++) {
-//                     classScore.add(int.parse(_scoreController[i].text));
-//                   }
-
-//                   // for (int i = 0; i < length!; i++) {
-//                   //   print(classScore[i]);
-//                   // }
-
-//                   await FirebaseFirestore.instance
-//                       .collection("Profile")
-//                       .doc(firebaseUser!.uid)
-//                       .collection("classScore")
-//                       .doc(Get.rootDelegate.parameters['semId'])
-//                       .set({});
-//                   for (int i = 0; i < length; i++) {
-//                     await FirebaseFirestore.instance
-//                         .collection("Profile")
-//                         .doc(firebaseUser!.uid)
-//                         .collection("classScore")
-//                         .doc(Get.rootDelegate.parameters['semId'])
-//                         .update({
-//                       _classCodeList[i].toString(): classScore[i],
-//                     });
-//                   }
-//                   FirebaseFirestore.instance
-//                       .collection("Profile")
-//                       .doc(firebaseUser!.uid)
-//                       .update({
-//                     "classRegister": true,
-//                   });
-//                   String? semId = Get.rootDelegate.parameters['semId'];
-//                   if (semId != null) {
-//                     Get.rootDelegate.toNamed(
-//                       Routes.MY_PAGE,
-//                       arguments: true,
-//                       parameters: {'semId': semId},
-//                     );
-//                   }
-//                 },
-//                 style: ElevatedButton.styleFrom(
-//                   primary: Colors.deepPurple,
-//                   onPrimary: Colors.white,
-//                   shape: RoundedRectangleBorder(
-//                     borderRadius: BorderRadius.circular(10),
-//                   ),
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }

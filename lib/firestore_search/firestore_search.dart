@@ -53,7 +53,7 @@ class FirestoreSearchScaffold extends StatefulWidget {
   /// [firestoreCollectionName] , [dataListFromSnapshot] are required
   const FirestoreSearchScaffold({
     this.appBarBottom,
-    this.scaffoldBody = const Center(child: Text('Add a scaffold body')),
+    required this.scaffoldBody,
     this.appBarBackgroundColor,
     this.backButtonColor,
     this.clearSearchButtonColor,
@@ -100,6 +100,12 @@ class _FirestoreSearchScaffoldState extends State<FirestoreSearchScaffold> {
     });
 
     super.initState();
+  }
+
+  @protected
+  void didUpdateWidget(FirestoreSearchScaffold oldWidget) {
+    print("자식 변경");
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -164,22 +170,22 @@ class _FirestoreSearchScaffoldState extends State<FirestoreSearchScaffold> {
                           onSearchQueryChanged: updateSearchQuery,
                         ),
                 ),
-                // if (widget.showSearchIcon)
-                //   IconButton(
-                //       icon: const Icon(Icons.search),
-                //       padding: const EdgeInsets.all(0),
-                //       color: widget.searchIconColor ??
-                //           Theme.of(context).primaryColor,
-                //       onPressed: () {
-                //         setState(() {
-                //           if (!isSearching) {
-                //             isSearching = true;
-                //             searchFocusNode.requestFocus();
-                //           } else {
-                //             searchFocusNode.unfocus();
-                //           }
-                //         });
-                //       })
+                if (widget.showSearchIcon)
+                  IconButton(
+                      icon: const Icon(Icons.search),
+                      padding: const EdgeInsets.all(0),
+                      color: widget.searchIconColor ??
+                          Theme.of(context).primaryColor,
+                      onPressed: () {
+                        setState(() {
+                          if (!isSearching) {
+                            isSearching = true;
+                            searchFocusNode.requestFocus();
+                          } else {
+                            searchFocusNode.unfocus();
+                          }
+                        });
+                      })
               ],
             ),
             // bottom: isSearching ? null : widget.appBarBottom,
@@ -193,7 +199,7 @@ class _FirestoreSearchScaffoldState extends State<FirestoreSearchScaffold> {
                   height: MediaQuery.of(context).size.height,
                   color: widget.searchBodyBackgroundColor,
                   child: searchQuery.isEmpty
-                      ? SizedBox()
+                      ? widget.scaffoldBody
                       : widget.firestoreDocsName != null
                           ? StreamBuilder<List>(
                               stream: FirestoreService(
