@@ -104,7 +104,6 @@ class _FirestoreSearchScaffoldState extends State<FirestoreSearchScaffold> {
 
   @protected
   void didUpdateWidget(FirestoreSearchScaffold oldWidget) {
-    print("자식 변경");
     super.didUpdateWidget(oldWidget);
   }
 

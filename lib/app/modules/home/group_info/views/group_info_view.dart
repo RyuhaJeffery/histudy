@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:histudy/app/widgets/top_bar_widget.dart';
@@ -26,7 +27,6 @@ class _HomePageState extends State<GroupInfoView> {
 
   @override
   void initState() {
-    super.initState();
     FirebaseFirestore.instance
         .collection('Profile')
         .doc(user?.uid)
@@ -38,6 +38,7 @@ class _HomePageState extends State<GroupInfoView> {
       });
       groupcheck = false;
     });
+    super.initState();
   }
 
   final TextEditingController _nameController = TextEditingController();
@@ -48,112 +49,6 @@ class _HomePageState extends State<GroupInfoView> {
 
   final CollectionReference _profile =
       FirebaseFirestore.instance.collection('Profile');
-
-  Future<void> _createOrUpdate([
-    DocumentSnapshot? documentSnapshot,
-    int? preGroup,
-    String? semId,
-  ]) async {
-    String action = 'create';
-    if (documentSnapshot != null) {
-      action = 'update';
-      isSwitched = documentSnapshot['isAdmin'];
-      _nameController.text = documentSnapshot['name'];
-      _groupController.text = documentSnapshot['group'].toString();
-    }
-
-    await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 20,
-                left: 20,
-                right: 20,
-                // prevent the soft keyboard from covering text fields
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
-                  controller: _groupController,
-                  decoration: const InputDecoration(
-                    labelText: 'change group number ',
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Switch(
-                  value: isSwitched,
-                  onChanged: (value) {
-                    setState(() {
-                      isSwitched = value;
-                      print(isSwitched);
-                    });
-                  },
-                  activeTrackColor: Colors.lightGreenAccent,
-                  activeColor: Colors.grey,
-                ),
-                ElevatedButton(
-                  child: Text(action == 'create' ? 'Create' : 'Update'),
-                  onPressed: () async {
-                    //final String? name = _nameController.text;
-                    final double? group =
-                        double.tryParse(_groupController.text);
-                    if (group != null && semId != null) {
-                      if (action == 'update') {
-                        //이전 그룹에서 유저 데이터를 삭제
-                        await FirebaseFirestore.instance
-                            .collection(semId)
-                            .doc(semId)
-                            .collection('Group')
-                            .doc(preGroup.toString())
-                            .update({
-                          "members":
-                              FieldValue.arrayRemove([documentSnapshot!.id]),
-                        });
-
-                        //이동할 그룹에 유저 데이터를 추가
-                        await FirebaseFirestore.instance
-                            .collection(semId)
-                            .doc(semId)
-                            .collection('Group')
-                            .doc(group.toString())
-                            .update({
-                          "members":
-                              FieldValue.arrayUnion([documentSnapshot.id]),
-                        });
-                        await _profile
-                            .doc(documentSnapshot.id)
-                            .update({"group": group, "isAdmin": isSwitched});
-                      }
-
-                      // Clear the text fields
-                      _nameController.text = '';
-                      _groupController.text = '';
-
-                      // Hide the bottom sheet
-                      Navigator.of(context).pop();
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xff04589C),
-                    side: BorderSide(width: 1),
-                    shape: RoundedRectangleBorder(
-                        //to set border radius to button
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
-                )
-              ],
-            ),
-          );
-        });
-  }
 
   Future<void> _deleteProduct(String productId) async {
     await _profile.doc(productId).delete();
@@ -292,11 +187,248 @@ class _HomePageState extends State<GroupInfoView> {
                                                     icon:
                                                         const Icon(Icons.edit),
                                                     onPressed: () {
-                                                      _createOrUpdate(
-                                                        documentSnapshot,
-                                                        documentSnapshot[
-                                                            'group'],
-                                                        semId,
+                                                      String action = 'create';
+                                                      if (documentSnapshot !=
+                                                          null) {
+                                                        action = 'update';
+                                                        isSwitched =
+                                                            documentSnapshot[
+                                                                'isAdmin'];
+                                                        _nameController.text =
+                                                            documentSnapshot[
+                                                                'name'];
+                                                        _groupController.text =
+                                                            documentSnapshot[
+                                                                    'group']
+                                                                .toString();
+                                                      }
+                                                      Get.dialog(
+                                                        AlertDialog(
+                                                          title:
+                                                              Text("유저정보 수정"),
+                                                          content: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                '그룹 번호 변경',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 14,
+                                                                ),
+                                                              ),
+                                                              TextField(
+                                                                keyboardType:
+                                                                    const TextInputType
+                                                                            .numberWithOptions(
+                                                                        decimal:
+                                                                            true),
+                                                                controller:
+                                                                    _groupController,
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  labelText:
+                                                                      'change group number ',
+                                                                ),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Row(
+                                                                children: [
+                                                                  Text(
+                                                                    'Admin 계정 지정',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      fontSize:
+                                                                          14,
+                                                                    ),
+                                                                  ),
+                                                                  Text(
+                                                                    '  (화면상으로 바로 바뀌지 않습니다.)',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          10,
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 10,
+                                                              ),
+                                                              Switch(
+                                                                value:
+                                                                    isSwitched,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  setState(() {
+                                                                    isSwitched =
+                                                                        value;
+                                                                    Get.snackbar(
+                                                                      value
+                                                                          ? "Admin 지정 완료"
+                                                                          : "Admin 지정 취소 완료",
+                                                                      "Update 버튼을 클릭해 완료하세요",
+                                                                      backgroundColor:
+                                                                          Color(
+                                                                              0xff04589C),
+                                                                      colorText:
+                                                                          Color(
+                                                                              0xffF0F0F0),
+                                                                    );
+                                                                  });
+                                                                },
+                                                                activeTrackColor:
+                                                                    Color(
+                                                                        0xff04589C),
+                                                                activeColor:
+                                                                    Colors.grey,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          actions: [
+                                                            ElevatedButton(
+                                                              child: Text(action ==
+                                                                      'create'
+                                                                  ? 'Create'
+                                                                  : 'Update'),
+                                                              onPressed:
+                                                                  () async {
+                                                                //final String? name = _nameController.text;
+                                                                final double?
+                                                                    group =
+                                                                    double.tryParse(
+                                                                        _groupController
+                                                                            .text);
+                                                                if (group !=
+                                                                        null &&
+                                                                    semId !=
+                                                                        null) {
+                                                                  if (action ==
+                                                                      'update') {
+                                                                    //이전 그룹에서 유저 데이터를 삭제
+                                                                    await FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            semId)
+                                                                        .doc(
+                                                                            semId)
+                                                                        .collection(
+                                                                            'Group')
+                                                                        .doc(documentSnapshot['group']
+                                                                            .toString())
+                                                                        .update({
+                                                                      "members":
+                                                                          FieldValue
+                                                                              .arrayRemove([
+                                                                        documentSnapshot
+                                                                            .id
+                                                                      ]),
+                                                                    });
+
+                                                                    //이동할 그룹에 유저 데이터를 추가
+                                                                    await FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            semId)
+                                                                        .doc(
+                                                                            semId)
+                                                                        .collection(
+                                                                            'Group')
+                                                                        .doc(group
+                                                                            .toString())
+                                                                        .update({
+                                                                      "members":
+                                                                          FieldValue
+                                                                              .arrayUnion([
+                                                                        documentSnapshot
+                                                                            .id
+                                                                      ]),
+                                                                    });
+                                                                    await _profile
+                                                                        .doc(documentSnapshot
+                                                                            .id)
+                                                                        .update({
+                                                                      "group":
+                                                                          group,
+                                                                      "isAdmin":
+                                                                          isSwitched
+                                                                    });
+                                                                    Get.back();
+                                                                    Get.snackbar(
+                                                                      "Update 완료",
+                                                                      "화면 닫기 버튼을 클릭하여 되돌아가세요",
+                                                                      backgroundColor: Color.fromARGB(
+                                                                          255,
+                                                                          5,
+                                                                          109,
+                                                                          195),
+                                                                      colorText:
+                                                                          Color(
+                                                                              0xffF0F0F0),
+                                                                    );
+                                                                  }
+                                                                  Get.back();
+                                                                  // Clear the text fields
+                                                                  // _nameController
+                                                                  //     .text = '';
+                                                                  // _groupController
+                                                                  //     .text = '';
+
+                                                                  // Hide the bottom sheet
+
+                                                                }
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                primary: Color(
+                                                                    0xff04589C),
+                                                                side:
+                                                                    BorderSide(
+                                                                        width:
+                                                                            1),
+                                                                shape: RoundedRectangleBorder(
+                                                                    //to set border radius to button
+                                                                    borderRadius: BorderRadius.circular(5)),
+                                                              ),
+                                                            ),
+                                                            ElevatedButton(
+                                                              child:
+                                                                  Text('화면 닫기'),
+                                                              onPressed: () {
+                                                                Get.back();
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                primary: Color(
+                                                                    0xff04589C),
+                                                                side:
+                                                                    BorderSide(
+                                                                        width:
+                                                                            1),
+                                                                shape: RoundedRectangleBorder(
+                                                                    //to set border radius to button
+                                                                    borderRadius: BorderRadius.circular(5)),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
                                                       );
                                                     },
                                                   ),

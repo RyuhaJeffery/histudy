@@ -366,7 +366,6 @@ class MyPageView extends GetView<MyPageController> {
                                             )),
                                           ),
                                           onPressed: () {
-                                            print(semId);
                                             if (semId != null) {
                                               Get.rootDelegate.toNamed(
                                                 Routes.EDIT_SEM,
@@ -401,7 +400,6 @@ class MyPageView extends GetView<MyPageController> {
                                             )),
                                           ),
                                           onPressed: () {
-                                            print(semId);
                                             if (semId != null) {
                                               Get.rootDelegate.toNamed(
                                                 Routes.EDIT_CLASS,
@@ -414,9 +412,53 @@ class MyPageView extends GetView<MyPageController> {
                                       ],
                                     )
                                   : getdata?['classRegister']
-                                      ? Container(
-                                          child: Text("이미 신청하셨습니다."),
-                                        )
+                                      ? getdata!['group'] != 0
+                                          ? Container()
+                                          : Column(
+                                              children: [
+                                                Container(
+                                                  child: Text("이미 신청하셨습니다."),
+                                                ),
+                                                SizedBox(
+                                                  height: 10.h,
+                                                ),
+                                                ElevatedButton(
+                                                  child: Text(
+                                                    '매칭 신청한 교과목 확인하기',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                    ),
+                                                  ),
+                                                  style: ButtonStyle(
+                                                    minimumSize:
+                                                        MaterialStateProperty
+                                                            .all(Size(280, 40)),
+                                                    backgroundColor:
+                                                        MaterialStateProperty
+                                                            .all<Color>(
+                                                                Colors.black54),
+                                                    shape: MaterialStateProperty
+                                                        .all<RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              27),
+                                                    )),
+                                                  ),
+                                                  onPressed: () async {
+                                                    if (semId != null) {
+                                                      Get.rootDelegate.toNamed(
+                                                        Routes.REGISTERED,
+                                                        arguments: true,
+                                                        parameters: {
+                                                          'semId': semId
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                              ],
+                                            )
                                       : ElevatedButton(
                                           child: Text(
                                             '이번학기 Histudy를 신청하세요!',
@@ -523,6 +565,34 @@ class MyPageView extends GetView<MyPageController> {
       ),
     );
   }
+}
+
+Future registeredClass() async {
+  return Get.dialog(
+    AlertDialog(
+      title: Text("Firebase에 수업 정보가 업로드 됩니다"),
+      content: Text("기존에 올라가 있는 수업 정보는 지워집니다."),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Get.snackbar(
+              "수업 업로드 완료",
+              "DB에서 정보를 확인하세요",
+              backgroundColor: Color(0xff04589C),
+              colorText: Color(0xffF0F0F0),
+            );
+          },
+          child: Text("다시 신청하기"),
+        ),
+        TextButton(
+          onPressed: () {
+            Get.back();
+          },
+          child: Text("아니요"),
+        ),
+      ],
+    ),
+  );
 }
 
 void createGroup() async {
@@ -639,6 +709,35 @@ void createGroup() async {
         }
         //만약 여기서 서로 등록을 했다면 가중치를 최대로 올려야 함.
         //여기서 조회 해야함.
+        //양쪽다 있어야 할 때 코드
+        // await FirebaseFirestore.instance
+        //     .collection("Profile")
+        //     .doc(profileList[i])
+        //     .collection(semId)
+        //     .doc(profileList[j])
+        //     .get()
+        //     .then(
+        //   (DocumentSnapshot ds1) {
+        //     if (ds1.exists) {
+        //       //상대편것도 확인 해야함.
+        //       FirebaseFirestore.instance
+        //           .collection("Profile")
+        //           .doc(profileList[j])
+        //           .collection(semId)
+        //           .doc(profileList[i])
+        //           .get()
+        //           .then(
+        //         (DocumentSnapshot ds) {
+        //           if (ds.exists) {
+        //             allTemp = maxscore;
+        //           }
+        //         },
+        //       );
+        //     }
+        //   },
+        // );
+
+        //한쪽만 있어도 되는 코드
         await FirebaseFirestore.instance
             .collection("Profile")
             .doc(profileList[i])
@@ -648,20 +747,21 @@ void createGroup() async {
             .then(
           (DocumentSnapshot ds1) {
             if (ds1.exists) {
-              //상대편것도 확인 해야함.
-              FirebaseFirestore.instance
-                  .collection("Profile")
-                  .doc(profileList[j])
-                  .collection(semId)
-                  .doc(profileList[i])
-                  .get()
-                  .then(
-                (DocumentSnapshot ds) {
-                  if (ds.exists) {
-                    allTemp = maxscore;
-                  }
-                },
-              );
+              allTemp = maxscore;
+            }
+          },
+        );
+
+        await FirebaseFirestore.instance
+            .collection("Profile")
+            .doc(profileList[j])
+            .collection(semId)
+            .doc(profileList[i])
+            .get()
+            .then(
+          (DocumentSnapshot ds2) {
+            if (ds2.exists) {
+              allTemp = maxscore;
             }
           },
         );

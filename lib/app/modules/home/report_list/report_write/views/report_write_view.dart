@@ -256,11 +256,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
   }
 
   Widget _participantsWidget(ProfileModel profileModel) {
-    print("semID 안넘어오니??");
-    print(profileModel.semId);
     if (profileModel.semId != null) {
-      print("semID 안넘어오니??");
-      print(profileModel.semId);
       return FutureBuilder<GroupModel?>(
           future: GroupRepository.getGroup(
               profileModel.semId, profileModel.group!.toString()),
@@ -288,7 +284,6 @@ class ReportWriteView extends GetView<ReportWriteController> {
                                     ? finalCheckedMembers
                                         .add(groupModel.members![index])
                                     : finalCheckedMembers.removeAt(index);
-                                print(finalCheckedMembers);
                               }),
                           FutureBuilder<ProfileModel?>(
                             future: UserRepositroy.getUser(

@@ -2,8 +2,6 @@ import 'package:get/get.dart';
 
 import '../middleware/auth_middleware.dart';
 import '../modules/home/admin/bindings/admin_binding.dart';
-// import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
-// import '../modules/home/admin/group_add/views/group_add_view.dart';
 import '../modules/home/admin/group_del/bindings/group_del_binding.dart';
 import '../modules/home/admin/group_del/views/group_del_view.dart';
 import '../modules/home/admin/student_list/bindings/student_list_binding.dart';
@@ -25,6 +23,8 @@ import '../modules/home/my_page/edit_myInfo/bindings/edit_my_info_binding.dart';
 import '../modules/home/my_page/edit_myInfo/views/edit_my_info_view.dart';
 import '../modules/home/my_page/edit_sem/bindings/edit_sem_binding.dart';
 import '../modules/home/my_page/edit_sem/views/edit_sem_view.dart';
+import '../modules/home/my_page/registered/bindings/registered_binding.dart';
+import '../modules/home/my_page/registered/views/registered_view.dart';
 import '../modules/home/my_page/views/my_page_view.dart';
 import '../modules/home/question/bindings/question_binding.dart';
 import '../modules/home/question/question_detail/bindings/question_detail_binding.dart';
@@ -47,6 +47,9 @@ import '../modules/home/sign_up/views/sign_up_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+
+// import '../modules/home/admin/group_add/bindings/group_add_binding.dart';
+// import '../modules/home/admin/group_add/views/group_add_view.dart';
 
 part 'app_routes.dart';
 
@@ -162,6 +165,15 @@ class AppPages {
             EnsureAuthMiddleware(),
           ],
           children: [
+            GetPage(
+              name: _Paths.REGISTERED,
+              page: () => RegisteredView(),
+              binding: RegisteredBinding(),
+              participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware(),
+              ],
+            ),
             GetPage(
               name: _Paths.EDIT_SEM,
               page: () => EditSemView(),

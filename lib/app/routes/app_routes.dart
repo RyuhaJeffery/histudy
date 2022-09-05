@@ -33,6 +33,7 @@ abstract class Routes {
   static const EDIT_CLASS = _Paths.HOME + _Paths.MY_PAGE + _Paths.EDIT_CLASS;
   static const EDIT_MY_INFO =
       _Paths.HOME + _Paths.MY_PAGE + _Paths.EDIT_MY_INFO;
+  static const REGISTERED = _Paths.HOME + _Paths.MY_PAGE + _Paths.REGISTERED;
 }
 
 abstract class _Paths {
@@ -61,4 +62,5 @@ abstract class _Paths {
   static const EDIT_SEM = '/edit-sem';
   static const EDIT_CLASS = '/edit-class';
   static const EDIT_MY_INFO = '/edit-my-info';
+  static const REGISTERED = '/registered';
 }
