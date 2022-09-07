@@ -16,67 +16,172 @@ import '../../../../widgets/top_bar_widget.dart';
 import '../controllers/report_list_controller.dart';
 import '../report_detail/controllers/report_detail_controller.dart';
 
-class ReportListView extends GetView<ReportListController> {
+// class ReportListView extends GetView<ReportListController> {
+class ReportListView extends StatefulWidget {
+  @override
+  State<ReportListView> createState() => _ReportListViewState();
+}
+
+class _ReportListViewState extends State<ReportListView> {
+  late int groupNum = 1;
+  final TextEditingController _groupController = TextEditingController();
+  final _groupKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     String? semId = Get.rootDelegate.parameters["semId"];
+
     return Scaffold(
       backgroundColor: Color(0xffFDFFFE),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(children: [
-          topBar(Get.rootDelegate.parameters["semId"]),
-          SizedBox(
-            height: 30.h,
-          ),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-            //SizedBox(width: 180,),
-            Text(
-              "등록된 스터디모임 보고서",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            topBar(Get.rootDelegate.parameters["semId"]),
+            SizedBox(
+              height: 30.h,
+            ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              //SizedBox(width: 180,),
+              Text(
+                "등록된 스터디모임 보고서",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+            ]),
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 500,
+                ),
+                SizedBox(
+                  width: 100,
+                  child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xff04589C),
+                        side: BorderSide(width: 1),
+                        shape: RoundedRectangleBorder(
+                            //to set border radius to button
+                            borderRadius: BorderRadius.circular(5)),
+                      ),
+                      onPressed: () {
+                        if (semId != null) {
+                          Get.rootDelegate.toNamed(
+                            Routes.REPORT_WRITE,
+                            arguments: true,
+                            parameters: {
+                              'semId': semId,
+                            },
+                          );
+                        }
+                      },
+                      child: Text('보고서 작성')),
+                ),
+              ],
+            ),
+            FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection(semId!)
+                  .doc(semId)
+                  .collection('Group')
+                  .get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+                if (snapshot.hasData) {
+                  _groupController.text = groupNum.toString();
+
+                  return Column(
+                    children: [
+                      Text("확인하고 싶은 그룹 정보를 입력하세요"),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: MediaQuery.of(context).size.width / 7,
+                            child: TextFormField(
+                              key: _groupKey,
+                              controller: _groupController,
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              decoration: InputDecoration(
+                                hintText: "그룹 번호",
+                                hintStyle: TextStyle(
+                                    fontSize: 13, color: Colors.black54),
+                                filled: true,
+                                fillColor: Colors.white,
+                                labelStyle: TextStyle(fontSize: 12),
+                                contentPadding: EdgeInsets.only(left: 15),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.black38),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Color(0xFFECEFF1)),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xff04589C),
+                              side: BorderSide(width: 1),
+                              shape: RoundedRectangleBorder(
+                                  //to set border radius to button
+                                  borderRadius: BorderRadius.circular(5)),
+                            ),
+                            onPressed: () {
+                              if (int.tryParse(_groupController.text) == null) {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: Text("번호만 입력하세요"),
+                                  ),
+                                );
+                                _groupController.text = groupNum.toString();
+                              } else if (int.parse(_groupController.text) < 1 ||
+                                  int.parse(_groupController.text) >=
+                                      snapshot.data!.docs.length) {
+                                Get.dialog(
+                                  AlertDialog(
+                                    title: Text(
+                                        "1에서 ${snapshot.data!.docs.length}까지 그룹이 있습니다."),
+                                  ),
+                                );
+                                _groupController.text = groupNum.toString();
+                              } else {
+                                setState(() {
+                                  groupNum = int.parse(_groupController.text);
+                                });
+                              }
+                            },
+                            child: Text('그룹 변경'),
+                          ),
+                        ],
+                      ),
+                      _reportList(groupNum),
+                    ],
+                  );
+                }
+                return CircularProgressIndicator();
+              },
             ),
           ]),
-          SizedBox(
-            height: 30,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 500,
-              ),
-              SizedBox(
-                width: 100,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xff04589C),
-                      side: BorderSide(width: 1),
-                      shape: RoundedRectangleBorder(
-                          //to set border radius to button
-                          borderRadius: BorderRadius.circular(5)),
-                    ),
-                    onPressed: () {
-                      if (semId != null) {
-                        Get.rootDelegate.toNamed(
-                          Routes.REPORT_WRITE,
-                          arguments: true,
-                          parameters: {
-                            'semId': semId,
-                          },
-                        );
-                      }
-                    },
-                    child: Text('보고서 작성')),
-              ),
-            ],
-          ),
-          _reportList(),
-        ]),
+        ),
       ),
     );
   }
 
-  _reportList() {
+  _reportList(int groupNum) {
     String? semId = Get.rootDelegate.parameters['semId'];
     return Padding(
       padding: const EdgeInsets.fromLTRB(80, 20, 80, 0),
@@ -127,37 +232,69 @@ class ReportListView extends GetView<ReportListController> {
             builder: (context, snapshot) {
               if (snapshot.hasData && semId != null) {
                 ProfileModel profile = snapshot.data!;
+                if (profile.isAdmin!) {
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: ReportRepository.getReportList(
+                      semId,
+                      groupNum.toString(),
+                    ),
+                    builder: (contextTwo, reportListSnapshot) {
+                      if (reportListSnapshot.hasData) {
+                        List<ReportModel> reportList = reportListSnapshot
+                            .data!.docs
+                            .map((item) => ReportModel.fromSnapshot(item))
+                            .toList();
 
-                return StreamBuilder<QuerySnapshot>(
-                  stream: ReportRepository.getReportList(
-                    semId,
-                    profile.group!.toString(),
-                  ),
-                  builder: (contextTwo, reportListSnapshot) {
-                    if (reportListSnapshot.hasData) {
-                      List<ReportModel> reportList = reportListSnapshot
-                          .data!.docs
-                          .map((item) => ReportModel.fromSnapshot(item))
-                          .toList();
-//                    List<ReportModel> reportList = reportListSnapshot.data!;
-
-                      return SizedBox(
-                        height: 400.h,
-                        child: ListView.builder(
-                          itemCount: reportList.length,
-                          itemBuilder: (BuildContext contextThree, int index) {
-                            return _reportBlock(reportList[index], index);
-                          },
-                        ),
-                      );
-                    } else {
-                      return Container(
+                        return SizedBox(
                           height: 400.h,
-                          width: 400.w,
-                          child: Center(child: CircularProgressIndicator()));
-                    }
-                  },
-                );
+                          child: ListView.builder(
+                            itemCount: reportList.length,
+                            itemBuilder:
+                                (BuildContext contextThree, int index) {
+                              return _reportBlock(reportList[index], index);
+                            },
+                          ),
+                        );
+                      } else {
+                        return Container(
+                            height: 400.h,
+                            width: 400.w,
+                            child: Center(child: CircularProgressIndicator()));
+                      }
+                    },
+                  );
+                } else {
+                  return StreamBuilder<QuerySnapshot>(
+                    stream: ReportRepository.getReportList(
+                      semId,
+                      profile.group!.toString(),
+                    ),
+                    builder: (contextTwo, reportListSnapshot) {
+                      if (reportListSnapshot.hasData) {
+                        List<ReportModel> reportList = reportListSnapshot
+                            .data!.docs
+                            .map((item) => ReportModel.fromSnapshot(item))
+                            .toList();
+
+                        return SizedBox(
+                          height: 400.h,
+                          child: ListView.builder(
+                            itemCount: reportList.length,
+                            itemBuilder:
+                                (BuildContext contextThree, int index) {
+                              return _reportBlock(reportList[index], index);
+                            },
+                          ),
+                        );
+                      } else {
+                        return Container(
+                            height: 400.h,
+                            width: 400.w,
+                            child: Center(child: CircularProgressIndicator()));
+                      }
+                    },
+                  );
+                }
               } else {
                 return Container(
                     height: 400.h,

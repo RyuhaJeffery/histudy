@@ -184,54 +184,55 @@ class _RegisteredViewState extends State<RegisteredView> {
                             final DocumentSnapshot ds =
                                 streamSnapshot.data!.docs[index];
                             return FutureBuilder(
-                                future: FirebaseFirestore.instance
-                                    .collection('Profile')
-                                    .doc(user!.uid)
-                                    .collection('classScore')
-                                    .doc(semId)
-                                    .get(),
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<DocumentSnapshot> snapshot1) {
-                                  if (snapshot1.connectionState ==
-                                      ConnectionState.done) {
-                                    Map<String, dynamic> subDs = snapshot1.data!
-                                        .data() as Map<String, dynamic>;
+                              future: FirebaseFirestore.instance
+                                  .collection('Profile')
+                                  .doc(user!.uid)
+                                  .collection('classScore')
+                                  .doc(semId)
+                                  .get(),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<DocumentSnapshot> snapshot1) {
+                                if (snapshot1.connectionState ==
+                                    ConnectionState.done) {
+                                  Map<String, dynamic> subDs = snapshot1.data!
+                                      .data() as Map<String, dynamic>;
 
-                                    if (subDs["${ds.id}"] > 0) {
-                                      return Container(
-                                        margin: const EdgeInsets.all(10),
-                                        child: Column(
-                                          children: [
-                                            ListTile(
-                                              title: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: <Widget>[
-                                                  Expanded(
-                                                      child: Text(
-                                                          '${subIndex++ + 1}')),
-                                                  Expanded(
-                                                      child: Text(ds['class'])),
-                                                  Expanded(
-                                                      child: Text(
-                                                          ds['professor'])),
-                                                  Expanded(
-                                                      child: Text(ds['code'])),
-                                                  Expanded(
-                                                      child: Text(
-                                                          subDs["${ds.id}"]
-                                                              .toString())),
-                                                ],
-                                              ),
+                                  if (subDs["${ds.id}"] > 0) {
+                                    return Container(
+                                      margin: const EdgeInsets.all(10),
+                                      child: Column(
+                                        children: [
+                                          ListTile(
+                                            title: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: <Widget>[
+                                                Expanded(
+                                                    child: Text(
+                                                        '${subIndex++ + 1}')),
+                                                Expanded(
+                                                    child: Text(ds['class'])),
+                                                Expanded(
+                                                    child:
+                                                        Text(ds['professor'])),
+                                                Expanded(
+                                                    child: Text(ds['code'])),
+                                                Expanded(
+                                                    child: Text(
+                                                        subDs["${ds.id}"]
+                                                            .toString())),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      );
-                                    }
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   }
-                                  return Container();
-                                });
+                                }
+                                return Container();
+                              },
+                            );
                           },
                         );
                       }

@@ -15,9 +15,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
   Widget build(BuildContext context) {
     ReportModel reportModel = controller.arg;
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: ListView(
+      body: ListView(
         children: [
           Column(
             children: [
@@ -41,145 +39,140 @@ class ReportDetailView extends GetView<ReportDetailController> {
                     ),
                   ],
                 ),
-                child: ListView(
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                _titleWidget('제목'),
-                                SizedBox(
-                                  width: 16.w,
-                                ),
-                                Text(
-                                  reportModel.title.toString(),
-                                  style: TextStyle(
-                                      fontSize: 15.sp, color: Colors.black),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                                onPressed: () {
-                                  Get.back();
-                                },
-                                icon: Icon(Icons.clear))
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          children: [
-                            _titleWidget('참여 멤버'),
-                            SizedBox(
-                              width: 16.h,
-                            ),
-                            Container(
-                              height: 50.h,
-                              width: 550.w,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: reportModel.participants!.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        FutureBuilder<ProfileModel?>(
-                                          future: UserRepositroy.getUser(
-                                              reportModel.participants![index]
-                                                  .toString()),
-                                          builder: (context, userSnapshot) {
-                                            if (userSnapshot.hasData) {
-                                              ProfileModel profileModelInGroup =
-                                                  userSnapshot.data!;
-                                              return index ==
-                                                      reportModel.participants!
-                                                              .length -
-                                                          1
-                                                  ? Text(profileModelInGroup
-                                                      .name
-                                                      .toString())
-                                                  : Text(profileModelInGroup
-                                                          .name
-                                                          .toString() +
-                                                      ", ");
-                                            } else {
-                                              return CircularProgressIndicator();
-                                            }
-                                          },
-                                        ),
-                                        SizedBox(
-                                          width: 10.w,
-                                        )
-                                      ],
-                                    );
-                                  }),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10.h,
-                        ),
-                        Row(
-                          children: [
-                            _titleWidget('스터디 시작 시간'),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            Text(
-                              '${reportModel.studyStartTime} ' +
-                                  '(${reportModel.duration}분간 진행)',
-                              style:
-                                  TextStyle(fontSize: 15, color: Colors.black),
-                            ),
-                          ],
-                        ),
-                        _dividerWidget(),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _titleWidget('스터디 내용'),
-                            SizedBox(
-                              width: 16.w,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(top: 8.0.h),
-                              child: Flexible(
-                                child: RichText(
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 50,
-                                    text: TextSpan(
-                                      text: reportModel.text.toString(),
-                                      style: TextStyle(
-                                          fontSize: 15.sp, color: Colors.black),
-                                    )),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              _titleWidget('제목'),
+                              SizedBox(
+                                width: 16.w,
                               ),
-                            )
-                          ],
-                        ),
-                        SizedBox(
-                          height: 20.h,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _titleWidget('이미지'),
-                            SizedBox(
-                              width: 54.w,
+                              Text(
+                                reportModel.title.toString(),
+                                style: TextStyle(
+                                    fontSize: 15.sp, color: Colors.black),
+                              ),
+                            ],
+                          ),
+                          // IconButton(
+                          //     onPressed: () {
+                          //       Get.back();
+                          //     },
+                          //     icon: Icon(Icons.clear))
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Row(
+                        children: [
+                          _titleWidget('참여 멤버'),
+                          SizedBox(
+                            width: 16.h,
+                          ),
+                          Container(
+                            height: 50.h,
+                            width: 550.w,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: reportModel.participants!.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      FutureBuilder<ProfileModel?>(
+                                        future: UserRepositroy.getUser(
+                                            reportModel.participants![index]
+                                                .toString()),
+                                        builder: (context, userSnapshot) {
+                                          if (userSnapshot.hasData) {
+                                            ProfileModel profileModelInGroup =
+                                                userSnapshot.data!;
+                                            return index ==
+                                                    reportModel.participants!
+                                                            .length -
+                                                        1
+                                                ? Text(profileModelInGroup.name
+                                                    .toString())
+                                                : Text(profileModelInGroup.name
+                                                        .toString() +
+                                                    ", ");
+                                          } else {
+                                            return CircularProgressIndicator();
+                                          }
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: 10.w,
+                                      )
+                                    ],
+                                  );
+                                }),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10.h,
+                      ),
+                      Row(
+                        children: [
+                          _titleWidget('스터디 시작 시간'),
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          Text(
+                            '${reportModel.studyStartTime} ' +
+                                '(${reportModel.duration}분간 진행)',
+                            style: TextStyle(fontSize: 15, color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      _dividerWidget(),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _titleWidget('스터디 내용'),
+                          SizedBox(
+                            width: 16.w,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8.0.h),
+                            child: Text(
+                              reportModel.text.toString(),
+                              style:
+                                  TextStyle(fontSize: 14, color: Colors.black),
                             ),
-                            Image.network(reportModel.image.toString(),
-                                height: 350.h, width: 350.w, fit: BoxFit.cover),
-                          ],
-                        ), // 이미지 추
-                      ],
-                    ),
-                  ],
+                            // child: Flexible(
+                            //   child: RichText(
+                            //       overflow: TextOverflow.ellipsis,
+                            //       maxLines: 50,
+                            //       text:
+                            // ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _titleWidget('이미지'),
+                          SizedBox(
+                            width: 54.w,
+                          ),
+                          Image.network(reportModel.image.toString(),
+                              height: 350.h, width: 350.w, fit: BoxFit.cover),
+                        ],
+                      ), // 이미지 추
+                    ],
+                  ),
                 ),
               ),
               SizedBox(
@@ -189,7 +182,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
           ),
         ],
       ),
-    ));
+    );
   }
 
   Widget _titleWidget(String title) {
