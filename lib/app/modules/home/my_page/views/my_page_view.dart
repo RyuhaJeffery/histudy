@@ -523,8 +523,8 @@ class MyPageView extends GetView<MyPageController> {
                           onPressed: () {
                             Get.dialog(
                               AlertDialog(
-                                title: Text("Firebase에 수업 정보가 업로드 됩니다"),
-                                content: Text("기존에 올라가 있는 수업 정보는 지워집니다."),
+                                title: Text("로그아웃 하시겠습니까?"),
+                                // content: Text(""),
                                 actions: [
                                   TextButton(
                                     onPressed: () {
