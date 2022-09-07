@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../middleware/auth_middleware.dart';
 import '../../../../models/profile_model.dart';
 import '../../../../models/report_model.dart';
 import '../../../../repository/report_repository.dart';
@@ -26,6 +27,23 @@ class _ReportListViewState extends State<ReportListView> {
   late int groupNum = 1;
   final TextEditingController _groupController = TextEditingController();
   final _groupKey = GlobalKey<FormState>();
+
+  bool admin = false;
+
+  @override
+  void initState() {
+    FirebaseFirestore.instance
+        .collection('Profile')
+        .doc(user.id)
+        .get()
+        .then((DocumentSnapshot ds) {
+      setState(() {
+        admin = ds['isAdmin'];
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     String? semId = Get.rootDelegate.parameters["semId"];
@@ -81,100 +99,110 @@ class _ReportListViewState extends State<ReportListView> {
                 ),
               ],
             ),
-            FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection(semId!)
-                  .doc(semId)
-                  .collection('Group')
-                  .get(),
-              builder: (BuildContext context,
-                  AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-                if (snapshot.hasData) {
-                  _groupController.text = groupNum.toString();
+            admin
+                ? FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection(semId!)
+                        .doc(semId)
+                        .collection('Group')
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                            snapshot) {
+                      if (snapshot.hasData) {
+                        _groupController.text = groupNum.toString();
 
-                  return Column(
-                    children: [
-                      Text("확인하고 싶은 그룹 정보를 입력하세요"),
-                      SizedBox(
-                        height: 10.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 7,
-                            child: TextFormField(
-                              key: _groupKey,
-                              controller: _groupController,
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                hintText: "그룹 번호",
-                                hintStyle: TextStyle(
-                                    fontSize: 13, color: Colors.black54),
-                                filled: true,
-                                fillColor: Colors.white,
-                                labelStyle: TextStyle(fontSize: 12),
-                                contentPadding: EdgeInsets.only(left: 15),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.black38),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Color(0xFFECEFF1)),
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
+                        return Column(
+                          children: [
+                            Text("확인하고 싶은 그룹 정보를 입력하세요"),
+                            SizedBox(
+                              height: 10.h,
                             ),
-                          ),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Color(0xff04589C),
-                              side: BorderSide(width: 1),
-                              shape: RoundedRectangleBorder(
-                                  //to set border radius to button
-                                  borderRadius: BorderRadius.circular(5)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 7,
+                                  child: TextFormField(
+                                    key: _groupKey,
+                                    controller: _groupController,
+                                    keyboardType: TextInputType.number,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      hintText: "그룹 번호",
+                                      hintStyle: TextStyle(
+                                          fontSize: 13, color: Colors.black54),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                      labelStyle: TextStyle(fontSize: 12),
+                                      contentPadding: EdgeInsets.only(left: 15),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.black38),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(0xFFECEFF1)),
+                                        borderRadius: BorderRadius.circular(15),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20.w,
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xff04589C),
+                                    side: BorderSide(width: 1),
+                                    shape: RoundedRectangleBorder(
+                                        //to set border radius to button
+                                        borderRadius: BorderRadius.circular(5)),
+                                  ),
+                                  onPressed: () {
+                                    if (int.tryParse(_groupController.text) ==
+                                        null) {
+                                      Get.dialog(
+                                        AlertDialog(
+                                          title: Text("번호만 입력하세요"),
+                                        ),
+                                      );
+                                      _groupController.text =
+                                          groupNum.toString();
+                                    } else if (int.parse(
+                                                _groupController.text) <
+                                            1 ||
+                                        int.parse(_groupController.text) >=
+                                            snapshot.data!.docs.length) {
+                                      Get.dialog(
+                                        AlertDialog(
+                                          title: Text(
+                                              "1에서 ${snapshot.data!.docs.length}까지 그룹이 있습니다."),
+                                        ),
+                                      );
+                                      _groupController.text =
+                                          groupNum.toString();
+                                    } else {
+                                      setState(() {
+                                        groupNum =
+                                            int.parse(_groupController.text);
+                                      });
+                                    }
+                                  },
+                                  child: Text('그룹 변경'),
+                                ),
+                              ],
                             ),
-                            onPressed: () {
-                              if (int.tryParse(_groupController.text) == null) {
-                                Get.dialog(
-                                  AlertDialog(
-                                    title: Text("번호만 입력하세요"),
-                                  ),
-                                );
-                                _groupController.text = groupNum.toString();
-                              } else if (int.parse(_groupController.text) < 1 ||
-                                  int.parse(_groupController.text) >=
-                                      snapshot.data!.docs.length) {
-                                Get.dialog(
-                                  AlertDialog(
-                                    title: Text(
-                                        "1에서 ${snapshot.data!.docs.length}까지 그룹이 있습니다."),
-                                  ),
-                                );
-                                _groupController.text = groupNum.toString();
-                              } else {
-                                setState(() {
-                                  groupNum = int.parse(_groupController.text);
-                                });
-                              }
-                            },
-                            child: Text('그룹 변경'),
-                          ),
-                        ],
-                      ),
-                      _reportList(groupNum),
-                    ],
-                  );
-                }
-                return CircularProgressIndicator();
-              },
-            ),
+                            _reportList(groupNum),
+                          ],
+                        );
+                      }
+                      return CircularProgressIndicator();
+                    },
+                  )
+                : _reportList(groupNum),
           ]),
         ),
       ),
