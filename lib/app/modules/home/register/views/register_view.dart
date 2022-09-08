@@ -216,111 +216,95 @@ class _RegisterViewState extends State<RegisterView> {
                                                         ),
                                                       ),
                                                     ));
-                                              } else {
-                                                return ListTile(
-                                                  leading: Text(
-                                                    "${index + 1}",
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  title: Container(
-                                                    width: 20,
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          "${data.name}",
-                                                          style: TextStyle(
-                                                              fontSize: 15),
-                                                        ),
-                                                        Text(
-                                                          "학번 : ${data.studentNumber} / 이메일 : ${data.email}",
-                                                          style: TextStyle(
-                                                              fontSize: 15),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  trailing: ElevatedButton(
-                                                    onPressed: () {
-                                                      Get.dialog(
-                                                        AlertDialog(
-                                                          title: Text(
-                                                              "${data.name}님과 같이 스터디를 진행하겠습니까?"),
-                                                          content: Text(
-                                                              "${data.name}님도 서로 신청을 해야 그룹으로 매칭됩니다."),
-                                                          actions: [
-                                                            TextButton(
-                                                                onPressed:
-                                                                    () async {
-                                                                  setState(() {
-                                                                    data.added =
-                                                                        true;
-                                                                  });
-
-                                                                  FirebaseFirestore
-                                                                      .instance
-                                                                      .collection(
-                                                                          "Profile")
-                                                                      .doc(firebaseUser!
-                                                                          .uid)
-                                                                      .collection(
-                                                                          semId)
-                                                                      .doc(data
-                                                                          .uid)
-                                                                      .set({
-                                                                    "match":
-                                                                        true,
-                                                                    "name": data
-                                                                        .name,
-                                                                    "email": data
-                                                                        .email,
-                                                                    "studentNumber":
-                                                                        data.studentNumber,
-                                                                    "phone": data
-                                                                        .phone,
-                                                                  });
-
-                                                                  Get.back();
-                                                                },
-                                                                child:
-                                                                    Text("예"))
-                                                          ],
-                                                        ),
-                                                      );
-                                                    },
-                                                    child: Text(
-                                                      "추가하기",
-                                                      style: TextStyle(
-                                                          fontSize: 11.sp,
-                                                          color: Colors.white),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      //  padding: EdgeInsets.all(10.sp),
-                                                      elevation: 0,
-                                                      primary:
-                                                          Color(0xffFFA300),
-                                                      fixedSize:
-                                                          Size(80.w, 27.h),
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(30),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
                                               }
                                             }
                                           }
-                                          return Center(
-                                            child: CircularProgressIndicator(),
+                                          return ListTile(
+                                            leading: Text(
+                                              "${index + 1}",
+                                              style: TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            title: Container(
+                                              width: 20,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    "${data.name}",
+                                                    style:
+                                                        TextStyle(fontSize: 15),
+                                                  ),
+                                                  Text(
+                                                    "학번 : ${data.studentNumber} / 이메일 : ${data.email}",
+                                                    style:
+                                                        TextStyle(fontSize: 15),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            trailing: ElevatedButton(
+                                              onPressed: () {
+                                                Get.dialog(
+                                                  AlertDialog(
+                                                    title: Text(
+                                                        "${data.name}님과 같이 스터디를 진행하겠습니까?"),
+                                                    content: Text(
+                                                        "${data.name}님도 서로 신청을 해야 그룹으로 매칭됩니다."),
+                                                    actions: [
+                                                      TextButton(
+                                                          onPressed: () async {
+                                                            setState(() {
+                                                              data.added = true;
+                                                            });
+
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "Profile")
+                                                                .doc(
+                                                                    firebaseUser!
+                                                                        .uid)
+                                                                .collection(
+                                                                    semId)
+                                                                .doc(data.uid)
+                                                                .set({
+                                                              "match": true,
+                                                              "name": data.name,
+                                                              "email":
+                                                                  data.email,
+                                                              "studentNumber": data
+                                                                  .studentNumber,
+                                                              "phone":
+                                                                  data.phone,
+                                                            });
+
+                                                            Get.back();
+                                                          },
+                                                          child: Text("예"))
+                                                    ],
+                                                  ),
+                                                );
+                                              },
+                                              child: Text(
+                                                "추가하기",
+                                                style: TextStyle(
+                                                    fontSize: 11.sp,
+                                                    color: Colors.white),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                //  padding: EdgeInsets.all(10.sp),
+                                                elevation: 0,
+                                                primary: Color(0xffFFA300),
+                                                fixedSize: Size(80.w, 27.h),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(30),
+                                                ),
+                                              ),
+                                            ),
                                           );
                                         },
                                       ),
