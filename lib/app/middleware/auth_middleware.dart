@@ -1,4 +1,5 @@
 import 'dart:html';
+import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterfire_ui/auth.dart';
@@ -20,6 +21,12 @@ class EnsureAuthMiddleware extends GetMiddleware {
     User? loggedInUser = await AuthService.to.authCheck();
     // User? loggedInUser = AuthService.to.auth.value.currentUser;
     if (loggedInUser == null) {
+      Get.snackbar(
+        "로그인을 해주세요",
+        "로그인 후 접속 가능합니다.",
+        backgroundColor: Color(0xff04589C),
+        colorText: Color(0xffF0F0F0),
+      );
       Get.rootDelegate.toNamed(Routes.LOGIN);
       return GetNavConfig.fromRoute(Routes.LOGIN);
     } else {
@@ -35,18 +42,26 @@ class EnsureNotAuthedMiddleware extends GetMiddleware {
     if (loggedInUser != null) {
       Get.rootDelegate.toNamed(Routes.HOME);
       return GetNavConfig.fromRoute(Routes.HOME);
+    } else {
+      return await super.redirectDelegate(route);
     }
-    return await super.redirectDelegate(route);
   }
 }
 
 class EnsureSignUpMiddleware extends GetMiddleware {
   @override
   Future<GetNavConfig?> redirectDelegate(GetNavConfig route) async {
-    await user.get().then((DocumentSnapshot documentSnapshot) {
+    await user.get().then((DocumentSnapshot documentSnapshot) async {
       if (documentSnapshot.exists == false) {
-        print('\nThere is no current user in firestore\n');
+        Get.snackbar(
+          "회원가입이 완료되지 않았습니다.",
+          "정보를 모두 입력해주세요!",
+          backgroundColor: Color(0xff04589C),
+          colorText: Color(0xffF0F0F0),
+        );
         return Get.rootDelegate.toNamed(Routes.SIGN_UP);
+      } else {
+        return await super.redirectDelegate(route);
       }
     });
     return await super.redirectDelegate(route);

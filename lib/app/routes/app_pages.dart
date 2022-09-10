@@ -72,6 +72,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
         ),
         GetPage(
@@ -81,6 +82,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
         ),
         GetPage(
@@ -90,6 +92,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
           children: [
             GetPage(
@@ -122,6 +125,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
         ),
         GetPage(
@@ -131,6 +135,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
         ),
         GetPage(
@@ -140,6 +145,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
           children: [
             GetPage(
@@ -163,6 +169,7 @@ class AppPages {
           participatesInRootNavigator: true,
           middlewares: [
             EnsureAuthMiddleware(),
+            EnsureSignUpMiddleware(),
           ],
           children: [
             GetPage(
@@ -218,12 +225,6 @@ class AppPages {
               binding: StudentListBinding(),
               participatesInRootNavigator: true,
             ),
-            // GetPage(
-            //   name: _Paths.GROUP_ADD,
-            //   page: () => GroupAddView(),
-            //   binding: GroupAddBinding(),
-            //   participatesInRootNavigator: true,
-            // ),
             GetPage(
               name: _Paths.GROUP_DEL,
               page: () => GroupDelView(),

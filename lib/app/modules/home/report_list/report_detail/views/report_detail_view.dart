@@ -14,6 +14,7 @@ class ReportDetailView extends GetView<ReportDetailController> {
   @override
   Widget build(BuildContext context) {
     ReportModel reportModel = controller.arg;
+    print(reportModel.image.toString());
     return Scaffold(
       body: ListView(
         children: [
@@ -77,43 +78,43 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           ),
                           Container(
                             height: 50.h,
-                            width: 550.w,
+                            width: 400.w,
                             child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: reportModel.participants!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Row(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      FutureBuilder<ProfileModel?>(
-                                        future: UserRepositroy.getUser(
-                                            reportModel.participants![index]
-                                                .toString()),
-                                        builder: (context, userSnapshot) {
-                                          if (userSnapshot.hasData) {
-                                            ProfileModel profileModelInGroup =
-                                                userSnapshot.data!;
-                                            return index ==
-                                                    reportModel.participants!
-                                                            .length -
-                                                        1
-                                                ? Text(profileModelInGroup.name
-                                                    .toString())
-                                                : Text(profileModelInGroup.name
-                                                        .toString() +
-                                                    ", ");
-                                          } else {
-                                            return CircularProgressIndicator();
-                                          }
-                                        },
-                                      ),
-                                      SizedBox(
-                                        width: 10.w,
-                                      )
-                                    ],
-                                  );
-                                }),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: reportModel.participants!.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    FutureBuilder<ProfileModel?>(
+                                      future: UserRepositroy.getUser(reportModel
+                                          .participants![index]
+                                          .toString()),
+                                      builder: (context, userSnapshot) {
+                                        if (userSnapshot.hasData) {
+                                          ProfileModel profileModelInGroup =
+                                              userSnapshot.data!;
+                                          return index ==
+                                                  reportModel.participants!
+                                                          .length -
+                                                      1
+                                              ? Text(profileModelInGroup.name
+                                                  .toString())
+                                              : Text(profileModelInGroup.name
+                                                      .toString() +
+                                                  ", ");
+                                        } else {
+                                          return CircularProgressIndicator();
+                                        }
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 10.w,
+                                    )
+                                  ],
+                                );
+                              },
+                            ),
                           )
                         ],
                       ),
@@ -167,8 +168,13 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           SizedBox(
                             width: 54.w,
                           ),
-                          Image.network(reportModel.image.toString(),
-                              height: 350.h, width: 350.w, fit: BoxFit.cover),
+                          // Image.network(reportModel.image.toString(),
+                          //     height: 350.h, width: 350.w, fit: BoxFit.cover),
+                          Image.network(
+                              "https://firebasestorage.googleapis.com/v0/b/cseehistudy.appspot.com/o/Group1%2F2022-09-07%2023%3A05%3A18.157.png?alt=media&token=a9771a46-7b59-4812-928a-607801527331",
+                              height: 350.h,
+                              width: 350.w,
+                              fit: BoxFit.cover),
                         ],
                       ), // 이미지 추
                     ],

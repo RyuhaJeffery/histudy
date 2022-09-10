@@ -337,10 +337,17 @@ class _ReportListViewState extends State<ReportListView> {
   }
 
   _reportBlock(ReportModel reportModel, int index) {
+    String? semId = Get.rootDelegate.parameters['semId'];
     return InkWell(
       onTap: () {
         Get.put(ReportDetailController()).arg = reportModel;
-        Get.rootDelegate.toNamed(Routes.REPORT_DETAILE);
+        if (semId != null) {
+          Get.rootDelegate.toNamed(
+            Routes.REPORT_DETAILE,
+            arguments: true,
+            parameters: {'semId': semId},
+          );
+        }
       },
       child: Container(
         height: 50.h,
