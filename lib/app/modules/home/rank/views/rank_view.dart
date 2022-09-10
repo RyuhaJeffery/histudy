@@ -16,7 +16,7 @@ class RankView extends GetView<RankController> {
         body: Center(
           child: Container(
             child: Column(children: [
-              topBar(Get.rootDelegate.parameters["semId"]),
+              topBar(Get.rootDelegate.parameters["semId"], context),
               SizedBox(
                 height: 30.h,
               ),

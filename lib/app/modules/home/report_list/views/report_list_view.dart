@@ -54,7 +54,7 @@ class _ReportListViewState extends State<ReportListView> {
         padding: const EdgeInsets.all(20.0),
         child: SingleChildScrollView(
           child: Column(children: [
-            topBar(Get.rootDelegate.parameters["semId"]),
+            topBar(Get.rootDelegate.parameters["semId"], context),
             SizedBox(
               height: 30.h,
             ),

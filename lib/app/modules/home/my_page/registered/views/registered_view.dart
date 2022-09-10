@@ -46,7 +46,7 @@ class _RegisteredViewState extends State<RegisteredView> {
       backgroundColor: Color(0xffFDFFFE),
       body: Column(
         children: [
-          topBar(Get.rootDelegate.parameters["semId"]),
+          topBar(Get.rootDelegate.parameters["semId"], context),
           SizedBox(
             height: 30.h,
           ),

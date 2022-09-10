@@ -40,7 +40,7 @@ class EditMyInfoView extends GetView<EditMyInfoController> {
         children: [
           Column(
             children: [
-              topBar(Get.rootDelegate.parameters['semId']),
+              topBar(Get.rootDelegate.parameters['semId'], context),
               SizedBox(
                 height: 22,
               ),

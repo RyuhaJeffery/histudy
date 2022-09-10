@@ -20,7 +20,7 @@ class AnnounceView extends GetView<AnnounceController> {
         child: Container(
           child: Column(
             children: [
-              topBar(Get.rootDelegate.parameters["semId"]),
+              topBar(Get.rootDelegate.parameters["semId"], context),
               SizedBox(
                 height: 30.h,
               ),

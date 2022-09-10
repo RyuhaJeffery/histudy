@@ -72,7 +72,7 @@ class GroupDelView extends GetView<GroupDelController> {
                       TextButton(
                           onPressed: () async {
                             await launchUrl(Uri.parse(
-                                "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                "https://fallacious-orchid-f3b.notion.site/Histudy-Guildeline-da4d8c45335b4823b0351928354e1756"));
                           },
                           child: Text("GUIDELINE")),
                       ElevatedButton(onPressed: () {}, child: Text('LOGOUT'))

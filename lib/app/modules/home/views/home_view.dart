@@ -20,6 +20,31 @@ class HomeView extends GetView<HomeController> {
   // var firebaseUser = FirebaseAuth.instance.currentUser;
 
   // User? get userProfile => auth.currentUser;
+
+  Widget histudyHomeLogo(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+            height: 70,
+            width: 70,
+            child: Image.asset('assets/handong_logo.png')),
+        SizedBox(
+          width: 8,
+        ),
+        GestureDetector(
+          onTap: () {
+            Get.rootDelegate.toNamed(Routes.HOME);
+          },
+          child: Text(
+            'HISTUDY',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+          ),
+        ),
+      ],
+    );
+  }
+
   late String semId;
   @override
   Widget build(BuildContext context) {
@@ -33,142 +58,380 @@ class HomeView extends GetView<HomeController> {
       });
     });
 
+    var reponsiveWidth = MediaQuery.of(context).size.width;
+
     bool test = true;
     return GetRouterOutlet.builder(builder: ((context, delegate, currentRoute) {
       return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                            height: 70,
-                            width: 70,
-                            child: Image.asset('assets/handong_logo.png')),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Get.rootDelegate.toNamed(Routes.HOME);
-                          },
-                          child: Text(
-                            'HISTUDY',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 26),
+            reponsiveWidth > 780
+                ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              histudyHomeLogo(context),
+                              SizedBox(
+                                width: 8,
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.rootDelegate.toNamed(
+                                      Routes.REPORT_LIST,
+                                      arguments: true,
+                                      parameters: {'semId': semId},
+                                    );
+                                  },
+                                  child: Text(
+                                    "REPORT",
+                                    style: TextStyle(color: Color(0xff04589C)),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.rootDelegate.toNamed(
+                                      Routes.GROUP_INFO,
+                                      arguments: true,
+                                      parameters: {'semId': semId},
+                                    );
+                                  },
+                                  child: Text(
+                                    "TEAM",
+                                    style: TextStyle(color: Color(0xff04589C)),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.rootDelegate.toNamed(
+                                      Routes.QUESTION,
+                                      arguments: true,
+                                      parameters: {'semId': semId},
+                                    );
+                                  },
+                                  child: Text(
+                                    "Q&A",
+                                    style: TextStyle(color: Color(0xff04589C)),
+                                  )),
+                              TextButton(
+                                  onPressed: () {
+                                    Get.rootDelegate.toNamed(
+                                      Routes.ANNOUNCE,
+                                      arguments: true,
+                                      parameters: {'semId': semId},
+                                    );
+                                  },
+                                  child: Text(
+                                    "ANNOUNCEMENT",
+                                    style: TextStyle(color: Color(0xff04589C)),
+                                  )),
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(
-                                Routes.REPORT_LIST,
-                                arguments: true,
-                                parameters: {'semId': semId},
-                              );
-                            },
-                            child: Text(
-                              "REPORT",
-                              style: TextStyle(color: Color(0xff04589C)),
-                            )),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(
-                                Routes.GROUP_INFO,
-                                arguments: true,
-                                parameters: {'semId': semId},
-                              );
-                            },
-                            child: Text(
-                              "TEAM",
-                              style: TextStyle(color: Color(0xff04589C)),
-                            )),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(
-                                Routes.QUESTION,
-                                arguments: true,
-                                parameters: {'semId': semId},
-                              );
-                            },
-                            child: Text(
-                              "Q&A",
-                              style: TextStyle(color: Color(0xff04589C)),
-                            )),
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(
-                                Routes.ANNOUNCE,
-                                arguments: true,
-                                parameters: {'semId': semId},
-                              );
-                            },
-                            child: Text(
-                              "ANNOUNCEMENT",
-                              style: TextStyle(color: Color(0xff04589C)),
-                            )),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        TextButton(
-                            onPressed: () {
-                              Get.rootDelegate.toNamed(
-                                Routes.RANK,
-                                arguments: true,
-                                parameters: {'semId': semId},
-                              );
-                            },
-                            child: Text(
-                              "RANK",
-                              style: TextStyle(color: Color(0xff04589C)),
-                            )),
-                        TextButton(
-                            onPressed: () async {
-                              await launchUrl(Uri.parse(
-                                  "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
-                            },
-                            child: Text(
-                              "GUIDELINE",
-                              style: TextStyle(color: Color(0xff04589C)),
-                            )),
-                        FirebaseAuth.instance.currentUser != null
-                            ? TextButton(
-                                onPressed: () {
-                                  Get.rootDelegate.toNamed(
-                                    Routes.MY_PAGE,
-                                    arguments: true,
-                                    parameters: {'semId': semId},
-                                  );
-                                },
-                                child: Text(
-                                  "MY PAGE",
-                                  style: TextStyle(color: Color(0xff04589C)),
-                                ))
-                            : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xff04589C),
-                                  side: BorderSide(width: 1),
-                                  shape: RoundedRectangleBorder(
-                                      //to set border radius to button
-                                      borderRadius: BorderRadius.circular(5)),
-                                ),
-                                onPressed: () {
-                                  Get.rootDelegate.toNamed(Routes.LOGIN);
-                                },
-                                child: Text('LOGIN'))
-                      ],
-                    ),
-                  ]),
-            ),
+                          Row(
+                            children: [
+                              TextButton(
+                                  onPressed: () {
+                                    Get.rootDelegate.toNamed(
+                                      Routes.RANK,
+                                      arguments: true,
+                                      parameters: {'semId': semId},
+                                    );
+                                  },
+                                  child: Text(
+                                    "RANK",
+                                    style: TextStyle(color: Color(0xff04589C)),
+                                  )),
+                              TextButton(
+                                  onPressed: () async {
+                                    await launchUrl(Uri.parse(
+                                        "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                  },
+                                  child: Text(
+                                    "GUIDELINE",
+                                    style: TextStyle(color: Color(0xff04589C)),
+                                  )),
+                              FirebaseAuth.instance.currentUser != null
+                                  ? TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.MY_PAGE,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "MY PAGE",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      ))
+                                  : ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Color(0xff04589C),
+                                        side: BorderSide(width: 1),
+                                        shape: RoundedRectangleBorder(
+                                            //to set border radius to button
+                                            borderRadius:
+                                                BorderRadius.circular(5)),
+                                      ),
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(Routes.LOGIN);
+                                      },
+                                      child: Text('LOGIN'))
+                            ],
+                          ),
+                        ]),
+                  )
+                : reponsiveWidth > 562
+                    ? Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  histudyHomeLogo(context),
+                                  SizedBox(
+                                    width: 8,
+                                  ),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.REPORT_LIST,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "REPORT",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.GROUP_INFO,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "TEAM",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.QUESTION,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "Q&A",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.ANNOUNCE,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "ANNOUNCEMENT",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.RANK,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "RANK",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () async {
+                                        await launchUrl(Uri.parse(
+                                            "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                      },
+                                      child: Text(
+                                        "GUIDELINE",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  FirebaseAuth.instance.currentUser != null
+                                      ? TextButton(
+                                          onPressed: () {
+                                            Get.rootDelegate.toNamed(
+                                              Routes.MY_PAGE,
+                                              arguments: true,
+                                              parameters: {'semId': semId},
+                                            );
+                                          },
+                                          child: Text(
+                                            "MY PAGE",
+                                            style: TextStyle(
+                                                color: Color(0xff04589C)),
+                                          ))
+                                      : ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xff04589C),
+                                            side: BorderSide(width: 1),
+                                            shape: RoundedRectangleBorder(
+                                                //to set border radius to button
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                          ),
+                                          onPressed: () {
+                                            Get.rootDelegate
+                                                .toNamed(Routes.LOGIN);
+                                          },
+                                          child: Text('LOGIN'))
+                                ],
+                              ),
+                            ]),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              histudyHomeLogo(context),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Row(
+                                children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.REPORT_LIST,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "REPORT",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.GROUP_INFO,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "TEAM",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.QUESTION,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "Q&A",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.ANNOUNCE,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "ANNOUNCEMENT",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                ],
+                              ),
+                              SizedBox(
+                                height: 10.h,
+                              ),
+                              Row(
+                                children: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Get.rootDelegate.toNamed(
+                                          Routes.RANK,
+                                          arguments: true,
+                                          parameters: {'semId': semId},
+                                        );
+                                      },
+                                      child: Text(
+                                        "RANK",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  TextButton(
+                                      onPressed: () async {
+                                        await launchUrl(Uri.parse(
+                                            "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                      },
+                                      child: Text(
+                                        "GUIDELINE",
+                                        style:
+                                            TextStyle(color: Color(0xff04589C)),
+                                      )),
+                                  FirebaseAuth.instance.currentUser != null
+                                      ? TextButton(
+                                          onPressed: () {
+                                            Get.rootDelegate.toNamed(
+                                              Routes.MY_PAGE,
+                                              arguments: true,
+                                              parameters: {'semId': semId},
+                                            );
+                                          },
+                                          child: Text(
+                                            "MY PAGE",
+                                            style: TextStyle(
+                                                color: Color(0xff04589C)),
+                                          ))
+                                      : ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color(0xff04589C),
+                                            side: BorderSide(width: 1),
+                                            shape: RoundedRectangleBorder(
+                                                //to set border radius to button
+                                                borderRadius:
+                                                    BorderRadius.circular(5)),
+                                          ),
+                                          onPressed: () {
+                                            Get.rootDelegate
+                                                .toNamed(Routes.LOGIN);
+                                          },
+                                          child: Text('LOGIN'))
+                                ],
+                              ),
+                            ]),
+                      ),
             SizedBox(
               height: 281,
               width: 367,

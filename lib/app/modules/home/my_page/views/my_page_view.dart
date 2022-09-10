@@ -38,7 +38,7 @@ class MyPageView extends GetView<MyPageController> {
         children: [
           Column(
             children: [
-              topBar(Get.rootDelegate.parameters["semId"]),
+              topBar(Get.rootDelegate.parameters["semId"], context),
               Text(
                 "마이 페이지",
                 style: TextStyle(

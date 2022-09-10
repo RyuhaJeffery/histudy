@@ -29,7 +29,7 @@ class _EditSemViewState extends State<EditSemView> {
       backgroundColor: Color(0xffFDFFFE),
       body: Column(
         children: [
-          topBar(Get.rootDelegate.parameters["semId"]),
+          topBar(Get.rootDelegate.parameters["semId"], context),
           SizedBox(
             height: 30.h,
           ),

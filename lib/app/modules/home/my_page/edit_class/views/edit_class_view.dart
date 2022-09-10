@@ -54,7 +54,7 @@ class _EditClassViewState extends State<EditClassView> {
     return Scaffold(
       body: Column(
         children: [
-          topBar(Get.rootDelegate.parameters["semId"]),
+          topBar(Get.rootDelegate.parameters["semId"], context),
           Text(
             "CSV파일 불러온 후 Firebase 업로드",
             style: TextStyle(

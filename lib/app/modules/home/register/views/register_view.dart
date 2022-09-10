@@ -54,7 +54,7 @@ class _RegisterViewState extends State<RegisterView> {
     return Scaffold(
       body: Column(
         children: [
-          topBar(semId),
+          topBar(semId, context),
           SizedBox(
             height: 20.h,
           ),

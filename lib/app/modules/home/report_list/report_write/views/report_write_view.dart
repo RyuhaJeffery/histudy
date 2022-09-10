@@ -55,15 +55,15 @@ class ReportWriteView extends GetView<ReportWriteController> {
                   children: [
                     Column(
                       children: [
-                        topBar(Get.rootDelegate.parameters["semId"]),
+                        topBar(Get.rootDelegate.parameters["semId"], context),
                         _sizedBoxWidget(22),
                         _mainTitleWidget(),
                         _sizedBoxWidget(22),
                         Container(
                           padding: EdgeInsets.symmetric(
                               horizontal: 30, vertical: 30),
-                          height: 1040,
-                          width: 700,
+                          height: 1100.h,
+                          width: 700.w,
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
@@ -263,8 +263,11 @@ class ReportWriteView extends GetView<ReportWriteController> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               GroupModel groupModel = snapshot.data!;
+              print(groupModel.members!.length);
+              double heightTemp = groupModel.members!.length * 27;
 
-              return Expanded(
+              return Container(
+                height: heightTemp.h,
                 child: ListView.builder(
                   itemCount: groupModel.members!.length,
                   itemBuilder: (BuildContext context, int index) {

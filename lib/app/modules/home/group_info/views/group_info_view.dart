@@ -63,7 +63,7 @@ class _HomePageState extends State<GroupInfoView> {
     return Scaffold(
         backgroundColor: Color(0xffFDFFFE),
         body: Column(children: [
-          topBar(Get.rootDelegate.parameters["semId"]),
+          topBar(Get.rootDelegate.parameters["semId"], context),
           SizedBox(
             height: 30.h,
           ),
@@ -331,13 +331,24 @@ class _HomePageState extends State<GroupInfoView> {
                                                                             'Group')
                                                                         .doc(documentSnapshot['group']
                                                                             .toString())
-                                                                        .update({
-                                                                      "members":
-                                                                          FieldValue
-                                                                              .arrayRemove([
-                                                                        documentSnapshot
-                                                                            .id
-                                                                      ]),
+                                                                        .get()
+                                                                        .then(
+                                                                            (value) {
+                                                                      if (value
+                                                                          .exists) {
+                                                                        FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(semId)
+                                                                            .doc(semId)
+                                                                            .collection('Group')
+                                                                            .doc(documentSnapshot['group'].toString())
+                                                                            .update({
+                                                                          "members":
+                                                                              FieldValue.arrayRemove([
+                                                                            documentSnapshot.id
+                                                                          ])
+                                                                        });
+                                                                      }
                                                                     });
 
                                                                     //이동할 그룹에 유저 데이터를 추가
