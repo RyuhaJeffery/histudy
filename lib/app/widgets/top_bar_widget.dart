@@ -107,7 +107,7 @@ Widget topBar(String? semId) {
           TextButton(
               onPressed: () async {
                 await launchUrl(Uri.parse(
-                    "https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
+                    "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
               },
               child: Text(
                 "GUIDELINE",

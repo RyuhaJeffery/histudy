@@ -14,103 +14,107 @@ class GroupDelView extends GetView<GroupDelController> {
         children: [
           Padding(
             padding: const EdgeInsets.all(20.0),
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Row(
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                      height: 100,
-                      width: 100,
-                      child: Image.asset('assets/handong_logo.png')),
-                  SizedBox(
-                    width: 8,
+                  Row(
+                    children: [
+                      SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.asset('assets/handong_logo.png')),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Get.rootDelegate.toNamed(Routes.HOME);
+                        },
+                        child: Text(
+                          'HISTUDY',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            Get.rootDelegate.toNamed(Routes.HOME);
+                          },
+                          child: Text("HOME")),
+                      TextButton(
+                          onPressed: () {
+                            Get.rootDelegate.toNamed(Routes.GROUP_INFO);
+                          },
+                          child: Text("TEAM")),
+                      TextButton(
+                          onPressed: () {
+                            Get.rootDelegate.toNamed(Routes.QUESTION);
+                          },
+                          child: Text("Q&A")),
+                      TextButton(
+                          onPressed: () {
+                            Get.rootDelegate.toNamed(Routes.ANNOUNCE);
+                          },
+                          child: Text("ANNOUNCEMENT")),
+                    ],
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Get.rootDelegate.toNamed(Routes.HOME);
-                    },
-                    child: Text(
-                      'HISTUDY',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
+                  Row(
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            Get.rootDelegate.toNamed(Routes.RANK);
+                          },
+                          child: Text("RANK")),
+                      TextButton(
+                          onPressed: () async {
+                            await launchUrl(Uri.parse(
+                                "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                          },
+                          child: Text("GUIDELINE")),
+                      ElevatedButton(onPressed: () {}, child: Text('LOGOUT'))
+                    ],
                   ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.HOME);
-                      },
-                      child: Text("HOME")),
-                  TextButton(
-                      onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.GROUP_INFO);
-                      },
-                      child: Text("TEAM")),
-                  TextButton(
-                      onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.QUESTION);
-                      },
-                      child: Text("Q&A")),
-                  TextButton(
-                      onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.ANNOUNCE);
-                      },
-                      child: Text("ANNOUNCEMENT")),
-                ],
-              ),
-              Row(
-                children: [
-                  TextButton(
-                      onPressed: () {
-                        Get.rootDelegate.toNamed(Routes.RANK);
-                      },
-                      child: Text("RANK")),
-                  TextButton(
-                      onPressed: () async{
-                              await launchUrl(Uri.parse("https://fish-gooseberry-dad.notion.site/Histudy-Guideline-866b2e628da247bcac615924fd718667"));
-                            },
-                      child: Text("GUIDELINE")),
-                  ElevatedButton(onPressed: () {
-                  }, child: Text('LOGOUT'))
-                ],
-              ),
-            ]),
+                ]),
           ),
           Center(
               child: Container(
-                width: 400,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
+            width: 400,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(30),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: Offset(0, 3), // changes position of shadow
                 ),
-                child: Container(
-                  width: 320,
-                  height: 470,
-                  padding: EdgeInsets.all(30),
-                  child: _formGroupDel(),
-                ),
-              )),
+              ],
+            ),
+            child: Container(
+              width: 320,
+              height: 470,
+              padding: EdgeInsets.all(30),
+              child: _formGroupDel(),
+            ),
+          )),
         ],
       ),
     );
   }
 }
 
-
 Widget _formGroupDel() {
   return Column(
     children: [
       Text("그룹에서 유저 삭제 "),
-      SizedBox(height: 10,),
+      SizedBox(
+        height: 10,
+      ),
       TextField(
         decoration: InputDecoration(
           hintText: '연도 ex.2020',
@@ -210,7 +214,6 @@ Widget _formGroupDel() {
           ),
         ),
       ),
-
     ],
   );
 }
