@@ -229,7 +229,7 @@ class _ReportListViewState extends State<ReportListView> {
             )),
             Expanded(
                 child: Text(
-              '  제목',
+              '제목',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -355,47 +355,34 @@ class _ReportListViewState extends State<ReportListView> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(
-              height: 50.h,
-              width: 40.w,
-              child: Center(
+            Expanded(
                 child: Text(
-                  '${index + 1}'.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              '  ${index + 1}'.toString(),
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
               ),
-            ),
-            SizedBox(
-              height: 50.h,
-              width: 80.w,
-              child: Center(
+            )),
+            Expanded(
                 child: Text(
-                  reportModel.title.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              '${reportModel.title.toString()}',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
               ),
-            ),
-            SizedBox(
-              height: 50.h,
-              width: 100.w,
-              child: Center(
+            )),
+            Expanded(
                 child: Text(
-                  reportModel.author.toString(),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              '  ${reportModel.author.toString()}',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
               ),
-            ),
-            SizedBox(
-              height: 50.h,
-              width: 130.w,
-              child: Center(
+            )),
+            Expanded(
                 child: Text(
-                  DateFormat('yyyy-MM-dd')
-                      .format(reportModel.dateTime!.toDate()),
-                  overflow: TextOverflow.ellipsis,
-                ),
+              '  ${DateFormat('yyyy-MM-dd').format(reportModel.dateTime!.toDate())}',
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
               ),
-            ),
+            )),
           ],
         ),
       ),

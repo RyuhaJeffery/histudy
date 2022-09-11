@@ -49,8 +49,10 @@ class ReportRepository {
       'studyStartTime': studyStartTime,
       'text': text,
       'title': title,
-      'sem': "1",
-      'year': "2022",
+    });
+
+    groupCollection.doc(group).update({
+      'imageUrl': image,
     });
 
     groupCollection.doc(group).update({

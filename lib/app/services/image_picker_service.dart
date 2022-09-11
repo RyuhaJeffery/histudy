@@ -16,7 +16,8 @@ class ImagePickerService extends GetxService {
   final ImagePicker _imagePicker = ImagePicker();
 
   Future<XFile?> pickImage() async {
-    return await _imagePicker.pickImage(source: ImageSource.gallery);
+    return await _imagePicker.pickImage(
+        source: ImageSource.gallery, maxHeight: 1024, maxWidth: 1024);
   }
 
   uploadImage(XFile xFile, String groupNum, String dateTime) async {

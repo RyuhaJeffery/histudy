@@ -60,11 +60,6 @@ class ReportDetailView extends GetView<ReportDetailController> {
                               ),
                             ],
                           ),
-                          // IconButton(
-                          //     onPressed: () {
-                          //       Get.back();
-                          //     },
-                          //     icon: Icon(Icons.clear))
                         ],
                       ),
                       SizedBox(
@@ -149,12 +144,6 @@ class ReportDetailView extends GetView<ReportDetailController> {
                               style:
                                   TextStyle(fontSize: 14, color: Colors.black),
                             ),
-                            // child: Flexible(
-                            //   child: RichText(
-                            //       overflow: TextOverflow.ellipsis,
-                            //       maxLines: 50,
-                            //       text:
-                            // ),
                           ),
                         ],
                       ),
@@ -168,13 +157,12 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           SizedBox(
                             width: 54.w,
                           ),
-                          // Image.network(reportModel.image.toString(),
-                          //     height: 350.h, width: 350.w, fit: BoxFit.cover),
                           Image.network(
-                              "https://firebasestorage.googleapis.com/v0/b/cseehistudy.appspot.com/o/Group1%2F2022-09-07%2023%3A05%3A18.157.png?alt=media&token=a9771a46-7b59-4812-928a-607801527331",
-                              height: 350.h,
-                              width: 350.w,
-                              fit: BoxFit.cover),
+                            reportModel.image.toString(),
+                            height: 350.h,
+                            width: 350.w,
+                            fit: BoxFit.cover,
+                          ),
                         ],
                       ), // 이미지 추
                     ],

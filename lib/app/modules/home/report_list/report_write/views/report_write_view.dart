@@ -239,12 +239,12 @@ class ReportWriteView extends GetView<ReportWriteController> {
             ],
           ),
           content: Container(
-            height: 200.h,
-            width: 300.w,
+            height: 800.h,
+            width: 1200.w,
             child: Center(
               child: Text(
                 code.toString(),
-                style: TextStyle(fontSize: 64.sp),
+                style: TextStyle(fontSize: 300.sp),
               ),
             ),
           ),
@@ -263,11 +263,11 @@ class ReportWriteView extends GetView<ReportWriteController> {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               GroupModel groupModel = snapshot.data!;
-              print(groupModel.members!.length);
-              double heightTemp = groupModel.members!.length * 27;
+
+              double heightTemp = groupModel.members!.length * 35;
 
               return Container(
-                height: heightTemp.h,
+                height: heightTemp,
                 child: ListView.builder(
                   itemCount: groupModel.members!.length,
                   itemBuilder: (BuildContext context, int index) {

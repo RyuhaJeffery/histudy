@@ -631,6 +631,13 @@ void createGroup() async {
     print(profileList);
     print("profile");
 
+    Get.snackbar(
+      "학생들 목록 불러오기 성공!",
+      "$profileList",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
+
     //서로 연결을 원하는 친구는 맺어질 수 있도록 한다.
     //등록시에 profile subcollection에 friend 항목을 넣고 매칭 원하는 user의 uid를 넣는다.
 
@@ -650,6 +657,12 @@ void createGroup() async {
 
     print(classList);
     print("classList");
+    Get.snackbar(
+      "수업 목록 불러오기 성공!",
+      "$classList",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
 
     //각각 학생들 마다 classScore의 점수를 가져와야함.
     //학생 x 숫자 배열 생성하기
@@ -692,6 +705,12 @@ void createGroup() async {
 
     print(studentScore);
     print("studentScore");
+    Get.snackbar(
+      "모든 학생들 점수 불러오기 성공",
+      "$studentScore",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
     await Future.delayed(Duration(seconds: 3));
 
     //학생들간의 관계도 그리기
@@ -853,6 +872,7 @@ void createGroup() async {
             .doc((-1 * groupNumber).toString())
             .set({
           'meeting': 0,
+          'imageUrl': "",
           'members': [
             profileList[maxNode[0]],
             profileList[maxNode[1]],
@@ -907,6 +927,7 @@ void createGroup() async {
         .doc((-1 * groupNumber).toString())
         .set({
       'meeting': 0,
+      'imageUrl': "",
       'members': FieldValue.arrayUnion(leftProfile),
       'no': 0,
       'sem': semester,
@@ -924,6 +945,7 @@ void createGroup() async {
           .doc((-1 * groupNumber).toString())
           .set({
         'meeting': 0,
+        'imageUrl': "",
         'members': [],
         'no': 0,
         'sem': semester,

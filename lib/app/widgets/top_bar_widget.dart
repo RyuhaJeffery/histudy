@@ -42,7 +42,7 @@ Widget topBar(String? semId, BuildContext context) {
                       studyTopBar(semId, context),
                     ],
                   ),
-                  histudyLogo(semId, context),
+                  personalTopBar(semId, context),
                 ],
               ),
             )

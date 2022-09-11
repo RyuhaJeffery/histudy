@@ -9,11 +9,10 @@ class ReportModel {
   String? group;
   String? image;
   List? participants;
-  String? sem;
+
   String? studyStartTime;
   String? text;
   String? title;
-  String? year;
 
   ReportModel(
       {this.author,
@@ -24,11 +23,9 @@ class ReportModel {
       this.group,
       this.image,
       this.participants,
-      this.sem,
       this.studyStartTime,
       this.text,
-      this.title,
-      this.year});
+      this.title});
 
   ReportModel.fromSnapshot(DocumentSnapshot snapshot)
       : author = snapshot['author'],
@@ -39,11 +36,9 @@ class ReportModel {
         group = snapshot['group'],
         image = snapshot['image'],
         participants = snapshot['participants'],
-        sem = snapshot['sem'],
         studyStartTime = snapshot['studyStartTime'],
         text = snapshot['text'],
-        title = snapshot['title'],
-        year = snapshot['year'];
+        title = snapshot['title'];
 
   List<ReportModel> reportListFromSnapshot(QuerySnapshot querySnapshot) {
     return querySnapshot.docs.map((snapshot) {
@@ -59,11 +54,9 @@ class ReportModel {
           group: ReportMap['group'],
           image: ReportMap['image'],
           participants: ReportMap['participants'],
-          sem: ReportMap['sem'],
           studyStartTime: ReportMap['studyStartTime'],
           text: ReportMap['text'],
-          title: ReportMap['title'],
-          year: ReportMap['year']);
+          title: ReportMap['title']);
     }).toList();
   }
 }
