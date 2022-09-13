@@ -84,33 +84,23 @@ class _HomePageState extends State<GroupInfoView> {
             //classDs들이 현재 과목 정보들을 담고 있음.
             //for 반복문으로 모든 class 정보 한번 훝고 확인함.
             Map<int, int> forSortScore = {};
-            for (int i = 0; i < classInfo.length; i++) {
-              //해당 클래스의 점수가 0이상이면 registeredClass에 추가함.
-              if (classDs[classInfo[i]["id"]] > 0) {
-                Map<int, int> tempSortScore = {i: classDs[classInfo[i]["id"]]};
-                forSortScore.addAll(tempSortScore);
-              }
-            }
-
-            // Sort Map key in ascending order
-            Map<int, int> sortedScore = SplayTreeMap<int, int>.from(
-                forSortScore, (keys1, keys2) => keys2.compareTo(keys1));
-
-            for (int i = 0; i < sortedScore.length; i++) {
-              if (sortedScore[i] != null) {
-                registeredClass += "/" +
-                    classInfo[i]["class"].toString() +
-                    "(" +
-                    classInfo[i]["professor"].toString() +
-                    ")[" +
-                    classDs[classInfo[i]["id"]].toString() +
-                    "]";
-                Map<String, String> tempData = {
-                  documentSnapshot.id: registeredClass
-                };
-                setState(() {
-                  userClassData.addAll(tempData);
-                });
+            for (int j = 10; j > 0; j--) {
+              for (int i = 0; i < classInfo.length; i++) {
+                if (classDs[classInfo[i]["id"]] == j) {
+                  registeredClass += "/" +
+                      classInfo[i]["class"].toString() +
+                      "(" +
+                      classInfo[i]["professor"].toString() +
+                      ")[" +
+                      classDs[classInfo[i]["id"]].toString() +
+                      "]";
+                  Map<String, String> tempData = {
+                    documentSnapshot.id: registeredClass
+                  };
+                  setState(() {
+                    userClassData.addAll(tempData);
+                  });
+                }
               }
             }
           });
