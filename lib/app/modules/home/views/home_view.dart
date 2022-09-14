@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/routes/app_pages.dart';
 
+import '../../../middleware/auth_middleware.dart';
 import '../../../services/auth_service.dart';
 import '../../../widgets/top_bar_widget.dart';
 import '../controllers/home_controller.dart';
@@ -46,6 +47,7 @@ class HomeView extends GetView<HomeController> {
   }
 
   late String semId;
+
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore.instance

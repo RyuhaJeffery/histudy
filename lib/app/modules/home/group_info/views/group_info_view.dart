@@ -15,10 +15,10 @@ class GroupInfoView extends StatefulWidget {
   const GroupInfoView({Key? key}) : super(key: key);
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _GroupInfoViewState createState() => _GroupInfoViewState();
 }
 
-class _HomePageState extends State<GroupInfoView> {
+class _GroupInfoViewState extends State<GroupInfoView> {
   //var firebaseUser = FirebaseAuth.instance.currentUser;
   // final FirebaseAuth _firebaseAuth =
   User? user = FirebaseAuth.instance.currentUser;
@@ -39,6 +39,7 @@ class _HomePageState extends State<GroupInfoView> {
     Color(0xff00796b),
     Color(0xff455a64),
   ];
+  List<List<String>> forCsvExport = List.empty(growable: true);
 
   List<Map<String, dynamic>> classInfo = List.empty(growable: true);
   Map<String, String> userClassData = {};
@@ -54,60 +55,64 @@ class _HomePageState extends State<GroupInfoView> {
       groupcheck = false;
     });
     String? semId = Get.rootDelegate.parameters['semId'];
-    FirebaseFirestore.instance
-        .collection("Class")
-        .doc(semId)
-        .collection('subClass')
-        .get()
-        .then((QuerySnapshot qs) {
-      qs.docs.forEach((element) {
-        var mapTemp = {
-          "id": element.id,
-          "class": element["class"],
-          "professor": element["professor"]
-        };
-        classInfo.add(mapTemp);
-      });
-    });
 
-    _profile.get().then((QuerySnapshot qs1) {
-      qs1.docs.forEach((documentSnapshot) {
-        if (documentSnapshot['classRegister'] == true) {
-          String registeredClass = "true";
-          _profile
-              .doc(documentSnapshot.id)
-              .collection('classScore')
-              .doc(semId)
-              .get()
-              .then((DocumentSnapshot classDs) {
-            //classDS는 id : 점수 항목들을 classDs[id] 이런식으로 나옴.
-            //classDs들이 현재 과목 정보들을 담고 있음.
-            //for 반복문으로 모든 class 정보 한번 훝고 확인함.
-            Map<int, int> forSortScore = {};
-            for (int j = 10; j > 0; j--) {
-              for (int i = 0; i < classInfo.length; i++) {
-                if (classDs[classInfo[i]["id"]] == j) {
-                  registeredClass += "/" +
-                      classInfo[i]["class"].toString() +
-                      "(" +
-                      classInfo[i]["professor"].toString() +
-                      ")[" +
-                      classDs[classInfo[i]["id"]].toString() +
-                      "]";
-                  Map<String, String> tempData = {
-                    documentSnapshot.id: registeredClass
-                  };
-                  setState(() {
-                    userClassData.addAll(tempData);
-                  });
+    if (admin == true) {
+      FirebaseFirestore.instance
+          .collection("Class")
+          .doc(semId)
+          .collection('subClass')
+          .get()
+          .then((QuerySnapshot qs) {
+        qs.docs.forEach((element) {
+          var mapTemp = {
+            "id": element.id,
+            "class": element["class"],
+            "professor": element["professor"]
+          };
+          classInfo.add(mapTemp);
+        });
+      });
+
+      _profile.get().then((QuerySnapshot qs1) {
+        qs1.docs.forEach((documentSnapshot) {
+          if (documentSnapshot['classRegister'] == true) {
+            String registeredClass = "true";
+            _profile
+                .doc(documentSnapshot.id)
+                .collection('classScore')
+                .doc(semId)
+                .get()
+                .then((DocumentSnapshot classDs) {
+              //classDS는 id : 점수 항목들을 classDs[id] 이런식으로 나옴.
+              //classDs들이 현재 과목 정보들을 담고 있음.
+              //for 반복문으로 모든 class 정보 한번 훝고 확인함.
+              Map<int, int> forSortScore = {};
+              for (int j = 10; j > 0; j--) {
+                for (int i = 0; i < classInfo.length; i++) {
+                  if (classDs[classInfo[i]["id"]] == j) {
+                    registeredClass += "/" +
+                        classInfo[i]["class"].toString() +
+                        "(" +
+                        classInfo[i]["professor"].toString() +
+                        ")[" +
+                        classDs[classInfo[i]["id"]].toString() +
+                        "]";
+                    Map<String, String> tempData = {
+                      documentSnapshot.id: registeredClass
+                    };
+                    setState(() {
+                      userClassData.addAll(tempData);
+                    });
+                  }
                 }
               }
-            }
-          });
-        }
+            });
+          }
+        });
       });
-    });
-
+    } else {
+      print("load 안됨");
+    }
     super.initState();
   }
 
@@ -216,6 +221,15 @@ class _HomePageState extends State<GroupInfoView> {
                                     itemBuilder: (context, index) {
                                       final DocumentSnapshot documentSnapshot =
                                           streamSnapshot.data!.docs[index];
+
+                                      List<String> forCsvTemp = [
+                                        documentSnapshot['name'],
+                                        documentSnapshot['email'].toString(),
+                                        documentSnapshot['group'].toString(),
+                                        documentSnapshot['phone'].toString(),
+                                        documentSnapshot['studentNumber']
+                                            .toString(),
+                                      ];
 
                                       return Container(
                                         margin: const EdgeInsets.all(10),
