@@ -408,6 +408,154 @@ class MyPageView extends GetView<MyPageController> {
                                               );
                                             }
                                           },
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        ElevatedButton(
+                                          child: Text(
+                                            '2022-2 부족한 데이터 추가 버튼',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            minimumSize:
+                                                MaterialStateProperty.all(
+                                                    Size(280, 40)),
+                                            backgroundColor:
+                                                MaterialStateProperty
+                                                    .all<Color>(Color.fromARGB(
+                                                        208, 255, 0, 0)),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(27),
+                                            )),
+                                          ),
+                                          onPressed: () {
+                                            Get.dialog(
+                                              AlertDialog(
+                                                title: Text(
+                                                    "데이터 베이스에 많은 트래픽이 생깁니다."),
+                                                content: Text("처음 한번만 시도하십시오"),
+                                                actions: [
+                                                  TextButton(
+                                                      onPressed: () async {
+                                                        final CollectionReference
+                                                            _profile =
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'Profile');
+                                                        List<
+                                                                Map<String,
+                                                                    dynamic>>
+                                                            classInfo =
+                                                            List.empty(
+                                                                growable: true);
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection("Class")
+                                                            .doc(semId)
+                                                            .collection(
+                                                                'subClass')
+                                                            .get()
+                                                            .then((QuerySnapshot
+                                                                qs) {
+                                                          qs.docs.forEach(
+                                                              (element) {
+                                                            var mapTemp = {
+                                                              "id": element.id,
+                                                              "class": element[
+                                                                  "class"],
+                                                              "professor":
+                                                                  element[
+                                                                      "professor"]
+                                                            };
+                                                            classInfo
+                                                                .add(mapTemp);
+                                                          });
+                                                        });
+
+                                                        _profile.get().then(
+                                                            (QuerySnapshot
+                                                                qs1) {
+                                                          qs1.docs.forEach(
+                                                              (documentSnapshot) {
+                                                            if (documentSnapshot[
+                                                                    'classRegister'] ==
+                                                                true) {
+                                                              String
+                                                                  registeredClass =
+                                                                  "true";
+                                                              _profile
+                                                                  .doc(
+                                                                      documentSnapshot
+                                                                          .id)
+                                                                  .collection(
+                                                                      'classScore')
+                                                                  .doc(semId)
+                                                                  .get()
+                                                                  .then((DocumentSnapshot
+                                                                      classDs) {
+                                                                for (int j = 10;
+                                                                    j > 0;
+                                                                    j--) {
+                                                                  for (int i =
+                                                                          0;
+                                                                      i <
+                                                                          classInfo
+                                                                              .length;
+                                                                      i++) {
+                                                                    if (classDs[classInfo[i]
+                                                                            [
+                                                                            "id"]] ==
+                                                                        j) {
+                                                                      registeredClass += "/" +
+                                                                          classInfo[i]["class"]
+                                                                              .toString() +
+                                                                          "(" +
+                                                                          classInfo[i]["professor"]
+                                                                              .toString() +
+                                                                          ")[" +
+                                                                          classDs[classInfo[i]["id"]]
+                                                                              .toString() +
+                                                                          "]";
+                                                                    }
+                                                                  }
+                                                                }
+
+                                                                //여기서 각자 유저마다 올리는 작업이 필요함.
+                                                                _profile
+                                                                    .doc(
+                                                                        documentSnapshot
+                                                                            .id)
+                                                                    .update({
+                                                                  "registeredClass":
+                                                                      registeredClass,
+                                                                });
+                                                              });
+                                                            } else {
+                                                              _profile
+                                                                  .doc(
+                                                                      documentSnapshot
+                                                                          .id)
+                                                                  .update({
+                                                                "registeredClass":
+                                                                    "",
+                                                              });
+                                                            }
+                                                          });
+                                                        });
+                                                        Get.back();
+                                                      },
+                                                      child: Text("예"))
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         )
                                       ],
                                     )

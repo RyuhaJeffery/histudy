@@ -1,10 +1,13 @@
 class ClassScore {
   String classId;
-  // String className;
+  String className;
+  String professor;
   int score;
 
   ClassScore({
     required this.classId,
+    required this.className,
+    required this.professor,
     required this.score,
     // required this.className,
   });
@@ -26,7 +29,8 @@ class ClassScore {
     return ClassScore(
       classId: classId,
       score: score,
-      // className: className,
+      className: className,
+      professor: professor,
     );
   }
 }

@@ -42,7 +42,7 @@ class _GroupInfoViewState extends State<GroupInfoView> {
   List<List<String>> forCsvExport = List.empty(growable: true);
 
   List<Map<String, dynamic>> classInfo = List.empty(growable: true);
-  Map<String, String> userClassData = {};
+
   @override
   void initState() {
     final CollectionReference _profile =
@@ -56,63 +56,6 @@ class _GroupInfoViewState extends State<GroupInfoView> {
     });
     String? semId = Get.rootDelegate.parameters['semId'];
 
-    if (admin == true) {
-      FirebaseFirestore.instance
-          .collection("Class")
-          .doc(semId)
-          .collection('subClass')
-          .get()
-          .then((QuerySnapshot qs) {
-        qs.docs.forEach((element) {
-          var mapTemp = {
-            "id": element.id,
-            "class": element["class"],
-            "professor": element["professor"]
-          };
-          classInfo.add(mapTemp);
-        });
-      });
-
-      _profile.get().then((QuerySnapshot qs1) {
-        qs1.docs.forEach((documentSnapshot) {
-          if (documentSnapshot['classRegister'] == true) {
-            String registeredClass = "true";
-            _profile
-                .doc(documentSnapshot.id)
-                .collection('classScore')
-                .doc(semId)
-                .get()
-                .then((DocumentSnapshot classDs) {
-              //classDS는 id : 점수 항목들을 classDs[id] 이런식으로 나옴.
-              //classDs들이 현재 과목 정보들을 담고 있음.
-              //for 반복문으로 모든 class 정보 한번 훝고 확인함.
-              Map<int, int> forSortScore = {};
-              for (int j = 10; j > 0; j--) {
-                for (int i = 0; i < classInfo.length; i++) {
-                  if (classDs[classInfo[i]["id"]] == j) {
-                    registeredClass += "/" +
-                        classInfo[i]["class"].toString() +
-                        "(" +
-                        classInfo[i]["professor"].toString() +
-                        ")[" +
-                        classDs[classInfo[i]["id"]].toString() +
-                        "]";
-                    Map<String, String> tempData = {
-                      documentSnapshot.id: registeredClass
-                    };
-                    setState(() {
-                      userClassData.addAll(tempData);
-                    });
-                  }
-                }
-              }
-            });
-          }
-        });
-      });
-    } else {
-      print("load 안됨");
-    }
     super.initState();
   }
 
@@ -275,12 +218,11 @@ class _GroupInfoViewState extends State<GroupInfoView> {
                                                             .center,
                                                     children: [
                                                       admin
-                                                          ? userClassData[
-                                                                      documentSnapshot
-                                                                          .id] !=
+                                                          ? documentSnapshot[
+                                                                      "registeredClass"] !=
                                                                   null
                                                               ? Text(
-                                                                  "${userClassData[documentSnapshot.id]}")
+                                                                  "${documentSnapshot["registeredClass"]}")
                                                               : Container()
                                                           : Container(),
                                                       SizedBox(

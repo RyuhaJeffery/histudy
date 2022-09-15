@@ -45,7 +45,12 @@ class _RegisterViewState extends State<RegisterView> {
       classlength = qs.docs.length;
 
       qs.docs.forEach((docs) {
-        ClassScore temp = new ClassScore(classId: docs.id, score: 0);
+        ClassScore temp = new ClassScore(
+          classId: docs.id,
+          score: 0,
+          professor: docs['professor'],
+          className: docs['class'],
+        );
         classScoreList.add(temp);
         _scoreController.add(TextEditingController());
       });
@@ -750,6 +755,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   actions: [
                                     TextButton(
                                         onPressed: () async {
+                                          String registeredClass = "true";
                                           await FirebaseFirestore.instance
                                               .collection("Profile")
                                               .doc(firebaseUser!.uid)
@@ -774,12 +780,27 @@ class _RegisterViewState extends State<RegisterView> {
                                                       .getClassScore()
                                                       .score,
                                             });
+                                            registeredClass += "/" +
+                                                classScoreList[i]
+                                                    .getClassScore()
+                                                    .className +
+                                                "(" +
+                                                classScoreList[i]
+                                                    .getClassScore()
+                                                    .professor +
+                                                ")[" +
+                                                classScoreList[i]
+                                                    .getClassScore()
+                                                    .score
+                                                    .toString() +
+                                                "]";
                                           }
                                           FirebaseFirestore.instance
                                               .collection("Profile")
                                               .doc(firebaseUser!.uid)
                                               .update({
                                             "classRegister": true,
+                                            "registeredClass": registeredClass,
                                           });
                                           String? semId = Get
                                               .rootDelegate.parameters['semId'];
