@@ -872,7 +872,7 @@ void createGroup() async {
         int allTemp = 0;
 
         for (int k = 0; k < classLen; k++) {
-          allTemp += studentScore[i][k] * studentScore[j][k];
+          allTemp += await studentScore[i][k] * studentScore[j][k];
         }
         //만약 여기서 서로 등록을 했다면 가중치를 최대로 올려야 함.
         //여기서 조회 해야함.
@@ -948,7 +948,12 @@ void createGroup() async {
     // print(allCount);
     // print("groupMember");
     // print(groupMember - 1);
-
+    await Get.snackbar(
+      "학생들과 점수 관계도 생성 완료",
+      "$graph",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
     //4개씩 끊어서 올리기
     int k = 1;
     while (allCount > groupMember) {
@@ -1005,7 +1010,7 @@ void createGroup() async {
         }
         //firebase에 업로드 하기
         //maxNode에 잡힌 uid 불러와서 update하기
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("Profile")
             .doc(profileList[maxNode[i]])
             .update({
@@ -1013,7 +1018,7 @@ void createGroup() async {
         });
 
         //group list에도 넣어야 .
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection(semId)
             .doc(semId)
             .collection("Group")
@@ -1050,7 +1055,7 @@ void createGroup() async {
         for (int j = 0; j < profileLen; j++) {
           graph[i][j] = groupNumber;
         }
-        FirebaseFirestore.instance
+        await FirebaseFirestore.instance
             .collection("Profile")
             .doc(profileList[i])
             .update({
@@ -1068,7 +1073,7 @@ void createGroup() async {
     }
 
     //남은 맴버들 list에 넣어두고 추가하기
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection(semId)
         .doc(semId)
         .collection("Group")
@@ -1086,7 +1091,7 @@ void createGroup() async {
     //create extra group
     for (int i = 0; i < 4; i++) {
       groupNumber--;
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection(semId)
           .doc(semId)
           .collection("Group")
@@ -1101,14 +1106,14 @@ void createGroup() async {
         'year': year,
       });
     }
-    Get.snackbar(
+    await Get.snackbar(
       "그룹 배정 완료",
       "DB를 확인하거나 혹은 Team tab을 클릭하세요",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
   } else {
-    Get.snackbar(
+    await Get.snackbar(
       "학기 정보가 없습니다.",
       "Home 화면으로 이동 후 다시 mypage로 오십시오",
       backgroundColor: Color(0xff04589C),
