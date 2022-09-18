@@ -147,7 +147,7 @@ class HomeView extends GetView<HomeController> {
                               TextButton(
                                   onPressed: () async {
                                     await launchUrl(Uri.parse(
-                                        "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                        "https://half-almanac-c07.notion.site/Histudy-Guildeline-24d0042dd2484ffb989e0aa7e5def3b8"));
                                   },
                                   child: Text(
                                     "GUIDELINE",
@@ -269,7 +269,7 @@ class HomeView extends GetView<HomeController> {
                                   TextButton(
                                       onPressed: () async {
                                         await launchUrl(Uri.parse(
-                                            "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                            "https://half-almanac-c07.notion.site/Histudy-Guildeline-24d0042dd2484ffb989e0aa7e5def3b8"));
                                       },
                                       child: Text(
                                         "GUIDELINE",
@@ -395,7 +395,7 @@ class HomeView extends GetView<HomeController> {
                                   TextButton(
                                       onPressed: () async {
                                         await launchUrl(Uri.parse(
-                                            "https://ryuha.notion.site/Histudy-Guildeline-da40cd57a8dc447ebc37cd0a9ff23c27"));
+                                            "https://half-almanac-c07.notion.site/Histudy-Guildeline-24d0042dd2484ffb989e0aa7e5def3b8"));
                                       },
                                       child: Text(
                                         "GUIDELINE",

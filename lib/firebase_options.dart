@@ -21,12 +21,28 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.windows:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
+      case TargetPlatform.linux:
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for linux - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
       default:
@@ -37,29 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAo0p6TBfa0885ctXgSWqJBvsTfudh3UtQ',
-    appId: '1:668681426021:web:c604664462fd76ebffa28c',
-    messagingSenderId: '668681426021',
-    projectId: 'cseehistudy',
-    authDomain: 'cseehistudy.firebaseapp.com',
-    storageBucket: 'cseehistudy.appspot.com',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDuW0ACTEw6AjDTjPMuBu-PxS3fLWGbt8E',
-    appId: '1:668681426021:android:ceda56f519056655ffa28c',
-    messagingSenderId: '668681426021',
-    projectId: 'cseehistudy',
-    storageBucket: 'cseehistudy.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBWb0_3cG-lVMaIKw39yOALXjUZD8NQkCA',
-    appId: '1:668681426021:ios:63e866bd84533904ffa28c',
-    messagingSenderId: '668681426021',
-    projectId: 'cseehistudy',
-    storageBucket: 'cseehistudy.appspot.com',
-    iosClientId: '668681426021-sh2lq81l32lfv4o2nmt30fdfatk6v10q.apps.googleusercontent.com',
-    iosBundleId: 'com.histudy.histudy',
+    apiKey: 'AIzaSyAzjBudtwr7Ax0NrTaiofV-cxirLh7Pdkw',
+    appId: '1:87857111074:web:4ff7bcf75e1c8e37ffea7b',
+    messagingSenderId: '87857111074',
+    projectId: 'histudy-2022-2',
+    authDomain: 'histudy-2022-2.firebaseapp.com',
+    storageBucket: 'histudy-2022-2.appspot.com',
+    measurementId: 'G-SSG5BGK7S2',
   );
 }

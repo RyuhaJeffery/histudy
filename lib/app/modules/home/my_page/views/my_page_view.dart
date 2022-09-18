@@ -766,6 +766,7 @@ void createGroup() async {
       colorText: Color(0xffF0F0F0),
     );
     List<String> profileList = new List.generate(0, (index) => "");
+    //학생수 만큼 불러오기
     final QuerySnapshot profileResult = await FirebaseFirestore.instance
         .collection('Profile')
         .where("classRegister", isEqualTo: true)
@@ -781,7 +782,7 @@ void createGroup() async {
 
     Get.snackbar(
       "학생들 목록 불러오기 성공!",
-      "$profileList",
+      "$profileList ${profileList.length}명의 학생",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
@@ -790,6 +791,7 @@ void createGroup() async {
     //등록시에 profile subcollection에 friend 항목을 넣고 매칭 원하는 user의 uid를 넣는다.
 
     //class id list
+    //class 수만큼 불러오기
     List<String> classList = new List.generate(0, (index) => "");
     final QuerySnapshot classResult = await FirebaseFirestore.instance
         .collection('Class')
@@ -807,7 +809,7 @@ void createGroup() async {
     print("classList");
     Get.snackbar(
       "수업 목록 불러오기 성공!",
-      "$classList",
+      "$classList ${classList.length}개의 수업이 있음. ",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
@@ -834,28 +836,28 @@ void createGroup() async {
     }
 
     //load되는 시간 기다리기
-    await Future.delayed(Duration(seconds: 5));
+    // await Future.delayed(Duration(seconds: 3));
 
-    for (int i = 0; i < profileLen; i++) {
-      await FirebaseFirestore.instance
-          .collection("Profile")
-          .doc(profileList[i])
-          .collection(semId)
-          .get()
-          .then(
-        (QuerySnapshot qs) {
-          // for (int j = 0; j < classLen; j++) {
-          //   studentScore[i][j] = ds[classList[j]];
-          // }
-        },
-      );
-    }
+    // for (int i = 0; i < profileLen; i++) {
+    //   await FirebaseFirestore.instance
+    //       .collection("Profile")
+    //       .doc(profileList[i])
+    //       .collection(semId)
+    //       .get()
+    //       .then(
+    //     (QuerySnapshot qs) {
+    //       // for (int j = 0; j < classLen; j++) {
+    //       //   studentScore[i][j] = ds[classList[j]];
+    //       // }
+    //     },
+    //   );
+    // }
 
     print(studentScore);
     print("studentScore");
     Get.snackbar(
-      "모든 학생들 점수 불러오기 성공",
-      "$studentScore",
+      "점수 x 학생 수의 갯수는 아래와 같습니다.",
+      "${classList.length * profileList.length}개의 읽기가 필요함.",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
@@ -866,6 +868,12 @@ void createGroup() async {
         profileLen, (i) => new List.filled(profileLen, 0, growable: false));
 
     int maxscore = 2147483640;
+    Get.snackbar(
+      "학생들간 점수 조합 시작",
+      "계속해서 진행상황 알림이 갑니다.",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
 
     for (int i = 0; i < profileLen; i++) {
       for (int j = i + 1; j < profileLen; j++) {
@@ -874,6 +882,7 @@ void createGroup() async {
         for (int k = 0; k < classLen; k++) {
           allTemp += await studentScore[i][k] * studentScore[j][k];
         }
+
         //만약 여기서 서로 등록을 했다면 가중치를 최대로 올려야 함.
         //여기서 조회 해야함.
         //양쪽다 있어야 할 때 코드
@@ -934,7 +943,15 @@ void createGroup() async {
         );
         graph[i][j] = allTemp;
       }
+      Get.snackbar(
+        "현재 ${i + 1}번째 학생과 ${profileList.length - i - 1}개의 조합 성공",
+        "${profileList.length - i}개 남음",
+        backgroundColor: Color(0xff04589C),
+        colorText: Color(0xffF0F0F0),
+      );
     }
+
+    print(graph);
 
     //group 계산해서 넣어둠.
     //미리 매칭된 그룹은 빠지지 않도록 해야함.
@@ -944,13 +961,10 @@ void createGroup() async {
     int groupMember = 4;
     //여기 필수로 수정해줘야함.
     int groupNumber = -1;
-    // print("allcount");
-    // print(allCount);
-    // print("groupMember");
-    // print(groupMember - 1);
+
     await Get.snackbar(
       "학생들과 점수 관계도 생성 완료",
-      "$graph",
+      "그룹 조합 매칭 시작합니다.",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
@@ -965,7 +979,7 @@ void createGroup() async {
       var maxNode = List.generate(groupMember, (i) => -1);
       print(k++);
       for (int i = 0; i < profileLen; i++) {
-        for (int j = i; j < profileLen; j++) {
+        for (int j = i + 1; j < profileLen; j++) {
           if (graph[i][j] > max[0]) {
             max[0] = graph[i][j];
             maxNode[0] = i;
@@ -1005,8 +1019,8 @@ void createGroup() async {
 
       //선택된 node에 연결된 edge들은 -1로
       for (int i = 0; i < groupMember; i++) {
-        for (int j = 0; j < allCount; j++) {
-          graph[maxNode[i]][j] = groupNumber;
+        for (int j = 0; j < profileLen; j++) {
+          graph[maxNode[i]][j] = -1000;
         }
         //firebase에 업로드 하기
         //maxNode에 잡힌 uid 불러와서 update하기
@@ -1039,16 +1053,24 @@ void createGroup() async {
         });
       }
 
+      Get.snackbar(
+        "${groupNumber - 1}번째 그룹 생성 완료",
+        "DB에서 확인하실 수 있습니다. ",
+        backgroundColor: Color(0xff04589C),
+        colorText: Color(0xffF0F0F0),
+      );
+
+      await Future.delayed(Duration(seconds: 1));
+      max.clear();
+      maxNode.clear();
       groupNumber--;
       allCount -= 4;
     }
 
-    print("dubug");
-
     //남은 학생들 그룹에 넣기
 
     int temp = 0;
-    var left = List.generate(4, (i) => -1);
+    var left = List.generate(allCount, (i) => -1, growable: true);
 
     for (int i = 0; i < profileLen; i++) {
       if (graph[i][0] >= 0) {
@@ -1066,7 +1088,7 @@ void createGroup() async {
       }
     }
 
-    var leftProfile = List.generate(temp, (index) => "");
+    var leftProfile = List.generate(temp, (index) => "", growable: true);
 
     for (int i = 0; i < temp; i++) {
       leftProfile[i] = profileList[left[i]];
