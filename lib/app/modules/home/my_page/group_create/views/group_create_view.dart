@@ -124,7 +124,12 @@ class _GroupCreateViewState extends State<GroupCreateView> {
 
     final CollectionReference _profile =
         FirebaseFirestore.instance.collection('Profile');
-
+    await Get.snackbar(
+      "잠시만 기다려 주세요",
+      "리스트 생성중입니다.",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
     // String registeredFriend = "";
     Map<String, String> registeredFriend = {};
     await _profile.get().then((QuerySnapshot qs1) {
@@ -149,7 +154,7 @@ class _GroupCreateViewState extends State<GroupCreateView> {
         }
       });
     });
-    print(registeredFriend);
+
     await Get.dialog(
       AlertDialog(
         title: Text("CSV파일을 다운 받으시겠습니까?"),
@@ -254,11 +259,97 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                         content: Text("기존에 올라가 있는 학생들 그룹 정보는 지워집니다."),
                         actions: [
                           TextButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (semId != null) {
+                                Get.snackbar("그룹 배정중입니다.", "종료 후 스낵바 알람이 갑니다.");
                                 //여기에 학생들 그룹정보 업데이트 해야함.
-                                for (int i = 0; i < studentData.length; i++) {
-                                  // print(studentData[i][0]);
+                                int maxNum = 0;
+
+                                for (int i = 1; i < studentData.length; i++) {
+                                  if (studentData[i][1] > maxNum) {
+                                    maxNum = studentData[i][1];
+                                  }
+                                }
+
+                                int? year;
+                                int? semester;
+
+                                await FirebaseFirestore.instance
+                                    .collection("year")
+                                    .doc(semId)
+                                    .get()
+                                    .then((DocumentSnapshot ds) {
+                                  year = ds['year'];
+                                  semester = ds['semester'];
+                                });
+                                //maxNum 갯수 만큼 group 생성하기
+                                for (int i = 1; i < maxNum + 1; i++) {
+                                  await FirebaseFirestore.instance
+                                      .collection(semId)
+                                      .doc(semId)
+                                      .collection("Group")
+                                      .doc((i).toString())
+                                      .set({
+                                    'meeting': 0,
+                                    'imageUrl': "",
+                                    'members': [],
+                                    'no': 0,
+                                    'sem': semester,
+                                    'time': 0,
+                                    'year': year,
+                                  });
+                                }
+
+                                for (int i = 24;
+                                    i < studentData.length + 1;
+                                    i++) {
+                                  print("$i : ${studentData[i][2]}");
+                                  //이전 데이터 가져오기
+                                  String userGroupNum = "";
+                                  await FirebaseFirestore.instance
+                                      .collection("Profile")
+                                      .doc(studentData[i][0])
+                                      .get()
+                                      .then((DocumentSnapshot ds1) {
+                                    userGroupNum = ds1['group'].toString();
+                                  });
+                                  if (int.parse(userGroupNum) != 0) {
+                                    await FirebaseFirestore.instance
+                                        .collection(semId)
+                                        .doc(semId)
+                                        .collection('Group')
+                                        .doc(userGroupNum)
+                                        .get()
+                                        .then((value) {
+                                      if (value.exists) {
+                                        FirebaseFirestore.instance
+                                            .collection(semId)
+                                            .doc(semId)
+                                            .collection('Group')
+                                            .doc(userGroupNum)
+                                            .update({
+                                          "members": FieldValue.arrayRemove(
+                                              [studentData[i][0]])
+                                        });
+                                      }
+                                    });
+                                    //이동할 그룹에 유저 데이터를 추가
+                                    await FirebaseFirestore.instance
+                                        .collection(semId)
+                                        .doc(semId)
+                                        .collection('Group')
+                                        .doc(studentData[i][1].toString())
+                                        .update({
+                                      "members": FieldValue.arrayUnion(
+                                          [studentData[i][0]]),
+                                    });
+                                    await FirebaseFirestore.instance
+                                        .collection("Profile")
+                                        .doc(studentData[i][0])
+                                        .update({
+                                      "group": studentData[i][1],
+                                    });
+                                  }
                                 }
                               }
                               Get.snackbar(
@@ -267,7 +358,7 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                 backgroundColor: Color(0xff04589C),
                                 colorText: Color(0xffF0F0F0),
                               );
-                              Get.rootDelegate.toNamed(Routes.HOME);
+                              Get.back();
                             },
                             child: Text("예"),
                           ),

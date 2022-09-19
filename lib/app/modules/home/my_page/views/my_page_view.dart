@@ -419,6 +419,40 @@ class MyPageView extends GetView<MyPageController> {
                                         ),
                                         ElevatedButton(
                                           child: Text(
+                                            'CSV with study group',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            minimumSize:
+                                                MaterialStateProperty.all(
+                                                    Size(280, 40)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.black54),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(27),
+                                            )),
+                                          ),
+                                          onPressed: () {
+                                            if (semId != null) {
+                                              Get.rootDelegate.toNamed(
+                                                Routes.GROUP_CREATE,
+                                                arguments: true,
+                                                parameters: {'semId': semId},
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 10.h,
+                                        ),
+                                        ElevatedButton(
+                                          child: Text(
                                             '2022-2 부족한 데이터 추가 버튼',
                                             style: TextStyle(
                                               fontSize: 18,
