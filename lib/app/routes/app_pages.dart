@@ -23,6 +23,8 @@ import '../modules/home/my_page/edit_myInfo/bindings/edit_my_info_binding.dart';
 import '../modules/home/my_page/edit_myInfo/views/edit_my_info_view.dart';
 import '../modules/home/my_page/edit_sem/bindings/edit_sem_binding.dart';
 import '../modules/home/my_page/edit_sem/views/edit_sem_view.dart';
+import '../modules/home/my_page/group_create/bindings/group_create_binding.dart';
+import '../modules/home/my_page/group_create/views/group_create_view.dart';
 import '../modules/home/my_page/registered/bindings/registered_binding.dart';
 import '../modules/home/my_page/registered/views/registered_view.dart';
 import '../modules/home/my_page/views/my_page_view.dart';
@@ -172,6 +174,15 @@ class AppPages {
             EnsureSignUpMiddleware(),
           ],
           children: [
+            GetPage(
+              name: _Paths.GROUP_CREATE,
+              page: () => GroupCreateView(),
+              binding: GroupCreateBinding(),
+              participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware(),
+              ],
+            ),
             GetPage(
               name: _Paths.REGISTERED,
               page: () => RegisteredView(),

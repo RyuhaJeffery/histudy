@@ -1,0 +1,328 @@
+import 'dart:convert';
+import 'dart:html' as html;
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csv/csv.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:get/get.dart';
+
+import '../../../../../routes/app_pages.dart';
+import '../../../../../widgets/top_bar_widget.dart';
+import '../controllers/group_create_controller.dart';
+
+// class GroupCreateView extends GetView<GroupCreateController> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('GroupCreateView'),
+//         centerTitle: true,
+//       ),
+//       body: Center(
+//         child: Text(
+//           'GroupCreateView is working',
+//           style: TextStyle(fontSize: 20),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class GroupCreateView extends StatefulWidget {
+  const GroupCreateView({Key? key}) : super(key: key);
+
+  @override
+  State<GroupCreateView> createState() => _GroupCreateViewState();
+}
+
+class _GroupCreateViewState extends State<GroupCreateView> {
+  late List<List<dynamic>> studentData;
+
+  Future _openFileExplorer() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        withData: true,
+        type: FileType.custom,
+        allowedExtensions: ['csv']);
+    if (result != null) {
+      //decode bytes back to utf8
+      final bytes = utf8.decode((result.files.first.bytes)!.toList());
+      setState(() {
+        //from the csv plugin
+        studentData =
+            CsvToListConverter(eol: "\r\n", fieldDelimiter: ",").convert(bytes);
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    studentData = List<List<dynamic>>.empty(growable: true);
+  }
+
+  void exportCsvNext(Map<String, String> registeredFriend) async {
+    final CollectionReference _profile =
+        FirebaseFirestore.instance.collection('Profile');
+    List<String> exportHeader = [
+      "id",
+      "group",
+      "name",
+      "email",
+      "friend",
+      "classScore",
+    ];
+    List<List<dynamic>> exportData = [];
+
+    exportData.add(exportHeader);
+    await _profile.get().then((QuerySnapshot qs1) {
+      qs1.docs.forEach((documentSnapshot) async {
+        if (documentSnapshot['classRegister'] == true) {
+          print(registeredFriend[documentSnapshot.id]);
+          List<dynamic> exportRow = [];
+          exportRow.add(documentSnapshot.id);
+          exportRow.add(documentSnapshot["group"]);
+          exportRow.add(documentSnapshot["name"]);
+          exportRow.add(documentSnapshot["email"]);
+          exportRow.add(registeredFriend[documentSnapshot.id]);
+          exportRow.add(documentSnapshot["registeredClass"]);
+
+          exportData.add(exportRow);
+        }
+      });
+    });
+    Get.snackbar("convert를 실행하세요", "예 버튼을 누르고 실행하세요.");
+
+//now convert our 2d array into the csvlist using the plugin of csv
+    String csv = ListToCsvConverter().convert(exportData);
+//this csv variable holds entire csv data
+//Now Convert or encode this csv string into utf8
+    final bytes = utf8.encode(csv);
+//NOTE THAT HERE WE USED HTML PACKAGE
+    final blob = html.Blob([bytes]);
+//It will create downloadable object
+    final url = html.Url.createObjectUrlFromBlob(blob);
+//It will create anchor to download the file
+    final anchor = html.document.createElement('a') as html.AnchorElement
+      ..href = url
+      ..style.display = 'none'
+      ..download = 'studentInfo.csv';
+//finally add the csv anchor to body
+    html.document.body!.children.add(anchor);
+// Cause download by calling this function
+    anchor.click();
+//revoke the object
+    html.Url.revokeObjectUrl(url);
+  }
+
+  void exportCsv() async {
+    String? semId = Get.rootDelegate.parameters['semId'];
+
+    final CollectionReference _profile =
+        FirebaseFirestore.instance.collection('Profile');
+
+    // String registeredFriend = "";
+    Map<String, String> registeredFriend = {};
+    await _profile.get().then((QuerySnapshot qs1) {
+      qs1.docs.forEach((documentSnapshot) async {
+        if (documentSnapshot['classRegister'] == true) {
+          //같이하기로한 친구 불러오기
+          String tempData = "";
+          _profile
+              .doc(documentSnapshot.id)
+              .collection(semId!)
+              .get()
+              .then((QuerySnapshot qs) {
+            qs.docs.forEach((doc) {
+              tempData +=
+                  doc["name"] + "/" + doc["studentNumber"] + "/" + doc.id + "/";
+            });
+            setState(() {
+              Map<String, String> tempMap = {documentSnapshot.id: tempData};
+              registeredFriend.addAll(tempMap);
+            });
+          });
+        }
+      });
+    });
+    print(registeredFriend);
+    await Get.dialog(
+      AlertDialog(
+        title: Text("CSV파일을 다운 받으시겠습니까?"),
+        // content: Text(""),
+        actions: [
+          TextButton(
+            onPressed: () {
+              exportCsvNext(registeredFriend);
+              Get.back();
+            },
+            child: Text("예"),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+            },
+            child: Text("아니요"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String? semId = Get.rootDelegate.parameters['semId'];
+    return Scaffold(
+      body: Column(
+        children: [
+          topBar(Get.rootDelegate.parameters["semId"], context),
+          Text(
+            "학생들 csv를 통한 그룹관리 페이지",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xff04589C),
+              side: BorderSide(width: 1),
+              shape: RoundedRectangleBorder(
+                  //to set border radius to button
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+            onPressed: () {
+              exportCsv();
+            },
+            child: Text(
+              "export student study information",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xff04589C),
+              side: BorderSide(width: 1),
+              shape: RoundedRectangleBorder(
+                  //to set border radius to button
+                  borderRadius: BorderRadius.circular(5)),
+            ),
+            onPressed: _openFileExplorer,
+            child: Text(
+              "CSV To List",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Text("업로드 된 학생수 : " +
+              ((studentData.isNotEmpty)
+                  ? studentData.length.toString()
+                  : ' 아직 비어 없습니다.')),
+          // Text("classData.first.length" +
+          //     ((classData.isNotEmpty)
+          //         ? classData.first.length.toString()
+          //         : ' is empty for now')),
+          SizedBox(
+            height: 20.h,
+          ),
+
+          studentData.isNotEmpty
+              ? ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromARGB(255, 7, 113, 200),
+                    side: BorderSide(width: 1),
+                    shape: RoundedRectangleBorder(
+                        //to set border radius to button
+                        borderRadius: BorderRadius.circular(5)),
+                  ),
+                  onPressed: () {
+                    Get.dialog(
+                      AlertDialog(
+                        title: Text("Firebase에 학생들 그룹 정보가 업데이트 됩니다."),
+                        content: Text("기존에 올라가 있는 학생들 그룹 정보는 지워집니다."),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              if (semId != null) {
+                                //여기에 학생들 그룹정보 업데이트 해야함.
+                                for (int i = 0; i < studentData.length; i++) {
+                                  // print(studentData[i][0]);
+                                }
+                              }
+                              Get.snackbar(
+                                "그룹 정보 업로드 완료",
+                                "DB에서 정보를 확인하세요",
+                                backgroundColor: Color(0xff04589C),
+                                colorText: Color(0xffF0F0F0),
+                              );
+                              Get.rootDelegate.toNamed(Routes.HOME);
+                            },
+                            child: Text("예"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            child: Text("아니요"),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  child: Text("upload to firebase"),
+                )
+              : Container(),
+          SizedBox(
+            height: 20.h,
+          ),
+          studentData.isNotEmpty
+              ? Text(
+                  "불러온 학생들 그룹 정보",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              : Container(),
+          SizedBox(
+            height: 20.h,
+          ),
+          Expanded(
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: studentData.length,
+                itemBuilder: (context, index) {
+                  if (index != 0) {
+                    return Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: studentData[index].map((e) {
+                            return Text(e.toString());
+                          }).toList(),
+                        ),
+                      ),
+                    );
+                  }
+                  return Container();
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+}
