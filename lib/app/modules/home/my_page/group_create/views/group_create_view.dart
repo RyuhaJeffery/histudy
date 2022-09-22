@@ -82,7 +82,6 @@ class _GroupCreateViewState extends State<GroupCreateView> {
     await _profile.get().then((QuerySnapshot qs1) {
       qs1.docs.forEach((documentSnapshot) async {
         if (documentSnapshot['classRegister'] == true) {
-          print(registeredFriend[documentSnapshot.id]);
           List<dynamic> exportRow = [];
           exportRow.add(documentSnapshot.id);
           exportRow.add(documentSnapshot["group"]);
@@ -260,8 +259,15 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                         actions: [
                           TextButton(
                             onPressed: () async {
+                              Get.snackbar("그룹 배정중입니다.", "종료 후 스낵바 알람이 갑니다.");
                               if (semId != null) {
-                                Get.snackbar("그룹 배정중입니다.", "종료 후 스낵바 알람이 갑니다.");
+                                Get.rootDelegate.toNamed(
+                                  Routes.MY_PAGE,
+                                  arguments: true,
+                                  parameters: {'semId': semId},
+                                );
+                              }
+                              if (semId != null) {
                                 //여기에 학생들 그룹정보 업데이트 해야함.
                                 int maxNum = 0;
 
@@ -300,9 +306,10 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                   });
                                 }
 
-                                for (int i = 24;
-                                    i < studentData.length + 1;
-                                    i++) {
+                                for (int i = 1; i < studentData.length; i++) {
+                                  if (i % 20 == 0) {
+                                    Get.snackbar("$i 번째 학생 배정중", "");
+                                  }
                                   print("$i : ${studentData[i][2]}");
                                   //이전 데이터 가져오기
                                   String userGroupNum = "";
@@ -352,13 +359,13 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                   }
                                 }
                               }
+
                               Get.snackbar(
                                 "그룹 정보 업로드 완료",
                                 "DB에서 정보를 확인하세요",
                                 backgroundColor: Color(0xff04589C),
                                 colorText: Color(0xffF0F0F0),
                               );
-                              Get.back();
                             },
                             child: Text("예"),
                           ),
