@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:histudy/app/models/report_model.dart';
 
@@ -59,5 +60,15 @@ class ReportRepository {
       'time': FieldValue.increment(int.parse(duration)),
       'meeting': FieldValue.increment(1)
     });
+
+    for (int i = 0; i < participants.length; i++) {
+      FirebaseFirestore.instance
+          .collection("Profile")
+          .doc(participants[i])
+          .update({
+        "${semId}_time": FieldValue.increment(int.parse(duration)),
+        "${semId}_meeting": FieldValue.increment(1),
+      });
+    }
   }
 }
