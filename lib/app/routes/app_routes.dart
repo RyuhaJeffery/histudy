@@ -36,6 +36,8 @@ abstract class Routes {
   static const REGISTERED = _Paths.HOME + _Paths.MY_PAGE + _Paths.REGISTERED;
   static const GROUP_CREATE =
       _Paths.HOME + _Paths.MY_PAGE + _Paths.GROUP_CREATE;
+  static const STUDY_RESULT =
+      _Paths.HOME + _Paths.MY_PAGE + _Paths.STUDY_RESULT;
 }
 
 abstract class _Paths {
@@ -66,4 +68,5 @@ abstract class _Paths {
   static const EDIT_MY_INFO = '/edit-my-info';
   static const REGISTERED = '/registered';
   static const GROUP_CREATE = '/group-create';
+  static const STUDY_RESULT = '/study-result';
 }

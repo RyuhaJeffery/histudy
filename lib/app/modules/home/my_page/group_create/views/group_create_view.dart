@@ -277,6 +277,8 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                   }
                                 }
 
+                                Get.snackbar("최대 그룹 수는 $maxNum 개 입니다.", "");
+
                                 int? year;
                                 int? semester;
 
@@ -289,7 +291,7 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                   semester = ds['semester'];
                                 });
                                 //maxNum 갯수 만큼 group 생성하기
-                                for (int i = 1; i < maxNum + 1; i++) {
+                                for (int i = 1; i < maxNum + 5; i++) {
                                   await FirebaseFirestore.instance
                                       .collection(semId)
                                       .doc(semId)
@@ -312,51 +314,51 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                   }
                                   // print("$i : ${studentData[i][2]}");
                                   //이전 데이터 가져오기
-                                  String userGroupNum = "";
+                                  // String userGroupNum = "";
+                                  // await FirebaseFirestore.instance
+                                  //     .collection("Profile")
+                                  //     .doc(studentData[i][0])
+                                  //     .get()
+                                  //     .then((DocumentSnapshot ds1) {
+                                  //   userGroupNum = ds1['group'].toString();
+                                  // });
+                                  // if (int.parse(userGroupNum) != 0) {
+                                  // await FirebaseFirestore.instance
+                                  //     .collection(semId)
+                                  //     .doc(semId)
+                                  //     .collection('Group')
+                                  //     .doc(userGroupNum)
+                                  //     .get()
+                                  //     .then((value) {
+                                  //   if (value.exists) {
+                                  //     FirebaseFirestore.instance
+                                  //         .collection(semId)
+                                  //         .doc(semId)
+                                  //         .collection('Group')
+                                  //         .doc(userGroupNum)
+                                  //         .update({
+                                  //       "members": FieldValue.arrayRemove(
+                                  //           [studentData[i][0]])
+                                  //     });
+                                  //   }
+                                  // });
+                                  //이동할 그룹에 유저 데이터를 추가
+                                  await FirebaseFirestore.instance
+                                      .collection(semId)
+                                      .doc(semId)
+                                      .collection('Group')
+                                      .doc(studentData[i][1].toString())
+                                      .update({
+                                    "members": FieldValue.arrayUnion(
+                                        [studentData[i][0]]),
+                                  });
                                   await FirebaseFirestore.instance
                                       .collection("Profile")
                                       .doc(studentData[i][0])
-                                      .get()
-                                      .then((DocumentSnapshot ds1) {
-                                    userGroupNum = ds1['group'].toString();
+                                      .update({
+                                    "group": studentData[i][1],
                                   });
-                                  if (int.parse(userGroupNum) != 0) {
-                                    await FirebaseFirestore.instance
-                                        .collection(semId)
-                                        .doc(semId)
-                                        .collection('Group')
-                                        .doc(userGroupNum)
-                                        .get()
-                                        .then((value) {
-                                      if (value.exists) {
-                                        FirebaseFirestore.instance
-                                            .collection(semId)
-                                            .doc(semId)
-                                            .collection('Group')
-                                            .doc(userGroupNum)
-                                            .update({
-                                          "members": FieldValue.arrayRemove(
-                                              [studentData[i][0]])
-                                        });
-                                      }
-                                    });
-                                    //이동할 그룹에 유저 데이터를 추가
-                                    await FirebaseFirestore.instance
-                                        .collection(semId)
-                                        .doc(semId)
-                                        .collection('Group')
-                                        .doc(studentData[i][1].toString())
-                                        .update({
-                                      "members": FieldValue.arrayUnion(
-                                          [studentData[i][0]]),
-                                    });
-                                    await FirebaseFirestore.instance
-                                        .collection("Profile")
-                                        .doc(studentData[i][0])
-                                        .update({
-                                      "group": studentData[i][1],
-                                    });
-                                  }
+                                  // }
                                 }
                               }
 

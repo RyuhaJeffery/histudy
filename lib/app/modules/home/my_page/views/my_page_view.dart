@@ -415,7 +415,7 @@ class MyPageView extends GetView<MyPageController> {
                                           },
                                         ),
                                         SizedBox(
-                                          height: 10.h,
+                                          height: 20.h,
                                         ),
                                         ElevatedButton(
                                           child: Text(
@@ -449,7 +449,41 @@ class MyPageView extends GetView<MyPageController> {
                                           },
                                         ),
                                         SizedBox(
-                                          height: 10.h,
+                                          height: 20.h,
+                                        ),
+                                        ElevatedButton(
+                                          child: Text(
+                                            'Export Study Group Result',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            minimumSize:
+                                                MaterialStateProperty.all(
+                                                    Size(280, 40)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.black26),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(27),
+                                            )),
+                                          ),
+                                          onPressed: () {
+                                            if (semId != null) {
+                                              Get.rootDelegate.toNamed(
+                                                Routes.STUDY_RESULT,
+                                                arguments: true,
+                                                parameters: {'semId': semId},
+                                              );
+                                            }
+                                          },
+                                        ),
+                                        SizedBox(
+                                          height: 20.h,
                                         ),
                                         ElevatedButton(
                                           child: Text(
@@ -892,7 +926,6 @@ void createGroup() async {
     //   );
     // }
 
-    print(studentScore);
     print("studentScore");
     Get.snackbar(
       "점수 x 학생 수의 갯수는 아래와 같습니다.",

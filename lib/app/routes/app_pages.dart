@@ -27,6 +27,8 @@ import '../modules/home/my_page/group_create/bindings/group_create_binding.dart'
 import '../modules/home/my_page/group_create/views/group_create_view.dart';
 import '../modules/home/my_page/registered/bindings/registered_binding.dart';
 import '../modules/home/my_page/registered/views/registered_view.dart';
+import '../modules/home/my_page/study_result/bindings/study_result_binding.dart';
+import '../modules/home/my_page/study_result/views/study_result_view.dart';
 import '../modules/home/my_page/views/my_page_view.dart';
 import '../modules/home/question/bindings/question_binding.dart';
 import '../modules/home/question/question_detail/bindings/question_detail_binding.dart';
@@ -174,6 +176,15 @@ class AppPages {
             EnsureSignUpMiddleware(),
           ],
           children: [
+            GetPage(
+              name: _Paths.STUDY_RESULT,
+              page: () => StudyResultView(),
+              binding: StudyResultBinding(),
+              participatesInRootNavigator: true,
+              middlewares: [
+                EnsureAuthMiddleware(),
+              ],
+            ),
             GetPage(
               name: _Paths.GROUP_CREATE,
               page: () => GroupCreateView(),
