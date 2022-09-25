@@ -260,14 +260,14 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                           TextButton(
                             onPressed: () async {
                               Get.snackbar("그룹 배정중입니다.", "종료 후 스낵바 알람이 갑니다.");
+
                               if (semId != null) {
                                 Get.rootDelegate.toNamed(
                                   Routes.MY_PAGE,
                                   arguments: true,
                                   parameters: {'semId': semId},
                                 );
-                              }
-                              if (semId != null) {
+
                                 //여기에 학생들 그룹정보 업데이트 해야함.
                                 int maxNum = 0;
 
@@ -310,7 +310,7 @@ class _GroupCreateViewState extends State<GroupCreateView> {
                                   if (i % 20 == 0) {
                                     Get.snackbar("$i 번째 학생 배정중", "");
                                   }
-                                  print("$i : ${studentData[i][2]}");
+                                  // print("$i : ${studentData[i][2]}");
                                   //이전 데이터 가져오기
                                   String userGroupNum = "";
                                   await FirebaseFirestore.instance
