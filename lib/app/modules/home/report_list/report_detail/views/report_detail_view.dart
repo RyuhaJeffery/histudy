@@ -26,8 +26,8 @@ class ReportDetailView extends GetView<ReportDetailController> {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 30),
-                height: 1040,
-                width: 700,
+                height: 1040.h,
+                width: 700.w,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
@@ -137,12 +137,15 @@ class ReportDetailView extends GetView<ReportDetailController> {
                           SizedBox(
                             width: 16.w,
                           ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 8.0.h),
-                            child: Text(
-                              reportModel.text.toString(),
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.black),
+                          Container(
+                            width: 500.w,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 8.0.h),
+                              child: Text(
+                                reportModel.text.toString(),
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.black),
+                              ),
                             ),
                           ),
                         ],

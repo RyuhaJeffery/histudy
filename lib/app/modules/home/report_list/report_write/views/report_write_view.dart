@@ -286,7 +286,8 @@ class ReportWriteView extends GetView<ReportWriteController> {
                                 value == true
                                     ? finalCheckedMembers
                                         .add(groupModel.members![index])
-                                    : finalCheckedMembers.removeAt(index);
+                                    : finalCheckedMembers.removeWhere((item) =>
+                                        item == groupModel.members![index]);
                               }),
                           FutureBuilder<ProfileModel?>(
                             future: UserRepositroy.getUser(
