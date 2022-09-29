@@ -206,8 +206,8 @@ class ReportWriteView extends GetView<ReportWriteController> {
   Widget _createCodeWidget() {
     return InkWell(
       child: Container(
-        height: 20.h,
-        width: 80.w,
+        height: 30.h,
+        width: 120.w,
         decoration: BoxDecoration(
             color: Color(0xff04589C),
             borderRadius: BorderRadius.all(Radius.circular(3.r))),
@@ -216,7 +216,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
             '코드 생성',
             style: TextStyle(
               color: Colors.white,
-              fontSize: 11.sp,
+              fontSize: 30.sp,
             ),
           ),
         ),
@@ -288,6 +288,8 @@ class ReportWriteView extends GetView<ReportWriteController> {
                                         .add(groupModel.members![index])
                                     : finalCheckedMembers.removeWhere((item) =>
                                         item == groupModel.members![index]);
+
+                                print(finalCheckedMembers);
                               }),
                           FutureBuilder<ProfileModel?>(
                             future: UserRepositroy.getUser(
@@ -466,20 +468,22 @@ class ReportWriteView extends GetView<ReportWriteController> {
                 child: Center(child: Text("작 성"))),
             onPressed: () async {
               if (DateTime.now().difference(makingCodeTime).inMinutes > 10) {
-                Get.snackbar('Regenerate code',
-                    'It has been more than 10 minutes since code generation. Please recreate the code.');
+                Get.snackbar('코드를 생성해주세요',
+                    '코드 생성 후 10분내로 업로드 하셔야 합니다. 다시 코드를 생성해서 인증샷을 찍어주세요');
               } else {
-                if (finalCheckedMembers.isEmpty ||
+                if (code.isEmpty) {
+                  Get.snackbar('코드를 생성해 주세요', '코드와 함께 인증샷을 찍어야 합니다.');
+                } else if (finalCheckedMembers.isEmpty ||
                     startingTime.isEmpty ||
                     duration.isEmpty ||
                     title.isEmpty ||
                     contents.isEmpty ||
                     pickedImage.isNull) {
-                  Get.snackbar('Retry',
-                      'You have not entered anything. There must be an image.');
+                  Get.snackbar('다시 시도하세요', '모든 항목을 채우셔야 합니다. 합니다.');
                 } else {
                   String? semId = Get.rootDelegate.parameters['semId'];
                   if (semId != null) {
+                    Get.rootDelegate.toNamed(Routes.REPORT_LIST);
                     DateTime dateTime = DateTime.now();
                     // print("[RW]" + dateTime.toString());
                     await imagePickerService.uploadImage(pickedImage!,
@@ -500,7 +504,6 @@ class ReportWriteView extends GetView<ReportWriteController> {
                         startingTime.toString(),
                         contents,
                         title);
-                    Get.rootDelegate.toNamed(Routes.REPORT_LIST);
                   }
                 }
               }

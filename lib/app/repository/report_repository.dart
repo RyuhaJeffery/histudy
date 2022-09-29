@@ -69,5 +69,7 @@ class ReportRepository {
         "${semId}_meeting": FieldValue.increment(1)
       });
     }
+
+    Get.snackbar("보고서 업로드 완료", "리스트를 확인하세요");
   }
 }
