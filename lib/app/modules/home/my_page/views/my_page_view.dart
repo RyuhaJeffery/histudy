@@ -472,164 +472,168 @@ class MyPageView extends GetView<MyPageController> {
                                                   BorderRadius.circular(27),
                                             )),
                                           ),
-                                          onPressed: () {
-                                            if (semId != null) {
-                                              Get.rootDelegate.toNamed(
-                                                Routes.STUDY_RESULT,
-                                                arguments: true,
-                                                parameters: {'semId': semId},
-                                              );
-                                            }
+                                          onPressed: () async {
+                                            String sem = "";
+                                            await FirebaseFirestore.instance
+                                                .collection("year")
+                                                .doc(semId)
+                                                .get()
+                                                .then((value) {
+                                              sem += value["year"].toString() +
+                                                  "_" +
+                                                  value["semester"].toString();
+                                              exportResult(sem);
+                                            });
                                           },
                                         ),
-                                        SizedBox(
-                                          height: 20.h,
-                                        ),
-                                        ElevatedButton(
-                                          child: Text(
-                                            '2022-2 부족한 데이터 추가 버튼',
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          style: ButtonStyle(
-                                            minimumSize:
-                                                MaterialStateProperty.all(
-                                                    Size(280, 40)),
-                                            backgroundColor:
-                                                MaterialStateProperty
-                                                    .all<Color>(Color.fromARGB(
-                                                        208, 255, 0, 0)),
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(27),
-                                            )),
-                                          ),
-                                          onPressed: () {
-                                            Get.dialog(
-                                              AlertDialog(
-                                                title: Text(
-                                                    "데이터 베이스에 많은 트래픽이 생깁니다."),
-                                                content: Text("처음 한번만 시도하십시오"),
-                                                actions: [
-                                                  TextButton(
-                                                      onPressed: () async {
-                                                        final CollectionReference
-                                                            _profile =
-                                                            FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    'Profile');
-                                                        List<
-                                                                Map<String,
-                                                                    dynamic>>
-                                                            classInfo =
-                                                            List.empty(
-                                                                growable: true);
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection("Class")
-                                                            .doc(semId)
-                                                            .collection(
-                                                                'subClass')
-                                                            .get()
-                                                            .then((QuerySnapshot
-                                                                qs) {
-                                                          qs.docs.forEach(
-                                                              (element) {
-                                                            var mapTemp = {
-                                                              "id": element.id,
-                                                              "class": element[
-                                                                  "class"],
-                                                              "professor":
-                                                                  element[
-                                                                      "professor"]
-                                                            };
-                                                            classInfo
-                                                                .add(mapTemp);
-                                                          });
-                                                        });
+                                        // SizedBox(
+                                        //   height: 20.h,
+                                        // ),
+                                        // ElevatedButton(
+                                        //   child: Text(
+                                        //     '2022-2 부족한 데이터 추가 버튼',
+                                        //     style: TextStyle(
+                                        //       fontSize: 18,
+                                        //     ),
+                                        //   ),
+                                        //   style: ButtonStyle(
+                                        //     minimumSize:
+                                        //         MaterialStateProperty.all(
+                                        //             Size(280, 40)),
+                                        //     backgroundColor:
+                                        //         MaterialStateProperty
+                                        //             .all<Color>(Color.fromARGB(
+                                        //                 208, 255, 0, 0)),
+                                        //     shape: MaterialStateProperty.all<
+                                        //             RoundedRectangleBorder>(
+                                        //         RoundedRectangleBorder(
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(27),
+                                        //     )),
+                                        //   ),
+                                        //   onPressed: () {
+                                        //     Get.dialog(
+                                        //       AlertDialog(
+                                        //         title: Text(
+                                        //             "데이터 베이스에 많은 트래픽이 생깁니다."),
+                                        //         content: Text("처음 한번만 시도하십시오"),
+                                        //         actions: [
+                                        //           TextButton(
+                                        //               onPressed: () async {
+                                        //                 final CollectionReference
+                                        //                     _profile =
+                                        //                     FirebaseFirestore
+                                        //                         .instance
+                                        //                         .collection(
+                                        //                             'Profile');
+                                        //                 List<
+                                        //                         Map<String,
+                                        //                             dynamic>>
+                                        //                     classInfo =
+                                        //                     List.empty(
+                                        //                         growable: true);
+                                        //                 FirebaseFirestore
+                                        //                     .instance
+                                        //                     .collection("Class")
+                                        //                     .doc(semId)
+                                        //                     .collection(
+                                        //                         'subClass')
+                                        //                     .get()
+                                        //                     .then((QuerySnapshot
+                                        //                         qs) {
+                                        //                   qs.docs.forEach(
+                                        //                       (element) {
+                                        //                     var mapTemp = {
+                                        //                       "id": element.id,
+                                        //                       "class": element[
+                                        //                           "class"],
+                                        //                       "professor":
+                                        //                           element[
+                                        //                               "professor"]
+                                        //                     };
+                                        //                     classInfo
+                                        //                         .add(mapTemp);
+                                        //                   });
+                                        //                 });
 
-                                                        _profile.get().then(
-                                                            (QuerySnapshot
-                                                                qs1) {
-                                                          qs1.docs.forEach(
-                                                              (documentSnapshot) {
-                                                            if (documentSnapshot[
-                                                                    'classRegister'] ==
-                                                                true) {
-                                                              String
-                                                                  registeredClass =
-                                                                  "true";
-                                                              _profile
-                                                                  .doc(
-                                                                      documentSnapshot
-                                                                          .id)
-                                                                  .collection(
-                                                                      'classScore')
-                                                                  .doc(semId)
-                                                                  .get()
-                                                                  .then((DocumentSnapshot
-                                                                      classDs) {
-                                                                for (int j = 10;
-                                                                    j > 0;
-                                                                    j--) {
-                                                                  for (int i =
-                                                                          0;
-                                                                      i <
-                                                                          classInfo
-                                                                              .length;
-                                                                      i++) {
-                                                                    if (classDs[classInfo[i]
-                                                                            [
-                                                                            "id"]] ==
-                                                                        j) {
-                                                                      registeredClass += "/" +
-                                                                          classInfo[i]["class"]
-                                                                              .toString() +
-                                                                          "(" +
-                                                                          classInfo[i]["professor"]
-                                                                              .toString() +
-                                                                          ")[" +
-                                                                          classDs[classInfo[i]["id"]]
-                                                                              .toString() +
-                                                                          "]";
-                                                                    }
-                                                                  }
-                                                                }
+                                        //                 _profile.get().then(
+                                        //                     (QuerySnapshot
+                                        //                         qs1) {
+                                        //                   qs1.docs.forEach(
+                                        //                       (documentSnapshot) {
+                                        //                     if (documentSnapshot[
+                                        //                             'classRegister'] ==
+                                        //                         true) {
+                                        //                       String
+                                        //                           registeredClass =
+                                        //                           "true";
+                                        //                       _profile
+                                        //                           .doc(
+                                        //                               documentSnapshot
+                                        //                                   .id)
+                                        //                           .collection(
+                                        //                               'classScore')
+                                        //                           .doc(semId)
+                                        //                           .get()
+                                        //                           .then((DocumentSnapshot
+                                        //                               classDs) {
+                                        //                         for (int j = 10;
+                                        //                             j > 0;
+                                        //                             j--) {
+                                        //                           for (int i =
+                                        //                                   0;
+                                        //                               i <
+                                        //                                   classInfo
+                                        //                                       .length;
+                                        //                               i++) {
+                                        //                             if (classDs[classInfo[i]
+                                        //                                     [
+                                        //                                     "id"]] ==
+                                        //                                 j) {
+                                        //                               registeredClass += "/" +
+                                        //                                   classInfo[i]["class"]
+                                        //                                       .toString() +
+                                        //                                   "(" +
+                                        //                                   classInfo[i]["professor"]
+                                        //                                       .toString() +
+                                        //                                   ")[" +
+                                        //                                   classDs[classInfo[i]["id"]]
+                                        //                                       .toString() +
+                                        //                                   "]";
+                                        //                             }
+                                        //                           }
+                                        //                         }
 
-                                                                //여기서 각자 유저마다 올리는 작업이 필요함.
-                                                                _profile
-                                                                    .doc(
-                                                                        documentSnapshot
-                                                                            .id)
-                                                                    .update({
-                                                                  "registeredClass":
-                                                                      registeredClass,
-                                                                });
-                                                              });
-                                                            } else {
-                                                              _profile
-                                                                  .doc(
-                                                                      documentSnapshot
-                                                                          .id)
-                                                                  .update({
-                                                                "registeredClass":
-                                                                    "",
-                                                              });
-                                                            }
-                                                          });
-                                                        });
-                                                        Get.back();
-                                                      },
-                                                      child: Text("예"))
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                        )
+                                        //                         //여기서 각자 유저마다 올리는 작업이 필요함.
+                                        //                         _profile
+                                        //                             .doc(
+                                        //                                 documentSnapshot
+                                        //                                     .id)
+                                        //                             .update({
+                                        //                           "registeredClass":
+                                        //                               registeredClass,
+                                        //                         });
+                                        //                       });
+                                        //                     } else {
+                                        //                       _profile
+                                        //                           .doc(
+                                        //                               documentSnapshot
+                                        //                                   .id)
+                                        //                           .update({
+                                        //                         "registeredClass":
+                                        //                             "",
+                                        //                       });
+                                        //                     }
+                                        //                   });
+                                        //                 });
+                                        //                 Get.back();
+                                        //               },
+                                        //               child: Text("예"))
+                                        //         ],
+                                        //       ),
+                                        //     );
+                                        //   },
+                                        // )
                                       ],
                                     )
                                   : getdata?['classRegister']
@@ -816,6 +820,104 @@ Future registeredClass() async {
   );
 }
 
+void exportResultReal(List<List<dynamic>> exportData, String sem) async {
+  String? semId = Get.rootDelegate.parameters['semId'];
+//now convert our 2d array into the csvlist using the plugin of csv
+  String csv = ListToCsvConverter().convert(exportData);
+//this csv variable holds entire csv data
+//Now Convert or encode this csv string into utf8
+  final bytes = utf8.encode(csv);
+//NOTE THAT HERE WE USED HTML PACKAGE
+  final blob = html.Blob([bytes]);
+//It will create downloadable object
+  final url = html.Url.createObjectUrlFromBlob(blob);
+//It will create anchor to download the file
+  final anchor = html.document.createElement('a') as html.AnchorElement
+    ..href = url
+    ..style.display = 'none'
+    ..download = "${sem}_study_result.csv";
+//finally add the csv anchor to body
+  html.document.body!.children.add(anchor);
+// Cause download by calling this function
+  anchor.click();
+//revoke the object
+  html.Url.revokeObjectUrl(url);
+  Get.rootDelegate.toNamed(
+    Routes.MY_PAGE,
+    arguments: true,
+    parameters: {'semId': semId!},
+  );
+}
+
+void exportResult(String sem) async {
+  String? semId = Get.rootDelegate.parameters['semId'];
+  final CollectionReference _profile =
+      FirebaseFirestore.instance.collection('Profile');
+  await Get.snackbar("스터디 결과 생성중", "결과 생성중입니다. 생성 후 안내창이 나타납니다.");
+  List<String> exportHeader = [
+    "name",
+    "studentNumber",
+    "group",
+    "groupStudyNum",
+    "personalStudyNum",
+    "personalStudyTime",
+  ];
+  List<List<dynamic>> exportData = [];
+
+  exportData.add(exportHeader);
+  await _profile.get().then((QuerySnapshot qs1) {
+    qs1.docs.forEach((documentSnapshot) async {
+      if (documentSnapshot["classRegister"] == true) {
+        List<dynamic> exportRow = [];
+        FirebaseFirestore.instance
+            .collection(semId!)
+            .doc(semId)
+            .collection("Group")
+            .doc(documentSnapshot["group"].toString())
+            .get()
+            .then((subDs) {
+          exportRow.add(documentSnapshot["name"]);
+          exportRow.add(documentSnapshot["studentNumber"]);
+          exportRow.add(documentSnapshot["group"]);
+          exportRow.add(subDs["meeting"]);
+
+          exportRow.add(
+              documentSnapshot.data().toString().contains("${semId}_meeting")
+                  ? documentSnapshot["${semId}_meeting"]
+                  : 0);
+          documentSnapshot.data().toString().contains("${semId}_time")
+              ? exportRow.add(documentSnapshot["${semId}_time"])
+              : exportRow.add(0);
+
+          exportData.add(exportRow);
+        });
+      }
+    });
+  });
+
+  await Get.dialog(
+    AlertDialog(
+      title: Text("study 결과를 export 하시겠습니까?"),
+      content: Text("예를 누르면 결과가 다운로드 됩니다."),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            exportResultReal(exportData, sem);
+          },
+          child: Text("예"),
+        ),
+        TextButton(
+          onPressed: () async {
+            Get.back();
+          },
+          child: Text("닫기"),
+        ),
+      ],
+    ),
+  );
+}
+
+//해당기능은 csv 파일 뽑는 것으로 수정해야함.
 void createGroup() async {
   String? semId = Get.rootDelegate.parameters['semId'];
   int? year;
@@ -834,7 +936,7 @@ void createGroup() async {
   if (semId != null) {
     Get.snackbar(
       "그룹 배정 시작",
-      "약 30초간 걸릴 예정입니다. 끝나면 스낵바로 알람이 갑니다. ",
+      " 끝나면 스낵바로 알람이 갑니다. ",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
     );
@@ -1041,6 +1143,48 @@ void createGroup() async {
       colorText: Color(0xffF0F0F0),
     );
     //4개씩 끊어서 올리기
+
+    List<String> exportHeader = [
+      "id",
+      "group",
+      "name",
+      "email",
+      "friend",
+      "classScore"
+    ];
+    List<List<dynamic>> exportData = [];
+    exportData.add(exportHeader);
+    final CollectionReference _profile =
+        FirebaseFirestore.instance.collection('Profile');
+    Map<String, String> registeredFriend = {};
+    await _profile.get().then((QuerySnapshot qs1) {
+      qs1.docs.forEach((documentSnapshot) async {
+        if (documentSnapshot['classRegister'] == true) {
+          //같이하기로한 친구 불러오기
+          String tempData = "";
+          _profile
+              .doc(documentSnapshot.id)
+              .collection(semId)
+              .get()
+              .then((QuerySnapshot qs) {
+            qs.docs.forEach((doc) {
+              tempData +=
+                  doc["name"] + "/" + doc["studentNumber"] + "/" + doc.id + "/";
+            });
+
+            Map<String, String> tempMap = {documentSnapshot.id: tempData};
+            registeredFriend.addAll(tempMap);
+          });
+        }
+      });
+    });
+
+    await Get.snackbar(
+      "csv file export 준비 완료",
+      "그룹 조합 매칭 시작합니다.",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
     int k = 1;
     while (allCount > groupMember) {
       //가장 큰 값을 가지고 있는 노드 확인
@@ -1094,40 +1238,56 @@ void createGroup() async {
         for (int j = 0; j < profileLen; j++) {
           graph[maxNode[i]][j] = -1000;
         }
-        //firebase에 업로드 하기
-        //maxNode에 잡힌 uid 불러와서 update하기
-        await FirebaseFirestore.instance
-            .collection("Profile")
-            .doc(profileList[maxNode[i]])
-            .update({
-          "group": groupNumber * (-1),
+
+        await _profile.get().then((QuerySnapshot qs1) {
+          qs1.docs.forEach((documentSnapshot) async {
+            if (documentSnapshot.id == profileList[maxNode[i]]) {
+              List<dynamic> exportRow = [];
+              exportRow.add(documentSnapshot.id);
+              exportRow.add(groupNumber * (-1));
+              exportRow.add(documentSnapshot["name"]);
+              exportRow.add(documentSnapshot["email"]);
+              exportRow.add(registeredFriend[documentSnapshot.id]);
+              exportRow.add(documentSnapshot["registeredClass"]);
+              exportData.add(exportRow);
+            }
+          });
         });
 
+        //firebase에 업로드 하기
+        //maxNode에 잡힌 uid 불러와서 update하기
+        // await FirebaseFirestore.instance
+        //     .collection("Profile")
+        //     .doc(profileList[maxNode[i]])
+        //     .update({
+        //   "group": groupNumber * (-1),
+        // });
+
         //group list에도 넣어야 .
-        await FirebaseFirestore.instance
-            .collection(semId)
-            .doc(semId)
-            .collection("Group")
-            .doc((-1 * groupNumber).toString())
-            .set({
-          'meeting': 0,
-          'imageUrl': "",
-          'members': [
-            profileList[maxNode[0]],
-            profileList[maxNode[1]],
-            profileList[maxNode[2]],
-            profileList[maxNode[3]],
-          ],
-          'no': 0,
-          'sem': semester,
-          'time': 0,
-          'year': year,
-        });
+        // await FirebaseFirestore.instance
+        //     .collection(semId)
+        //     .doc(semId)
+        //     .collection("Group")
+        //     .doc((-1 * groupNumber).toString())
+        //     .set({
+        //   'meeting': 0,
+        //   'imageUrl': "",
+        //   'members': [
+        //     profileList[maxNode[0]],
+        //     profileList[maxNode[1]],
+        //     profileList[maxNode[2]],
+        //     profileList[maxNode[3]],
+        //   ],
+        //   'no': 0,
+        //   'sem': semester,
+        //   'time': 0,
+        //   'year': year,
+        // });
       }
 
       Get.snackbar(
         "${groupNumber - 1}번째 그룹 생성 완료",
-        "DB에서 확인하실 수 있습니다. ",
+        "",
         backgroundColor: Color(0xff04589C),
         colorText: Color(0xffF0F0F0),
       );
@@ -1167,45 +1327,85 @@ void createGroup() async {
     }
 
     //남은 맴버들 list에 넣어두고 추가하기
-    await FirebaseFirestore.instance
-        .collection(semId)
-        .doc(semId)
-        .collection("Group")
-        .doc((-1 * groupNumber).toString())
-        .set({
-      'meeting': 0,
-      'imageUrl': "",
-      'members': FieldValue.arrayUnion(leftProfile),
-      'no': 0,
-      'sem': semester,
-      'time': 0,
-      'year': year,
-    });
+    for (int i = 0; i < leftProfile.length; i++) {
+      await _profile.get().then((QuerySnapshot qs1) {
+        qs1.docs.forEach((documentSnapshot) async {
+          if (documentSnapshot.id == leftProfile[i]) {
+            List<dynamic> exportRow = [];
+            exportRow.add(documentSnapshot.id);
+            exportRow.add(groupNumber * (-1));
+            exportRow.add(documentSnapshot["name"]);
+            exportRow.add(documentSnapshot["email"]);
+            exportRow.add(registeredFriend[documentSnapshot.id]);
+            exportRow.add(documentSnapshot["registeredClass"]);
 
-    //create extra group
-    for (int i = 0; i < 4; i++) {
-      groupNumber--;
-      await FirebaseFirestore.instance
-          .collection(semId)
-          .doc(semId)
-          .collection("Group")
-          .doc((-1 * groupNumber).toString())
-          .set({
-        'meeting': 0,
-        'imageUrl': "",
-        'members': [],
-        'no': 0,
-        'sem': semester,
-        'time': 0,
-        'year': year,
+            exportData.add(exportRow);
+          }
+        });
       });
     }
-    await Get.snackbar(
-      "그룹 배정 완료",
-      "DB를 확인하거나 혹은 Team tab을 클릭하세요",
-      backgroundColor: Color(0xff04589C),
-      colorText: Color(0xffF0F0F0),
-    );
+
+    // await FirebaseFirestore.instance
+    //     .collection(semId)
+    //     .doc(semId)
+    //     .collection("Group")
+    //     .doc((-1 * groupNumber).toString())
+    //     .set({
+    //   'meeting': 0,
+    //   'imageUrl': "",
+    //   'members': FieldValue.arrayUnion(leftProfile),
+    //   'no': 0,
+    //   'sem': semester,
+    //   'time': 0,
+    //   'year': year,
+    // });
+
+    //create extra group
+    // for (int i = 0; i < 4; i++) {
+    //   groupNumber--;
+    //   await FirebaseFirestore.instance
+    //       .collection(semId)
+    //       .doc(semId)
+    //       .collection("Group")
+    //       .doc((-1 * groupNumber).toString())
+    //       .set({
+    //     'meeting': 0,
+    //     'imageUrl': "",
+    //     'members': [],
+    //     'no': 0,
+    //     'sem': semester,
+    //     'time': 0,
+    //     'year': year,
+    //   });
+    // }
+    String sem = "";
+    await FirebaseFirestore.instance
+        .collection("year")
+        .doc(semId)
+        .get()
+        .then((value) {
+      sem += value["year"].toString() + "_" + value["semester"].toString();
+      Get.dialog(
+        AlertDialog(
+          title: Text("study 결과를 export 하시겠습니까?"),
+          content: Text("예를 누르면 결과가 다운로드 됩니다."),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                exportResultReal(exportData, sem);
+              },
+              child: Text("예"),
+            ),
+            TextButton(
+              onPressed: () async {
+                Get.back();
+              },
+              child: Text("닫기"),
+            ),
+          ],
+        ),
+      );
+    });
   } else {
     await Get.snackbar(
       "학기 정보가 없습니다.",

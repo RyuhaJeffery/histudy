@@ -399,39 +399,32 @@ class _GroupInfoViewState extends State<GroupInfoView> {
                                                                               (value) {
                                                                         if (value
                                                                             .exists) {
-                                                                          FirebaseFirestore
-                                                                              .instance
-                                                                              .collection(semId)
-                                                                              .doc(semId)
-                                                                              .collection('Group')
-                                                                              .doc(documentSnapshot['group'].toString())
-                                                                              .update({
-                                                                            "members":
-                                                                                FieldValue.arrayRemove([
-                                                                              documentSnapshot.id
-                                                                            ])
-                                                                          });
+                                                                          if (documentSnapshot['group'] !=
+                                                                              0) {
+                                                                            FirebaseFirestore.instance.collection(semId).doc(semId).collection('Group').doc(documentSnapshot['group'].toString()).update({
+                                                                              "members": FieldValue.arrayRemove([
+                                                                                documentSnapshot.id,
+                                                                              ]),
+                                                                            });
+                                                                          }
                                                                         }
                                                                       });
-
-                                                                      //이동할 그룹에 유저 데이터를 추가
-                                                                      await FirebaseFirestore
-                                                                          .instance
-                                                                          .collection(
-                                                                              semId)
-                                                                          .doc(
-                                                                              semId)
-                                                                          .collection(
-                                                                              'Group')
-                                                                          .doc(group
-                                                                              .toString())
-                                                                          .update({
-                                                                        "members":
-                                                                            FieldValue.arrayUnion([
-                                                                          documentSnapshot
-                                                                              .id
-                                                                        ]),
-                                                                      });
+                                                                      if (group !=
+                                                                          0) {
+                                                                        //이동할 그룹에 유저 데이터를 추가
+                                                                        await FirebaseFirestore
+                                                                            .instance
+                                                                            .collection(semId)
+                                                                            .doc(semId)
+                                                                            .collection('Group')
+                                                                            .doc(group.toString())
+                                                                            .update({
+                                                                          "members":
+                                                                              FieldValue.arrayUnion([
+                                                                            documentSnapshot.id
+                                                                          ]),
+                                                                        });
+                                                                      }
                                                                       await _profile
                                                                           .doc(documentSnapshot
                                                                               .id)
