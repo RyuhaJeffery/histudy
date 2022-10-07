@@ -867,8 +867,10 @@ void exportResult(String sem) async {
   exportData.add(exportHeader);
   await _profile.get().then((QuerySnapshot qs1) {
     qs1.docs.forEach((documentSnapshot) async {
-      if (documentSnapshot["classRegister"] == true) {
-        List<dynamic> exportRow = [];
+      // if (documentSnapshot["classRegister"] == true) {
+      List<dynamic> exportRow = [];
+
+      if (documentSnapshot["group"] != 0) {
         FirebaseFirestore.instance
             .collection(semId!)
             .doc(semId)
@@ -891,7 +893,23 @@ void exportResult(String sem) async {
 
           exportData.add(exportRow);
         });
+      } else {
+        exportRow.add(documentSnapshot["name"]);
+        exportRow.add(documentSnapshot["studentNumber"]);
+        exportRow.add(documentSnapshot["group"]);
+        exportRow.add(0);
+
+        exportRow.add(
+            documentSnapshot.data().toString().contains("${semId}_meeting")
+                ? documentSnapshot["${semId}_meeting"]
+                : 0);
+        documentSnapshot.data().toString().contains("${semId}_time")
+            ? exportRow.add(documentSnapshot["${semId}_time"])
+            : exportRow.add(0);
+
+        exportData.add(exportRow);
       }
+      // }
     });
   });
 
