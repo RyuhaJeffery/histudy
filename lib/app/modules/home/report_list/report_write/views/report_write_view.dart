@@ -483,15 +483,15 @@ class ReportWriteView extends GetView<ReportWriteController> {
                 } else {
                   String? semId = Get.rootDelegate.parameters['semId'];
                   if (semId != null) {
-                    Get.rootDelegate.toNamed(Routes.REPORT_LIST);
-                    DateTime dateTime = DateTime.now();
+                    await Get.snackbar('보고서 업로드를 시작합니다.', '잠시만 기다려 주세요');
+                    DateTime dateTime = await DateTime.now();
                     // print("[RW]" + dateTime.toString());
                     await imagePickerService.uploadImage(pickedImage!,
                         profileModel.group.toString(), dateTime.toString());
                     String imageUrl = await imagePickerService.downloadURL(
                         profileModel.group.toString(), dateTime.toString());
                     // print("[RW]" + imageUrl);
-                    ReportRepository.uploadReport(
+                    await ReportRepository.uploadReport(
                         semId,
                         profileModel.name.toString(),
                         code.toString(),
@@ -504,6 +504,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                         startingTime.toString(),
                         contents,
                         title);
+                    await Get.rootDelegate.toNamed(Routes.REPORT_LIST);
                   }
                 }
               }

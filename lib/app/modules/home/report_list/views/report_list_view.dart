@@ -243,7 +243,14 @@ class _ReportListViewState extends State<ReportListView> {
             )),
             Expanded(
                 child: Text(
-              '  날짜',
+              '     날짜',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            )),
+            Expanded(
+                child: Text(
+              '                        삭제',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -279,7 +286,8 @@ class _ReportListViewState extends State<ReportListView> {
                             itemCount: reportList.length,
                             itemBuilder:
                                 (BuildContext contextThree, int index) {
-                              return _reportBlock(reportList[index], index);
+                              return _reportBlock(
+                                  reportList[index], index, groupNum);
                             },
                           ),
                         );
@@ -310,7 +318,8 @@ class _ReportListViewState extends State<ReportListView> {
                             itemCount: reportList.length,
                             itemBuilder:
                                 (BuildContext contextThree, int index) {
-                              return _reportBlock(reportList[index], index);
+                              return _reportBlock(
+                                  reportList[index], index, groupNum);
                             },
                           ),
                         );
@@ -336,7 +345,7 @@ class _ReportListViewState extends State<ReportListView> {
     );
   }
 
-  _reportBlock(ReportModel reportModel, int index) {
+  _reportBlock(ReportModel reportModel, int index, int groupNum) {
     String? semId = Get.rootDelegate.parameters['semId'];
     return InkWell(
       onTap: () {
@@ -382,6 +391,78 @@ class _ReportListViewState extends State<ReportListView> {
               style: TextStyle(
                 fontWeight: FontWeight.normal,
               ),
+            )),
+            Expanded(
+                child: IconButton(
+              icon: Icon(Icons.delete_forever),
+              onPressed: () {
+                Get.dialog(
+                  AlertDialog(
+                    title: Text("보고서를 삭제 합니다."),
+                    content: Text("정말로 삭제하시겠습니까?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          List<dynamic> participants = [];
+                          int duration = 0;
+                          String image = "";
+
+                          if (semId != null) {
+                            await FirebaseFirestore.instance
+                                .collection(semId)
+                                .doc(semId)
+                                .collection("Group")
+                                .doc(groupNum.toString())
+                                .collection("reports")
+                                .doc(reportModel.id)
+                                .get()
+                                .then((DocumentSnapshot ds) {
+                              duration = ds['duration'];
+                              participants = ds['participants'];
+                              image = ds['image'];
+                            });
+                            await FirebaseFirestore.instance
+                                .collection(semId)
+                                .doc(semId)
+                                .collection("Group")
+                                .doc(groupNum.toString())
+                                .update({
+                              "time": FieldValue.increment(duration * (-1)),
+                              "meeting": FieldValue.increment(-1)
+                            });
+                            for (int i = 0; i < participants.length; i++) {
+                              await FirebaseFirestore.instance
+                                  .collection("Profile")
+                                  .doc(participants[i])
+                                  .update({
+                                "${semId}_time":
+                                    FieldValue.increment(duration * (-1)),
+                                "${semId}_meeting": FieldValue.increment(-1)
+                              });
+                            }
+                            await FirebaseFirestore.instance
+                                .collection(semId)
+                                .doc(semId)
+                                .collection("Group")
+                                .doc(groupNum.toString())
+                                .collection("reports")
+                                .doc(reportModel.id)
+                                .delete();
+                          }
+                          Get.back();
+                        },
+                        child: Text("예"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        child: Text("아니요"),
+                      ),
+                    ],
+                  ),
+                );
+              },
             )),
           ],
         ),

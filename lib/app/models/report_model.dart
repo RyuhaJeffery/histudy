@@ -9,7 +9,7 @@ class ReportModel {
   String? group;
   String? image;
   List? participants;
-
+  String? id;
   String? studyStartTime;
   String? text;
   String? title;
@@ -25,7 +25,8 @@ class ReportModel {
       this.participants,
       this.studyStartTime,
       this.text,
-      this.title});
+      this.title,
+      this.id});
 
   ReportModel.fromSnapshot(DocumentSnapshot snapshot)
       : author = snapshot['author'],
@@ -38,7 +39,8 @@ class ReportModel {
         participants = snapshot['participants'],
         studyStartTime = snapshot['studyStartTime'],
         text = snapshot['text'],
-        title = snapshot['title'];
+        title = snapshot['title'],
+        id = snapshot.id;
 
   List<ReportModel> reportListFromSnapshot(QuerySnapshot querySnapshot) {
     return querySnapshot.docs.map((snapshot) {

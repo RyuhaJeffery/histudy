@@ -27,13 +27,13 @@ class ReportRepository {
       List<String> participants,
       String studyStartTime,
       String text,
-      String title) {
+      String title) async {
     final groupCollection = FirebaseFirestore.instance
         .collection(semId)
         .doc(semId)
         .collection('Group');
 
-    groupCollection
+    await groupCollection
         .doc(group)
         .collection("reports")
         .doc(dateTime.toString())
@@ -51,17 +51,17 @@ class ReportRepository {
       'title': title,
     });
 
-    groupCollection.doc(group).update({
+    await groupCollection.doc(group).update({
       'imageUrl': image,
     });
 
-    groupCollection.doc(group).update({
+    await groupCollection.doc(group).update({
       'time': FieldValue.increment(int.parse(duration)),
       'meeting': FieldValue.increment(1)
     });
 
     for (int i = 0; i < participants.length; i++) {
-      FirebaseFirestore.instance
+      await FirebaseFirestore.instance
           .collection("Profile")
           .doc(participants[i])
           .update({
