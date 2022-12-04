@@ -849,7 +849,7 @@ Future registeredClass() async {
 }
 
 void removeDuplicatedResult() async {
-  await Get.snackbar("스터디 결과 정리중", "중복되어 있는 결과를 삭제중입니다. 완료 후 스낵바가 나타납니다.");
+  await Get.snackbar("스터디 결과 정리중", "중복되어 있는 결과를 삭제중입니다. 1분 후 csv 파일을 출력하세요");
   String? semId = Get.rootDelegate.parameters['semId'];
 
   //개인 데이터 정리
