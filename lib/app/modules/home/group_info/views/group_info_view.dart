@@ -6,6 +6,7 @@ import 'package:flutter_switch/flutter_switch.dart';
 import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:histudy/app/widgets/top_bar_widget.dart';
+import '../../../../widgets/top_bar_widget.dart';
 import '../controllers/group_info_controller.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

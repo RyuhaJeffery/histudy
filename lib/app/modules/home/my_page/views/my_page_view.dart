@@ -71,7 +71,7 @@ class MyPageView extends GetView<MyPageController> {
                 ),
                 child: Container(
                   width: 450,
-                  height: 650,
+                  height: 700,
                   padding: EdgeInsets.all(30),
                   child: SingleChildScrollView(
                     child: Column(
@@ -486,6 +486,34 @@ class MyPageView extends GetView<MyPageController> {
                                             });
                                           },
                                         ),
+                                        SizedBox(
+                                          height: 20.h,
+                                        ),
+                                        ElevatedButton(
+                                          child: Text(
+                                            'Adjust (remove duplicated) Result',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                            ),
+                                          ),
+                                          style: ButtonStyle(
+                                            minimumSize:
+                                                MaterialStateProperty.all(
+                                                    Size(280, 40)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all<
+                                                    Color>(Colors.black26),
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(27),
+                                            )),
+                                          ),
+                                          onPressed: () async {
+                                            removeDuplicatedResult();
+                                          },
+                                        ),
                                         // SizedBox(
                                         //   height: 20.h,
                                         // ),
@@ -818,6 +846,81 @@ Future registeredClass() async {
       ],
     ),
   );
+}
+
+void removeDuplicatedResult() async {
+  await Get.snackbar("스터디 결과 정리중", "중복되어 있는 결과를 삭제중입니다. 완료 후 스낵바가 나타납니다.");
+  String? semId = Get.rootDelegate.parameters['semId'];
+
+  //개인 데이터 정리
+  FirebaseFirestore.instance
+      .collection(semId!)
+      .doc(semId)
+      .collection('Group')
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((doc) {
+      List<dynamic> members;
+      members = doc["members"];
+      for (int i = 0; i < members.toSet().toList().length; i++) {
+        FirebaseFirestore.instance
+            .collection("Profile")
+            .doc(members[i])
+            .update({
+          "${semId}_time": 0,
+          "${semId}_meeting": 0,
+        });
+        Future.delayed(Duration(seconds: 1));
+      }
+    });
+  });
+
+  //개인 데이터 업데이트
+  FirebaseFirestore.instance
+      .collection(semId)
+      .doc(semId)
+      .collection('Group')
+      .get()
+      .then((QuerySnapshot querySnapshot) {
+    querySnapshot.docs.forEach((doc) {
+      FirebaseFirestore.instance
+          .collection(semId)
+          .doc(semId)
+          .collection('Group')
+          .doc(doc.id)
+          .collection("reports")
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+        querySnapshot.docs.forEach((subDoc) {
+          List<dynamic> participants;
+          int duration;
+          participants = subDoc['participants'].toSet().toList();
+          duration = subDoc['duration'];
+
+          for (int i = 0; i < participants.toSet().toList().length; i++) {
+            FirebaseFirestore.instance
+                .collection("Profile")
+                .doc(participants[i])
+                .update({
+              "${semId}_time": FieldValue.increment(duration),
+              "${semId}_meeting": FieldValue.increment(1)
+            });
+            Future.delayed(Duration(seconds: 1));
+          }
+          FirebaseFirestore.instance
+              .collection(semId)
+              .doc(semId)
+              .collection('Group')
+              .doc(doc.id)
+              .collection("reports")
+              .doc(subDoc.id)
+              .update({"participants": participants});
+        });
+      });
+    });
+  });
+
+  //단체 데이터 정리
 }
 
 void exportResultReal(List<List<dynamic>> exportData, String sem) async {

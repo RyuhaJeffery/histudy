@@ -500,7 +500,7 @@ class ReportWriteView extends GetView<ReportWriteController> {
                         duration,
                         profileModel.group.toString(),
                         imageUrl,
-                        finalCheckedMembers,
+                        finalCheckedMembers.toSet().toList(),
                         startingTime.toString(),
                         contents,
                         title);
