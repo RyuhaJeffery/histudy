@@ -849,16 +849,24 @@ Future registeredClass() async {
 }
 
 void removeDuplicatedResult() async {
-  await Get.snackbar("스터디 결과 정리중", "중복되어 있는 결과를 삭제중입니다. 1분 후 csv 파일을 출력하세요");
+  Get.snackbar("스터디 결과 정리중", "중복되어 있는 결과를 삭제중입니다. 1분 후 csv 파일을 출력하세요");
   String? semId = Get.rootDelegate.parameters['semId'];
+  String sem = "";
+  await FirebaseFirestore.instance
+      .collection("year")
+      .doc(semId)
+      .get()
+      .then((value) {
+    sem += value["year"].toString() + "_" + value["semester"].toString();
+  });
 
   //개인 데이터 정리
-  FirebaseFirestore.instance
+  await FirebaseFirestore.instance
       .collection(semId!)
       .doc(semId)
       .collection('Group')
       .get()
-      .then((QuerySnapshot querySnapshot) {
+      .then((QuerySnapshot querySnapshot) async {
     querySnapshot.docs.forEach((doc) {
       List<dynamic> members;
       members = doc["members"];
@@ -876,12 +884,14 @@ void removeDuplicatedResult() async {
   });
 
   //개인 데이터 업데이트
-  FirebaseFirestore.instance
+  await FirebaseFirestore.instance
       .collection(semId)
       .doc(semId)
       .collection('Group')
       .get()
       .then((QuerySnapshot querySnapshot) {
+    int lastGroup = querySnapshot.docs.length;
+    int check = 0;
     querySnapshot.docs.forEach((doc) {
       FirebaseFirestore.instance
           .collection(semId)
@@ -904,8 +914,34 @@ void removeDuplicatedResult() async {
                 .update({
               "${semId}_time": FieldValue.increment(duration),
               "${semId}_meeting": FieldValue.increment(1)
+            }).then((value) {
+              if (int.parse(doc.id) > (lastGroup - 8) && check == 0) {
+                check = 1;
+                Get.dialog(
+                  AlertDialog(
+                    title: Text("중복 데이터 정리 완료 되었습니다."),
+                    content: Text("csv 파일 출력을 할 수 있습니다. "),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          Future.delayed(Duration(milliseconds: 1500));
+                          Get.back();
+                          exportResult(sem);
+                        },
+                        child: Text("csv 파일 출력"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          Get.back();
+                        },
+                        child: Text("닫기"),
+                      ),
+                    ],
+                  ),
+                );
+              }
             });
-            Future.delayed(Duration(seconds: 1));
+            Future.delayed(Duration(milliseconds: 10));
           }
           FirebaseFirestore.instance
               .collection(semId)
@@ -919,8 +955,6 @@ void removeDuplicatedResult() async {
       });
     });
   });
-
-  //단체 데이터 정리
 }
 
 void exportResultReal(List<List<dynamic>> exportData, String sem) async {
