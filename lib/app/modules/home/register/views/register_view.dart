@@ -763,37 +763,44 @@ class _RegisterViewState extends State<RegisterView> {
                                               .doc(Get.rootDelegate
                                                   .parameters['semId'])
                                               .set({});
-                                          for (int i = 0;
-                                              i < classlength;
-                                              i++) {
-                                            await FirebaseFirestore.instance
-                                                .collection("Profile")
-                                                .doc(firebaseUser!.uid)
-                                                .collection("classScore")
-                                                .doc(Get.rootDelegate
-                                                    .parameters['semId'])
-                                                .update({
-                                              classScoreList[i]
+                                          for (int j = 10; j > 0; j--) {
+                                            for (int i = 0;
+                                                i < classlength;
+                                                i++) {
+                                              await FirebaseFirestore.instance
+                                                  .collection("Profile")
+                                                  .doc(firebaseUser!.uid)
+                                                  .collection("classScore")
+                                                  .doc(Get.rootDelegate
+                                                      .parameters['semId'])
+                                                  .update({
+                                                classScoreList[i]
+                                                        .getClassScore()
+                                                        .classId:
+                                                    classScoreList[i]
+                                                        .getClassScore()
+                                                        .score,
+                                              });
+                                              if (classScoreList[i]
                                                       .getClassScore()
-                                                      .classId:
-                                                  classScoreList[i]
-                                                      .getClassScore()
-                                                      .score,
-                                            });
-                                            registeredClass += "/" +
-                                                classScoreList[i]
-                                                    .getClassScore()
-                                                    .className +
-                                                "(" +
-                                                classScoreList[i]
-                                                    .getClassScore()
-                                                    .professor +
-                                                ")[" +
-                                                classScoreList[i]
-                                                    .getClassScore()
-                                                    .score
-                                                    .toString() +
-                                                "]";
+                                                      .score ==
+                                                  j) {
+                                                registeredClass += "/" +
+                                                    classScoreList[i]
+                                                        .getClassScore()
+                                                        .className +
+                                                    "(" +
+                                                    classScoreList[i]
+                                                        .getClassScore()
+                                                        .professor +
+                                                    ")[" +
+                                                    classScoreList[i]
+                                                        .getClassScore()
+                                                        .score
+                                                        .toString() +
+                                                    "]";
+                                              }
+                                            }
                                           }
                                           FirebaseFirestore.instance
                                               .collection("Profile")

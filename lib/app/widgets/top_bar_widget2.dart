@@ -81,7 +81,7 @@ Widget topBar2() {
               onPressed: () async {
                 await launchUrl(Uri.parse(
                     //"https://fallacious-orchid-f3b.notion.site/Histudy-Guildeline-da4d8c45335b4823b0351928354e1756"
-                    "https://half-almanac-c07.notion.site/Histudy-Guildeline-24d0042dd2484ffb989e0aa7e5def3b8"));
+                    "https://fallacious-orchid-f3b.notion.site/Histudy-Guildeline-da4d8c45335b4823b0351928354e1756"));
               },
               child: Text(
                 "GUIDELINE",
