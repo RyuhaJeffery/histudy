@@ -1327,16 +1327,16 @@ void createGroup() async {
     );
     //4개씩 끊어서 올리기
 
-    List<String> exportHeader = [
-      "id",
-      "group",
-      "name",
-      "email",
-      "friend",
-      "classScore"
-    ];
-    List<List<dynamic>> exportData = [];
-    exportData.add(exportHeader);
+    // List<String> exportHeader = [
+    //   "id",
+    //   "group",
+    //   "name",
+    //   "email",
+    //   "friend",
+    //   "classScore"
+    // ];
+    // List<List<dynamic>> exportData = [];
+    // exportData.add(exportHeader);
     final CollectionReference _profile =
         FirebaseFirestore.instance.collection('Profile');
     Map<String, String> registeredFriend = {};
@@ -1362,8 +1362,15 @@ void createGroup() async {
       });
     });
 
+    // await Get.snackbar(
+    //   "csv file export 준비 완료",
+    //   "그룹 조합 매칭 시작합니다.",
+    //   backgroundColor: Color(0xff04589C),
+    //   colorText: Color(0xffF0F0F0),
+    // );
+
     await Get.snackbar(
-      "csv file export 준비 완료",
+      "그룹 조ㅂ 매칭 시작",
       "그룹 조합 매칭 시작합니다.",
       backgroundColor: Color(0xff04589C),
       colorText: Color(0xffF0F0F0),
@@ -1422,54 +1429,54 @@ void createGroup() async {
           graph[maxNode[i]][j] = -1000;
         }
 
-        await _profile.get().then((QuerySnapshot qs1) {
-          qs1.docs.forEach((documentSnapshot) async {
-            if (documentSnapshot.id == profileList[maxNode[i]]) {
-              List<dynamic> exportRow = [];
-              exportRow.add(documentSnapshot.id);
-              exportRow.add(groupNumber * (-1));
-              exportRow.add(documentSnapshot["name"]);
-              exportRow.add(documentSnapshot["email"]);
-              exportRow.add(registeredFriend[documentSnapshot.id]);
-              exportRow.add(documentSnapshot["registeredClass"]);
-              exportData.add(exportRow);
-            }
-          });
+        // await _profile.get().then((QuerySnapshot qs1) {
+        //   qs1.docs.forEach((documentSnapshot) async {
+        //     if (documentSnapshot.id == profileList[maxNode[i]]) {
+        //       List<dynamic> exportRow = [];
+        //       exportRow.add(documentSnapshot.id);
+        //       exportRow.add(groupNumber * (-1));
+        //       exportRow.add(documentSnapshot["name"]);
+        //       exportRow.add(documentSnapshot["email"]);
+        //       exportRow.add(registeredFriend[documentSnapshot.id]);
+        //       exportRow.add(documentSnapshot["registeredClass"]);
+        //       exportData.add(exportRow);
+        //     }
+        //   });
+        // });
+
+        // firebase에 업로드 하기
+        // maxNode에 잡힌 uid 불러와서 update하기
+        await FirebaseFirestore.instance
+            .collection("Profile")
+            .doc(profileList[maxNode[i]])
+            .update({
+          "group": groupNumber * (-1),
         });
 
-        //firebase에 업로드 하기
-        //maxNode에 잡힌 uid 불러와서 update하기
-        // await FirebaseFirestore.instance
-        //     .collection("Profile")
-        //     .doc(profileList[maxNode[i]])
-        //     .update({
-        //   "group": groupNumber * (-1),
-        // });
-
-        //group list에도 넣어야 .
-        // await FirebaseFirestore.instance
-        //     .collection(semId)
-        //     .doc(semId)
-        //     .collection("Group")
-        //     .doc((-1 * groupNumber).toString())
-        //     .set({
-        //   'meeting': 0,
-        //   'imageUrl': "",
-        //   'members': [
-        //     profileList[maxNode[0]],
-        //     profileList[maxNode[1]],
-        //     profileList[maxNode[2]],
-        //     profileList[maxNode[3]],
-        //   ],
-        //   'no': 0,
-        //   'sem': semester,
-        //   'time': 0,
-        //   'year': year,
-        // });
+        // group list에도 넣어야 .
+        await FirebaseFirestore.instance
+            .collection(semId)
+            .doc(semId)
+            .collection("Group")
+            .doc((-1 * groupNumber).toString())
+            .set({
+          'meeting': 0,
+          'imageUrl': "",
+          'members': [
+            profileList[maxNode[0]],
+            profileList[maxNode[1]],
+            profileList[maxNode[2]],
+            profileList[maxNode[3]],
+          ],
+          'no': 0,
+          'sem': semester,
+          'time': 0,
+          'year': year,
+        });
       }
 
       Get.snackbar(
-        "${groupNumber - 1}번째 그룹 생성 완료",
+        "${groupNumber * -1}번째 그룹 생성 완료",
         "",
         backgroundColor: Color(0xff04589C),
         colorText: Color(0xffF0F0F0),
@@ -1509,86 +1516,109 @@ void createGroup() async {
       leftProfile[i] = profileList[left[i]];
     }
 
-    //남은 맴버들 list에 넣어두고 추가하기
-    for (int i = 0; i < leftProfile.length; i++) {
-      await _profile.get().then((QuerySnapshot qs1) {
-        qs1.docs.forEach((documentSnapshot) async {
-          if (documentSnapshot.id == leftProfile[i]) {
-            List<dynamic> exportRow = [];
-            exportRow.add(documentSnapshot.id);
-            exportRow.add(groupNumber * (-1));
-            exportRow.add(documentSnapshot["name"]);
-            exportRow.add(documentSnapshot["email"]);
-            exportRow.add(registeredFriend[documentSnapshot.id]);
-            exportRow.add(documentSnapshot["registeredClass"]);
+    // //남은 맴버들 list에 넣어두고 추가하기
+    // for (int i = 0; i < leftProfile.length; i++) {
+    //   await _profile.get().then((QuerySnapshot qs1) {
+    //     qs1.docs.forEach((documentSnapshot) async {
+    //       if (documentSnapshot.id == leftProfile[i]) {
+    //         List<dynamic> exportRow = [];
+    //         exportRow.add(documentSnapshot.id);
+    //         exportRow.add(groupNumber * (-1));
+    //         exportRow.add(documentSnapshot["name"]);
+    //         exportRow.add(documentSnapshot["email"]);
+    //         exportRow.add(registeredFriend[documentSnapshot.id]);
+    //         exportRow.add(documentSnapshot["registeredClass"]);
 
-            exportData.add(exportRow);
-          }
-        });
+    //         exportData.add(exportRow);
+    //       }
+    //     });
+    //   });
+    // }
+
+    await FirebaseFirestore.instance
+        .collection(semId)
+        .doc(semId)
+        .collection("Group")
+        .doc((-1 * groupNumber).toString())
+        .set({
+      'meeting': 0,
+      'imageUrl': "",
+      'members': FieldValue.arrayUnion(leftProfile),
+      'no': 0,
+      'sem': semester,
+      'time': 0,
+      'year': year,
+    });
+
+    // create extra group
+    for (int i = 0; i < 4; i++) {
+      groupNumber--;
+      await FirebaseFirestore.instance
+          .collection(semId)
+          .doc(semId)
+          .collection("Group")
+          .doc((-1 * groupNumber).toString())
+          .set({
+        'meeting': 0,
+        'imageUrl': "",
+        'members': [],
+        'no': 0,
+        'sem': semester,
+        'time': 0,
+        'year': year,
       });
     }
 
-    // await FirebaseFirestore.instance
-    //     .collection(semId)
-    //     .doc(semId)
-    //     .collection("Group")
-    //     .doc((-1 * groupNumber).toString())
-    //     .set({
-    //   'meeting': 0,
-    //   'imageUrl': "",
-    //   'members': FieldValue.arrayUnion(leftProfile),
-    //   'no': 0,
-    //   'sem': semester,
-    //   'time': 0,
-    //   'year': year,
-    // });
+    Get.snackbar(
+      "생성 완료",
+      "",
+      backgroundColor: Color(0xff04589C),
+      colorText: Color(0xffF0F0F0),
+    );
 
-    //create extra group
-    // for (int i = 0; i < 4; i++) {
-    //   groupNumber--;
-    //   await FirebaseFirestore.instance
-    //       .collection(semId)
-    //       .doc(semId)
-    //       .collection("Group")
-    //       .doc((-1 * groupNumber).toString())
-    //       .set({
-    //     'meeting': 0,
-    //     'imageUrl': "",
-    //     'members': [],
-    //     'no': 0,
-    //     'sem': semester,
-    //     'time': 0,
-    //     'year': year,
-    //   });
-    // }
-    String sem = "";
-    await FirebaseFirestore.instance
-        .collection("year")
-        .doc(semId)
-        .get()
-        .then((value) {
-      sem += value["year"].toString() + "_" + value["semester"].toString();
-      Get.dialog(
-        AlertDialog(
-          title: Text("study 결과를 export 하시겠습니까?"),
-          content: Text("예를 누르면 결과가 다운로드 됩니다."),
-          actions: [
-            TextButton(
-              onPressed: () async {
-                exportResultReal(exportData, sem);
-              },
-              child: Text("예"),
-            ),
-            TextButton(
-              onPressed: () async {
-                Get.back();
-              },
-              child: Text("닫기"),
-            ),
-          ],
-        ),
-      );
-    });
+    Get.dialog(
+      AlertDialog(
+        title: Text("생성 완료"),
+        content: Text("그룹이 생성되었습니다. Team tab에서 확인하세요."),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              Get.back();
+            },
+            child: Text("완료"),
+          ),
+        ],
+      ),
+    );
+
+    // String sem = "";
+    // await FirebaseFirestore.instance
+    //     .collection("year")
+    //     .doc(semId)
+    //     .get()
+    //     .then((value) {
+    //   sem += value["year"].toString() + "_" + value["semester"].toString();
+    //   Get.dialog(
+    //     AlertDialog(
+    //       title: Text("study 결과를 export 하시겠습니까?"),
+    //       content: Text("예를 누르면 결과가 다운로드 됩니다."),
+    //       actions: [
+    //         TextButton(
+    //           onPressed: () async {
+    //             exportResultReal(exportData, sem);
+    //           },
+    //           child: Text("예"),
+    //         ),
+    //         TextButton(
+    //           onPressed: () async {
+    //             Get.back();
+    //           },
+    //           child: Text("닫기"),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // });
   } else {
     await Get.snackbar(
       "학기 정보가 없습니다.",
