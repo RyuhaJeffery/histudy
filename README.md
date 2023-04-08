@@ -1,16 +1,7 @@
 # histudy
 
-A new Flutter project.
+Histudy는 한동대학교 전산전자공학부의 스터디 시스템 입니다.
 
-## Getting Started
+<img width="1440" alt="image" src="https://user-images.githubusercontent.com/63452858/230720707-db340c70-6356-4f6a-a8cc-53a9a0257594.png">
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://user-images.githubusercontent.com/63452858/230720752-654fb2c8-e35b-4fd9-a79b-5e7eea2b0b2b.png)
